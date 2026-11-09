@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>ระบบฌาปนกิจ | v41.2 Slip</title>
+<title>ระบบฌาปนกิจ | v42 Cloud</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="manifest" href='data:application/manifest+json,{"name":"ฌาปนกิจ พลัส","short_name":"ฌาปนกิจ","start_url":"./","display":"standalone","background_color":"#0F172A","theme_color":"#2563EB"}'>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,31 +11,16 @@
 <script src="https://unpkg.com/html5-qrcode"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <style>
-/* ============ CONTENT-FIRST UI THEME ============ */
-:root {
-    --p: #2563EB; --pd: #1D4ED8; --bg: #F1F5F9; --card: #FFFFFF;
-    --text: #0F172A; --sub: #64748B; --border: #E2E8F0;
-    --red: #EF4444; --redbg: #FEF2F2; --orange: #F59E0B; --orangebg: #FFFBEB;
-    --green: #10B981; --greenbg: #ECFDF5; --purple: #8B5CF6; --purplebg: #F5F3FF;
-    --line: #00B900;
-    --grad: linear-gradient(135deg, #2563EB, #3B82F6);
-    --gradH: linear-gradient(135deg, #0F172A, #1E3A8A);
-    --gradW: linear-gradient(135deg, #F59E0B, #FBBF24);
-    --r: 10px; --rl: 14px; --rxl: 18px; --rxxl: 22px;
-    --sh-sm: 0 2px 6px rgba(15,23,42,0.05);
-    --sh-md: 0 4px 12px rgba(15,23,42,0.08);
-    --sh-lg: 0 10px 25px rgba(15,23,42,0.1);
-}
-[data-theme=dark] {
-    --bg: #0F172A; --card: #1E293B; --text: #F8FAFC; --sub: #94A3B8; --border: #334155;
-    --redbg: #451A1A; --orangebg: #452A10; --greenbg: #064E3B; --purplebg: #2E1065;
-}
+/* [CSS คงเดิมทั้งหมดจาก v41.2] */
+:root { --p: #2563EB; --pd: #1D4ED8; --bg: #F1F5F9; --card: #FFFFFF; --text: #0F172A; --sub: #64748B; --border: #E2E8F0; --red: #EF4444; --redbg: #FEF2F2; --orange: #F59E0B; --orangebg: #FFFBEB; --green: #10B981; --greenbg: #ECFDF5; --purple: #8B5CF6; --purplebg: #F5F3FF; --line: #00B900; --grad: linear-gradient(135deg, #2563EB, #3B82F6); --gradH: linear-gradient(135deg, #0F172A, #1E3A8A); --gradW: linear-gradient(135deg, #F59E0B, #FBBF24); --r: 10px; --rl: 14px; --rxl: 18px; --rxxl: 22px; --sh-sm: 0 2px 6px rgba(15,23,42,0.05); --sh-md: 0 4px 12px rgba(15,23,42,0.08); --sh-lg: 0 10px 25px rgba(15,23,42,0.1); }
+[data-theme=dark] { --bg: #0F172A; --card: #1E293B; --text: #F8FAFC; --sub: #94A3B8; --border: #334155; --redbg: #451A1A; --orangebg: #452A10; --greenbg: #064E3B; --purplebg: #2E1065; }
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', sans-serif; -webkit-tap-highlight-color: transparent; }
 body { background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-
-/* Login */
 #login-screen { position: fixed; inset: 0; background: var(--gradH); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; }
 .login-card { background: var(--card); padding: 30px 24px; border-radius: var(--rxxl); width: 100%; max-width: 400px; box-shadow: var(--sh-lg); }
 .login-logo { width: 70px; height: 70px; border-radius: 20px; background: var(--grad); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 16px; box-shadow: 0 8px 20px rgba(37,99,235,0.3); }
@@ -44,8 +29,6 @@ body { background: var(--bg); color: var(--text); height: 100vh; display: flex; 
 .login-tabs { display: flex; background: var(--bg); border-radius: var(--rl); padding: 4px; margin-bottom: 20px; }
 .login-tab { flex: 1; padding: 10px; border: none; background: transparent; border-radius: var(--r); font-size: .85rem; font-weight: 700; color: var(--sub); cursor: pointer; transition: all 0.2s; }
 .login-tab.active { background: var(--card); color: var(--p); box-shadow: var(--sh-sm); }
-
-/* Base */
 .form-group { margin-bottom: 14px; }
 .form-label { display: block; font-size: .85rem; font-weight: 700; color: var(--sub); margin-bottom: 6px; }
 .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: var(--rl); font-size: .95rem; background: var(--bg); color: var(--text); transition: all 0.2s; }
@@ -56,8 +39,6 @@ body { background: var(--bg); color: var(--text); height: 100vh; display: flex; 
 .demo-info code { background: #EFF6FF; padding: 2px 6px; border-radius: 6px; color: var(--pd); font-weight: 700; }
 .remember-me { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; cursor: pointer; font-size: .85rem; font-weight: 600; color: var(--sub); }
 .remember-me input { width: 18px; height: 18px; accent-color: var(--p); cursor: pointer; }
-
-/* Header */
 header { background: var(--gradH); color: #fff; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; z-index: 100; border-radius: 0 0 var(--rxl) var(--rxl); box-shadow: var(--sh-md); }
 .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: .95rem; flex: 1; min-width: 0; }
 .brand i { font-size: 1.2rem; flex-shrink: 0; }
@@ -69,12 +50,8 @@ header { background: var(--gradH); color: #fff; padding: 12px 16px; display: fle
 .icon-btn { background: rgba(255,255,255,.15); border: none; color: #fff; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; font-size: .9rem; transition: background 0.2s; }
 .icon-btn:hover { background: rgba(255,255,255,.25); }
 .badge { position: absolute; top: -2px; right: -2px; background: var(--red); color: #fff; font-size: .6rem; font-weight: 800; padding: 1px 4px; border-radius: 10px; min-width: 16px; text-align: center; border: 2px solid #1E3A8A; }
-
-/* Warning */
 #backup-warning { display: none; padding: 8px 16px; background: var(--orangebg); color: var(--orange); font-size: .75rem; font-weight: 700; text-align: center; border-bottom: 1px solid var(--border); }
 #backup-warning button { background: var(--orange); color: #fff; border: none; padding: 3px 10px; border-radius: 6px; cursor: pointer; margin-left: 8px; font-weight: 700; font-size: .7rem; }
-
-/* Stats */
 .stats-container { padding: 12px 16px 6px; }
 .stats-bar { background: var(--card); border-radius: var(--rl); display: flex; padding: 10px 4px; box-shadow: var(--sh-sm); border: 1px solid var(--border); }
 .stat-item { flex: 1; text-align: center; border-right: 1px solid var(--border); cursor: pointer; padding: 2px 0; }
@@ -84,8 +61,6 @@ header { background: var(--gradH); color: #fff; padding: 12px 16px; display: fle
 .stat-item .val.tr { color: var(--red); }
 .stat-item .val.tg { color: var(--green); }
 .stat-item .lbl { font-size: .65rem; color: var(--sub); font-weight: 600; margin-top: 2px; }
-
-/* Search */
 .search-filter-zone { padding: 4px 16px 8px; position: sticky; top: 0; background: var(--bg); z-index: 50; }
 .search-box { position: relative; margin-bottom: 8px; display: flex; gap: 8px; }
 .search-box input { width: 100%; padding: 10px 14px 10px 36px; border-radius: var(--rl); border: 1px solid var(--border); font-size: .9rem; background: var(--card); color: var(--text); box-shadow: var(--sh-sm); }
@@ -98,8 +73,6 @@ header { background: var(--gradH); color: #fff; padding: 12px 16px; display: fle
 .filter-chip.active { background: var(--p); color: #fff; border-color: var(--p); }
 .filter-chip .badge-n { background: rgba(0,0,0,.06); padding: 1px 4px; border-radius: 6px; margin-left: 4px; font-size: .65rem; }
 .filter-chip.active .badge-n { background: rgba(255,255,255,.25); }
-
-/* Main & Member Card */
 main { flex: 1; overflow-y: auto; padding-bottom: 85px; }
 .member-list { padding: 8px 16px 0; }
 .member-card { background: var(--card); border-radius: var(--rl); padding: 12px; margin-bottom: 10px; box-shadow: var(--sh-sm); border: 1px solid var(--border); cursor: pointer; position: relative; overflow: hidden; }
@@ -107,14 +80,12 @@ main { flex: 1; overflow-y: auto; padding-bottom: 85px; }
 .member-card.s-overdue::before { background: var(--red); }
 .member-card.s-due_soon::before { background: var(--orange); }
 .member-card.s-archived::before, .member-card.s-deceased::before { background: var(--sub); }
-
 .member-row { display: flex; gap: 10px; align-items: flex-start; }
 .bulk-checkbox { display: flex; align-items: center; padding-top: 10px; }
 .bulk-checkbox input { width: 20px; height: 20px; accent-color: var(--p); cursor: pointer; }
 .member-av { width: 40px; height: 40px; border-radius: 12px; background: #EFF6FF; color: var(--p); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; flex-shrink: 0; overflow: hidden; }
 [data-theme=dark] .member-av { background: #1E3A8A; }
 .member-av img { width: 100%; height: 100%; object-fit: cover; }
-
 .member-body { flex: 1; min-width: 0; }
 .member-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px; gap: 8px; }
 .member-name { font-size: .9rem; font-weight: 800; line-height: 1.3; flex: 1; }
@@ -123,7 +94,6 @@ main { flex: 1; overflow-y: auto; padding-bottom: 85px; }
 .pill-due_soon { background: var(--orangebg); color: var(--orange); }
 .pill-overdue { background: var(--redbg); color: var(--red); }
 .pill-inactive, .pill-archived, .pill-deceased { background: var(--bg); color: var(--sub); }
-
 .member-reg { font-size: .7rem; color: var(--sub); font-family: monospace; font-weight: 600; }
 .member-meta { font-size: .75rem; color: var(--sub); margin-top: 2px; display: flex; flex-wrap: wrap; gap: 6px; }
 .fund-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
@@ -133,13 +103,10 @@ main { flex: 1; overflow-y: auto; padding-bottom: 85px; }
 .tag-fam { font-size: .65rem; padding: 2px 8px; border-radius: 6px; background: #EFF6FF; color: var(--p); font-weight: 700; }
 .tag-aging { font-size: .65rem; padding: 2px 8px; border-radius: 6px; background: var(--orangebg); color: var(--orange); font-weight: 700; }
 .owe-tag { font-size: .7rem; padding: 2px 8px; border-radius: 6px; background: var(--redbg); color: var(--red); font-weight: 800; margin-top: 6px; display: inline-block; }
-
 .member-actions { display: flex; gap: 6px; justify-content: flex-end; padding-top: 10px; margin-top: 10px; border-top: 1px dashed var(--border); }
 .btn-sm { padding: 6px 12px; border-radius: 8px; font-size: .75rem; font-weight: 700; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 4px; }
 .btn-outline { background: var(--card); color: var(--p); border: 1px solid var(--p); }
 .btn-solid { background: var(--p); color: #fff; }
-
-/* Bulk */
 #bulk-bar { position: fixed; bottom: 75px; left: 16px; right: 16px; background: #0F172A; color: #fff; border-radius: var(--rl); padding: 10px 16px; display: none; justify-content: space-between; align-items: center; z-index: 99; box-shadow: var(--sh-lg); flex-wrap: wrap; gap: 8px; }
 [data-theme=dark] #bulk-bar { background: var(--pd); }
 .bulk-info { font-size: .85rem; font-weight: 700; }
@@ -147,8 +114,6 @@ main { flex: 1; overflow-y: auto; padding-bottom: 85px; }
 .btn-bulk { background: rgba(255,255,255,.2); border: none; color: #fff; padding: 6px 12px; border-radius: 8px; font-size: .75rem; font-weight: 700; cursor: pointer; }
 .btn-bulk.primary { background: var(--green); }
 .btn-bulk.warning { background: var(--orange); }
-
-/* Nav */
 nav.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); display: flex; justify-content: space-around; padding: 8px 8px 16px; box-shadow: 0 -2px 10px rgba(15,23,42,.06); z-index: 100; border-radius: 20px 20px 0 0; border-top: 1px solid var(--border); }
 .nav-item { text-align: center; color: var(--sub); font-size: .65rem; cursor: pointer; flex: 1; padding: 2px; position: relative; font-weight: 700; }
 .nav-item i { display: block; font-size: 1.2rem; margin-bottom: 2px; width: 40px; height: 30px; line-height: 30px; border-radius: 10px; margin-left: auto; margin-right: auto; }
@@ -156,8 +121,6 @@ nav.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(
 .nav-item.active i { background: #EFF6FF; color: var(--p); }
 [data-theme=dark] .nav-item.active i { background: #1E3A8A; }
 .nav-badge { position: absolute; top: 0; right: calc(50% - 20px); background: var(--red); color: #fff; font-size: .55rem; font-weight: 800; padding: 1px 4px; border-radius: 8px; min-width: 16px; border: 2px solid var(--card); }
-
-/* Modals */
 .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.6); backdrop-filter: blur(3px); display: none; justify-content: center; align-items: flex-end; z-index: 200; }
 .modal-overlay.show { display: flex; }
 .modal { background: var(--card); width: 100%; max-height: 92vh; border-radius: var(--rxxl) var(--rxxl) 0 0; padding: 20px; overflow-y: auto; animation: slideUp 0.3s ease-out; }
@@ -181,8 +144,6 @@ textarea.form-input { resize: vertical; min-height: 70px; }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .toast.success { background: var(--green); }
 .toast.error { background: var(--red); }
-
-/* Notif */
 .notif-item { display: flex; gap: 12px; padding: 12px; border-radius: var(--rl); margin-bottom: 10px; background: var(--card); border: 1px solid var(--border); cursor: pointer; position: relative; box-shadow: var(--sh-sm); }
 .notif-item.unread { background: #EFF6FF; border-color: #BFDBFE; }
 [data-theme=dark] .notif-item.unread { background: #1E3A8A; border-color: #1D4ED8; }
@@ -195,8 +156,6 @@ textarea.form-input { resize: vertical; min-height: 70px; }
 .notif-msg { font-size: .75rem; color: var(--sub); }
 .notif-time { font-size: .65rem; color: var(--sub); font-weight: 600; }
 .notif-dismiss { position: absolute; top: 10px; right: 10px; background: transparent; border: none; color: var(--sub); cursor: pointer; font-size: 1.2rem; padding: 0; }
-
-/* Settings & Forms */
 .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
 .setting-info { flex: 1; padding-right: 12px; }
 .setting-title { font-size: .9rem; font-weight: 700; margin-bottom: 2px; }
@@ -206,7 +165,6 @@ textarea.form-input { resize: vertical; min-height: 70px; }
 .slider:before { content: ''; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .3s; }
 .switch input:checked + .slider { background: var(--p); }
 .switch input:checked + .slider:before { transform: translateX(20px); }
-
 .fund-row { border: 1.5px solid var(--border); border-radius: var(--rl); padding: 10px; margin-bottom: 8px; background: var(--card); }
 .fund-row.checked { border-color: var(--p); background: #EFF6FF; }
 [data-theme=dark] .fund-row.checked { background: #1E3A8A; }
@@ -260,8 +218,6 @@ textarea.form-input { resize: vertical; min-height: 70px; }
 .summary-box.success .summary-label, .summary-box.success .summary-value { color: var(--green); }
 .summary-box.purple { background: var(--purplebg); border-color: var(--purple); }
 .summary-box.purple .summary-label, .summary-box.purple .summary-value { color: var(--purple); }
-
-/* Admin & Table */
 .admin-tabs { display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
 .admin-tabs::-webkit-scrollbar { display: none; }
 .admin-tab { padding: 8px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--sub); font-weight: 700; font-size: .8rem; cursor: pointer; white-space: nowrap; font-family: inherit; }
@@ -319,8 +275,6 @@ textarea.form-input { resize: vertical; min-height: 70px; }
 .text-xs { font-size: .75rem; }
 .font-bold { font-weight: 700; }
 .w-full { width: 100%; }
-
-/* Slip Uploader */
 .slip-upload-box { border: 2px dashed var(--border); border-radius: var(--rl); padding: 20px; text-align: center; background: var(--bg); cursor: pointer; position: relative; overflow: hidden; transition: all 0.2s; }
 .slip-upload-box:hover { border-color: var(--p); background: #EFF6FF; }
 .slip-upload-box i { font-size: 2rem; color: var(--p); margin-bottom: 8px; }
@@ -335,7 +289,7 @@ textarea.form-input { resize: vertical; min-height: 70px; }
     <div class="login-card">
         <div class="login-logo"><i class="fas fa-heartbeat"></i></div>
         <h2 class="login-title">ระบบฌาปนกิจ</h2>
-        <p class="login-sub">v41.2 Slip</p>
+        <p class="login-sub">v42 Cloud Sync</p>
         <div class="login-tabs">
             <button id="tab-staff" class="login-tab active" onclick="switchLoginTab('staff')">เจ้าหน้าที่</button>
             <button id="tab-member" class="login-tab" onclick="switchLoginTab('member')">สมาชิก</button>
@@ -507,7 +461,6 @@ textarea.form-input { resize: vertical; min-height: 70px; }
         <div class="form-group"><label class="form-label">วิธี</label><select id="method" class="form-input"><option value="cash">เงินสด</option><option value="transfer">โอน</option></select></div>
         <div class="form-group"><label class="form-label">ผู้เก็บ</label><input type="text" id="collector" class="form-input" readonly style="background:var(--bg);font-weight:700;color:var(--p)"></div>
         
-        <!-- ส่วนแนบสลิป (เพิ่มใหม่) -->
         <div class="form-group">
             <label class="form-label">แนบหลักฐานการชำระเงิน (สลิป)</label>
             <input type="file" id="pay-slip-input" accept="image/*" style="display:none" onchange="handlePaySlipUpload(this)">
@@ -656,6 +609,21 @@ textarea.form-input { resize: vertical; min-height: 70px; }
 <div id="toast" class="toast">บันทึกสำเร็จ</div>
 
 <script>
+// ============ FIREBASE INIT ============
+const firebaseConfig = {
+  apiKey: "AIzaSyDvoyf9GMLbPXCsj1qeuUbX1TrSR0AfKvg",
+  authDomain: "test-f3c67.firebaseapp.com",
+  databaseURL: "https://test-f3c67-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "test-f3c67",
+  storageBucket: "test-f3c67.firebasestorage.app",
+  messagingSenderId: "342567299985",
+  appId: "1:342567299985:web:f6cfb0354ed5e525ed8830",
+  measurementId: "G-MTDEELLL4J"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const dbRef = db.ref('chapanakit_data');
+
 // ============ STATE ============
 let currentUserKey=null,currentDisplayName="",currentRole="";
 let members=[],users={},auditLogs=[],funds=[],payouts=[],editRequests=[],expenses=[];
@@ -663,12 +631,13 @@ let notifications=[],notifSettings={},benefitConfig={formula:'years',fixedAmount
 let branding={logo:null,name:'ระบบฌาปนกิจ',address:'',phone:''};
 let currentViewIndex=null,currentSearchTerm="",currentStatusFilter="all";
 let tempMemberPhoto=null,tempDocs=[],lastBackupAt=null;
-let tempPaySlip=null; // ตัวแปรเก็บสลิปชั่วคราว
+let tempPaySlip=null;
 let notifFilter="all",logFilter="all",reqFilter="pending";
 let notifInterval=null,selectedMembers=[],inactivityTimer=null;
 let html5QrCode=null, barChartInstance=null, pieChartInstance=null;
+let isCloudLoading = true;
 
-const K={funds:'v41_funds',members:'v41_members',users:'v41_users',logs:'v41_logs',payouts:'v41_payouts',reqs:'v41_requests',notifs:'v41_notifs',ns:'v41_nsettings',lb:'v41_lastbackup',theme:'v41_theme',expenses:'v41_expenses',linetoken:'v41_linetoken',benefit:'v41_benefit',branding:'v41_branding'};
+const K={funds:'v42_funds',members:'v42_members',users:'v42_users',logs:'v42_logs',payouts:'v42_payouts',reqs:'v42_requests',notifs:'v42_notifs',ns:'v42_nsettings',lb:'v42_lastbackup',theme:'v42_theme',expenses:'v42_expenses',linetoken:'v42_linetoken',benefit:'v42_benefit',branding:'v42_branding'};
 const DEF_NS={enabled:true,sound:true,triggers:{overdue:true,due_soon:true,backup_reminder:true},backupDays:7};
 const DEF_USERS={'admin99':{pass:'admin123',displayName:'Administrator',role:'admin'},'usa123':{pass:'usa123',displayName:'อ.อุษา',role:'agent'}};
 const DEF_FUNDS=[{id:'f_cremation',name:'เงินฌาปนกิจ',amount:50},{id:'f_somthop',name:'สมทบ',amount:30}];
@@ -725,17 +694,69 @@ const canAddMember=()=>currentRole==='admin'||currentRole==='agent';
 const canCollectMoney=(m)=>{if(currentRole==='admin'||currentRole==='supervisor')return true;return m&&m.agentName===currentDisplayName;};
 const canEditMoney=()=>currentRole==='admin';
 
-// ============ STORAGE ============
-const saveFunds=()=>localStorage.setItem(K.funds,JSON.stringify(funds));
-const saveUsers=()=>localStorage.setItem(K.users,JSON.stringify(users));
-const saveLogs=()=>localStorage.setItem(K.logs,JSON.stringify(auditLogs));
-const savePayouts=()=>localStorage.setItem(K.payouts,JSON.stringify(payouts));
-const saveReqs=()=>localStorage.setItem(K.reqs,JSON.stringify(editRequests));
-const saveNotifs=()=>localStorage.setItem(K.notifs,JSON.stringify(notifications));
-const saveNS=()=>localStorage.setItem(K.ns,JSON.stringify(notifSettings));
-const saveExpenses=()=>localStorage.setItem(K.expenses,JSON.stringify(expenses));
-const persistBranding=()=>localStorage.setItem(K.branding,JSON.stringify(branding));
-function saveMembers(){try{localStorage.setItem(K.members,JSON.stringify(members));}catch(e){throw new Error('QUOTA');}}
+// ============ FIREBASE SYNC ============
+async function syncDataToCloud() {
+    if(isCloudLoading) return;
+    try {
+        await dbRef.set({
+            members, users, auditLogs, funds, payouts, editRequests, expenses,
+            notifications, notifSettings, benefitConfig, branding
+        });
+        // Cache ลง LocalStorage
+        localStorage.setItem(K.members, JSON.stringify(members));
+        localStorage.setItem(K.users, JSON.stringify(users));
+        localStorage.setItem(K.funds, JSON.stringify(funds));
+        localStorage.setItem(K.logs, JSON.stringify(auditLogs));
+        localStorage.setItem(K.payouts, JSON.stringify(payouts));
+        localStorage.setItem(K.reqs, JSON.stringify(editRequests));
+        localStorage.setItem(K.expenses, JSON.stringify(expenses));
+        localStorage.setItem(K.branding, JSON.stringify(branding));
+    } catch (e) {
+        console.error("Cloud Sync Error:", e);
+        toast('ไม่สามารถซิงค์ข้อมูลขึ้น Cloud ได้', 'error');
+    }
+}
+
+function listenToCloudChanges() {
+    dbRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            members = data.members || [];
+            users = data.users || DEF_USERS;
+            auditLogs = data.auditLogs || [];
+            funds = data.funds || DEF_FUNDS;
+            payouts = data.payouts || [];
+            editRequests = data.editRequests || [];
+            expenses = data.expenses || [];
+            notifications = data.notifications || [];
+            notifSettings = data.notifSettings || DEF_NS;
+            benefitConfig = data.benefitConfig || {formula:'years',fixedAmount:0,ratePerYear:1000,tiers:[]};
+            branding = data.branding || {logo:null,name:'ระบบฌาปนกิจ',address:'',phone:''};
+
+            if(document.getElementById('app-container').style.display !== 'none') {
+                refreshDashboard();
+                if(branding.name) document.getElementById('brand-name-header').textContent = branding.name;
+            }
+        } else {
+            members = DEF_MEMBERS;
+            users = DEF_USERS;
+            funds = DEF_FUNDS;
+            syncDataToCloud();
+        }
+        isCloudLoading = false;
+    });
+}
+
+const saveFunds=()=>syncDataToCloud();
+const saveUsers=()=>syncDataToCloud();
+const saveLogs=()=>syncDataToCloud();
+const savePayouts=()=>syncDataToCloud();
+const saveReqs=()=>syncDataToCloud();
+const saveNotifs=()=>syncDataToCloud();
+const saveNS=()=>syncDataToCloud();
+const saveExpenses=()=>syncDataToCloud();
+const persistBranding=()=>syncDataToCloud();
+function saveMembers(){try{syncDataToCloud();}catch(e){throw new Error('QUOTA');}}
 
 // ============ CORE ============
 const getFund=id=>funds.find(f=>f.id===id);
@@ -865,6 +886,7 @@ function debugSystem(){
         ``,
         `Session: ${sessionStorage.getItem('logged_user_key')||'ไม่มี'}`,
         `Remember: ${localStorage.getItem('remember_user_key')||'ไม่มี'}`,
+        `Cloud Status: ${isCloudLoading ? 'กำลังโหลด...' : 'เชื่อมต่อแล้ว'}`
     ].join('\n');
     alert('🔍 Debug Info:\n\n'+info);
 }
@@ -872,8 +894,9 @@ function debugSystem(){
 function initApp(){
     try{
         loadTheme();
+        
+        // 1. โหลดจาก Cache ก่อน
         users=safeParse(K.users,DEF_USERS);
-        if(!users||typeof users!=='object'||Object.keys(users).length===0){users=JSON.parse(JSON.stringify(DEF_USERS));localStorage.setItem(K.users,JSON.stringify(users));}
         funds=safeParse(K.funds,DEF_FUNDS);if(!Array.isArray(funds))funds=DEF_FUNDS;
         members=safeParse(K.members,DEF_MEMBERS);if(!Array.isArray(members))members=DEF_MEMBERS;
         auditLogs=safeParse(K.logs,[]);if(!Array.isArray(auditLogs))auditLogs=[];
@@ -883,26 +906,30 @@ function initApp(){
         benefitConfig=safeParse(K.benefit,{formula:'years',fixedAmount:0,ratePerYear:1000,tiers:[]});
         branding=safeParse(K.branding,{logo:null,name:'ระบบฌาปนกิจ',address:'',phone:''});
         loadNotifs();
-        members.forEach(m=>{
-            if(!m||typeof m!=='object')return;
-            if(!Array.isArray(m.subscriptions))m.subscriptions=[];
-            if(!Array.isArray(m.documents))m.documents=[];
-            if(!Array.isArray(m.beneficiaries))m.beneficiaries=[];
-            if(!m.status)m.status='active';
-            if(!m.phone)m.phone='';
-            if(!m.familyId)m.familyId='';
-            if(!Array.isArray(m.payments))m.payments=[];
-            m.payments.forEach(p=>{if(!p.id)p.id=uid('p');if(!p.receiptNo)p.receiptNo=genReceipt();});
-        });
+        
+        // 2. ดึงจาก Firebase Cloud
+        listenToCloudChanges();
+
         const bh=document.getElementById('brand-name-header');
         if(bh&&branding.name)bh.textContent=branding.name;
+        
         checkSession();
     }catch(e){
         console.error('Init error:',e);
         alert('❌ เกิดข้อผิดพลาดตอนโหลด: '+e.message);
     }
 }
-function forceReset(){if(confirm('ล้างข้อมูลทั้งหมด?')){Object.values(K).forEach(k=>localStorage.removeItem(k));sessionStorage.clear();localStorage.removeItem('remember_user_key');localStorage.removeItem('remember_role');location.reload();}}
+function forceReset(){
+    if(confirm('ล้างข้อมูลทั้งหมด (ทั้งในเครื่องและบน Cloud)?')){
+        dbRef.remove().then(()=>{
+            Object.values(K).forEach(k=>localStorage.removeItem(k));
+            sessionStorage.clear();
+            localStorage.removeItem('remember_user_key');
+            localStorage.removeItem('remember_role');
+            location.reload();
+        });
+    }
+}
 function forceResetSystem(){forceReset();}
 function switchLoginTab(t){document.getElementById('tab-staff').classList.toggle('active',t==='staff');document.getElementById('tab-member').classList.toggle('active',t==='member');document.getElementById('staff-form').style.display=t==='staff'?'block':'none';document.getElementById('login-member-form').style.display=t==='member'?'block':'none';document.getElementById('demo-info-staff').style.display=t==='staff'?'block':'none';document.getElementById('demo-info-member').style.display=t==='member'?'block':'none';}
 
@@ -921,7 +948,6 @@ function handleLogin(e){
         if(!users||typeof users!=='object'||Object.keys(users).length===0){
             if(confirm('ไม่พบข้อมูลผู้ใช้ โหลดข้อมูลตั้งต้นหรือไม่?')){
                 users=JSON.parse(JSON.stringify(DEF_USERS));
-                localStorage.setItem(K.users,JSON.stringify(users));
             } else return;
         }
         if(!users[u]){alert('❌ ไม่พบ Username: "'+u+'"');return;}
@@ -1314,7 +1340,7 @@ function handlePaySlipUpload(input) {
             const cv = document.createElement('canvas');
             const cx = cv.getContext('2d');
             let w = img.width, h = img.height;
-            const mx = 500; // ย่อขนาดรูปสลิปให้เล็กลงเพื่อประหยัดพื้นที่
+            const mx = 500;
             if(w > mx) { h = h * mx / w; w = mx; }
             cv.width = w; cv.height = h;
             cx.drawImage(img, 0, 0, w, h);
@@ -1423,10 +1449,7 @@ function openDetail(idx){
                 tp+=parseFloat(p.amount)||0;
                 const f=getFund(p.fundId);
                 const tag=f?`<span class="hist-fund">${esc(f.name)}</span>`:'';
-                
-                // ปุ่มดูสลิป (ถ้ามี)
                 const slipBtn = p.slip ? `<button class="icon-btn-sm" style="color:var(--p);background:#EFF6FF;" onclick="viewPaymentSlip(${idx},'${p.id}')"><i class="fas fa-image"></i></button>` : '';
-                
                 return`<div class="hist-row">
                     <div class="hist-info">
                         <strong>${fmtDate(p.date)}</strong>${tag}<br>
@@ -1477,7 +1500,6 @@ function openDetail(idx){
     }
 }
 
-// ฟังก์ชันสำหรับดูสลิป
 function viewPaymentSlip(mIdx, pId) {
     const m = members[mIdx];
     if(!m) return;
@@ -1623,7 +1645,7 @@ function handleLogoUpload(input){
     r.readAsDataURL(input.files[0]);
 }
 function saveBranding(){if(!isAdmin()){alert('เฉพาะแอดมิน');return;}branding.name=document.getElementById('brand-name').value.trim()||'ระบบฌาปนกิจ';branding.address=document.getElementById('brand-address').value.trim();branding.phone=document.getElementById('brand-phone').value.trim();persistBranding();const bh=document.getElementById('brand-name-header');if(bh)bh.textContent=branding.name;toast('บันทึกแบรนด์','success');}
-function exportBackup(){if(!isAdmin()){alert('เฉพาะแอดมิน');return;}const b={version:'v41.2',exportedAt:new Date().toISOString(),funds,members,users,auditLogs,payouts,editRequests,expenses,benefitConfig,branding,notifications,notificationSettings};const blob=new Blob([JSON.stringify(b,null,2)],{type:'application/json'});const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=`backup_${today()}.json`;a.click();lastBackupAt=new Date().toISOString();localStorage.setItem(K.lb,lastBackupAt);log('BACKUP_EXPORT','');toast('Backup สำเร็จ','success');checkBackupWarning();}
+function exportBackup(){if(!isAdmin()){alert('เฉพาะแอดมิน');return;}const b={version:'v42',exportedAt:new Date().toISOString(),funds,members,users,auditLogs,payouts,editRequests,expenses,benefitConfig,branding,notifications,notificationSettings};const blob=new Blob([JSON.stringify(b,null,2)],{type:'application/json'});const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=`backup_${today()}.json`;a.click();lastBackupAt=new Date().toISOString();localStorage.setItem(K.lb,lastBackupAt);log('BACKUP_EXPORT','');toast('Backup สำเร็จ','success');checkBackupWarning();}
 function importBackup(input){
     if(!isAdmin()){alert('เฉพาะแอดมิน');return;}
     if(!input.files||!input.files[0])return;
