@@ -3,28 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ระบบฌาปนกิจ | v42 Cloud</title>
+<title>ระบบฌาปนกิจ | v43 AI</title>
 <style>
 :root{
-  --bg:#f3f6fb; --card:#fff; --text:#0f172a; --muted:#64748b; --line:#e2e8f0;
-  --primary:#2563eb; --primary2:#7c3aed; --success:#16a34a; --danger:#dc2626; --warning:#d97706;
+  --bg:#eef2f8; --card:#fff; --text:#0b1220; --muted:#64748b; --line:#e2e8f0;
+  --primary:#2563eb; --primary2:#7c3aed; --success:#16a34a; --danger:#dc2626;
+  --warning:#d97706; --income:#0ea5e9; --ai:#8b5cf6;
   --shadow:0 10px 30px rgba(15,23,42,.08); --radius:16px;
 }
 html.dark{
-  --bg:#0b1220; --card:#111827; --text:#e5e7eb; --muted:#94a3b8; --line:#223047;
-  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --bg:#0a1020; --card:#0f172a; --text:#e5e7eb; --muted:#94a3b8; --line:#1e293b;
+  --shadow:0 10px 30px rgba(0,0,0,.4);
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:'Sarabun','Leelawadee UI',Tahoma,system-ui,sans-serif;background:var(--bg);color:var(--text)}
+body{margin:0;font-family:'Sarabun','Leelawadee UI',Tahoma,system-ui,sans-serif;background:var(--bg);color:var(--text);-webkit-tap-highlight-color:transparent}
 .hidden{display:none!important}
-button{cursor:pointer}
-.input,select,textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text)}
+button{cursor:pointer;font-family:inherit}
+.input,select,textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);font-family:inherit;font-size:.92rem}
 .input:focus,select:focus,textarea:focus{outline:2px solid rgba(37,99,235,.25);border-color:var(--primary)}
-.btn{border:0;border-radius:12px;padding:10px 14px;font-weight:700}
+.btn{border:0;border-radius:12px;padding:10px 14px;font-weight:700;font-size:.9rem;transition:transform .1s}
+.btn:active{transform:scale(.97)}
 .btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff}
 .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
 .btn.danger{background:var(--danger);color:#fff}
 .btn.success{background:var(--success);color:#fff}
+.btn.ai{background:linear-gradient(135deg,var(--ai),var(--primary2));color:#fff}
 .btn.small{padding:7px 10px;font-size:.82rem;border-radius:10px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
 .muted{color:var(--muted)}
@@ -33,105 +36,167 @@ button{cursor:pointer}
 .center{text-align:center}
 
 /* LOGIN */
-.gate{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 20% 20%, rgba(124,58,237,.25), transparent 30%),radial-gradient(circle at 80% 10%, rgba(37,99,235,.3), transparent 35%),linear-gradient(135deg,#0f172a,#111827)}
+.gate{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 20% 20%,rgba(124,58,237,.25),transparent 30%),radial-gradient(circle at 80% 10%,rgba(37,99,235,.3),transparent 35%),linear-gradient(135deg,#0f172a,#111827)}
 .login-card{width:min(430px,100%);background:var(--card);border-radius:24px;padding:24px;box-shadow:var(--shadow)}
 .logo{width:64px;height:64px;border-radius:22px;display:grid;place-items:center;font-size:2rem;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;margin:0 auto 12px}
-.tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;background:color-mix(in srgb,var(--line) 45%,transparent);padding:6px;border-radius:14px;margin:16px 0}
-.tabbtn{border:0;border-radius:10px;padding:9px;background:transparent;color:var(--muted);font-weight:700}
+.tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;background:rgba(100,116,139,.14);padding:6px;border-radius:14px;margin:16px 0}
+.tabbtn{border:0;border-radius:10px;padding:9px;background:transparent;color:var(--muted);font-weight:700;font-family:inherit}
 .tabbtn.active{background:var(--card);color:var(--primary);box-shadow:var(--shadow)}
 .hint{margin-top:14px;padding:10px;border:1px dashed var(--line);border-radius:12px;font-size:.8rem;color:var(--muted);line-height:1.7}
 .error{color:var(--danger);font-size:.86rem;margin-top:10px;min-height:1.2em}
 
-/* APP BAR */
-.topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:10px;padding:12px 16px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;box-shadow:var(--shadow)}
-.topbar .title h1{margin:0;font-size:1.05rem}
-.topbar .title p{margin:0;font-size:.72rem;opacity:.85}
+/* APP SHELL */
+.shell{display:flex;min-height:100vh}
+.backdrop{position:fixed;inset:0;background:rgba(2,6,23,.5);z-index:60;opacity:0;pointer-events:none;transition:opacity .2s}
+.backdrop.open{opacity:1;pointer-events:auto}
+
+/* SIDEBAR */
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:260px;background:var(--card);border-right:1px solid var(--line);z-index:70;transform:translateX(-100%);transition:transform .25s ease;display:flex;flex-direction:column;box-shadow:2px 0 20px rgba(0,0,0,.1)}
+.sidebar.open{transform:translateX(0)}
+.sidebar-head{padding:16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.sidebar-head .logo{width:42px;height:42px;border-radius:12px;font-size:1.2rem;margin:0}
+.sidebar-head h2{margin:0;font-size:.95rem}
+.sidebar-head p{margin:0;font-size:.72rem;color:var(--muted)}
+.sidebar-nav{flex:1;overflow-y:auto;padding:8px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;color:var(--text);border:0;background:transparent;width:100%;text-align:left;font-weight:600;font-size:.9rem;margin-bottom:2px}
+.nav-item:hover{background:rgba(37,99,235,.08)}
+.nav-item.active{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff}
+.nav-item .ico{font-size:1.15rem;width:24px;text-align:center}
+.nav-item .badge{margin-left:auto;background:#ef4444;color:#fff;border-radius:999px;font-size:.68rem;padding:2px 7px;font-weight:800}
+.nav-item.active .badge{background:rgba(255,255,255,.3)}
+.sidebar-foot{padding:12px;border-top:1px solid var(--line)}
+.user-chip{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;background:rgba(37,99,235,.08)}
+.user-chip .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;display:grid;place-items:center;font-weight:800}
+.user-chip b{font-size:.85rem;display:block}
+.user-chip span{font-size:.72rem;color:var(--muted)}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;padding:12px 16px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;box-shadow:0 4px 20px rgba(37,99,235,.25)}
+.icon-btn{width:40px;height:40px;border-radius:12px;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:1.1rem;position:relative;display:grid;place-items:center}
+.icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;border-radius:999px;font-size:.62rem;padding:2px 5px;font-weight:800;min-width:18px}
+.income-top{background:rgba(255,255,255,.16);border-radius:12px;padding:6px 14px;display:flex;flex-direction:column;line-height:1.15;margin-left:auto}
+.income-top span{font-size:.7rem;opacity:.85}
+.income-top b{font-size:1.05rem}
 .spacer{flex:1}
-.icon-btn{width:38px;height:38px;border-radius:12px;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:1rem;position:relative}
-.badge{position:absolute;top:-5px;right:-5px;background:#ef4444;color:#fff;border-radius:999px;font-size:.62rem;padding:1px 5px;font-weight:700}
-.backup-pill{border:0;background:rgba(255,255,255,.16);color:#fff;border-radius:999px;padding:8px 12px;font-size:.78rem;font-weight:700}
 
-.mainnav{position:sticky;top:62px;z-index:30;display:flex;gap:8px;overflow:auto;padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--line)}
-.navbtn{border:1px solid var(--line);background:var(--card);color:var(--text);padding:8px 14px;border-radius:999px;white-space:nowrap;font-weight:700}
-.navbtn.active{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border-color:transparent}
+.content{flex:1;padding:16px;max-width:1280px;width:100%;margin:0 auto}
 
-.container{max-width:1200px;margin:0 auto;padding:16px}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
-.kpi{padding:16px}
-.kpi .label{color:var(--muted);font-size:.78rem;font-weight:700}
-.kpi .value{font-size:1.45rem;font-weight:800;margin-top:6px}
-.kpi .sub{color:var(--muted);font-size:.76rem;margin-top:4px}
+/* DASHBOARD */
+.hero-income{background:linear-gradient(135deg,#0ea5e9,#2563eb 50%,#7c3aed);color:#fff;border-radius:20px;padding:22px;position:relative;overflow:hidden;margin-bottom:16px;box-shadow:0 12px 40px rgba(37,99,235,.3)}
+.hero-income::before{content:'';position:absolute;top:-40%;right:-10%;width:60%;height:180%;background:radial-gradient(circle,rgba(255,255,255,.2),transparent 60%);pointer-events:none}
+.hero-income .lbl{font-size:.85rem;opacity:.9;display:flex;align-items:center;gap:8px}
+.hero-income .amt{font-size:2.6rem;font-weight:900;margin:6px 0;letter-spacing:-.02em}
+.hero-income .sub{display:flex;gap:20px;flex-wrap:wrap;font-size:.82rem;margin-top:6px;position:relative}
+.hero-income .sub div{background:rgba(255,255,255,.15);padding:6px 12px;border-radius:10px;backdrop-filter:blur(6px)}
+.trend-up{color:#a7f3d0}
+.trend-down{color:#fecaca}
 
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px}
+.kpi{padding:14px}
+.kpi .label{color:var(--muted);font-size:.76rem;font-weight:700}
+.kpi .value{font-size:1.35rem;font-weight:800;margin-top:6px}
+.kpi .sub{color:var(--muted);font-size:.74rem;margin-top:4px}
+
+/* AI PANEL */
+.ai-panel{border:1px solid rgba(139,92,246,.3);background:linear-gradient(135deg,rgba(139,92,246,.06),rgba(37,99,235,.04));border-radius:16px;padding:16px;margin-bottom:16px;position:relative}
+.ai-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.ai-head .orb{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--ai),var(--primary2));color:#fff;display:grid;place-items:center;font-size:1.1rem;animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(139,92,246,.4)}50%{box-shadow:0 0 0 10px rgba(139,92,246,0)}}
+.ai-head h3{margin:0;font-size:1rem;flex:1}
+.ai-tag{font-size:.68rem;background:var(--ai);color:#fff;padding:3px 8px;border-radius:999px;font-weight:800;letter-spacing:.03em}
+.ai-tips{display:grid;gap:8px}
+.ai-tip{display:flex;gap:10px;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;font-size:.86rem;line-height:1.5}
+.ai-tip .icon{font-size:1.2rem;flex-shrink:0}
+.ai-tip.warn{border-color:rgba(217,119,6,.3);background:rgba(217,119,6,.05)}
+.ai-tip.bad{border-color:rgba(220,38,38,.3);background:rgba(220,38,38,.05)}
+.ai-tip.ok{border-color:rgba(22,163,74,.3);background:rgba(22,163,74,.05)}
+.ai-tip b{color:var(--text)}
+
+/* TABLE */
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
 .search{flex:1;min-width:220px;position:relative}
 .search input{padding-left:36px}
 .search span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
-.chips{display:flex;gap:8px;overflow:auto;padding-bottom:6px;margin-bottom:10px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px}
 .chip{border:1px solid var(--line);background:var(--card);color:var(--text);padding:7px 12px;border-radius:999px;white-space:nowrap;font-size:.82rem;font-weight:700}
 .chip.active{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border-color:transparent}
-
-.bulkbar{display:flex;gap:8px;align-items:center;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:var(--card);margin-bottom:10px;box-shadow:var(--shadow)}
-.table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:900px}
+.table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--line);background:var(--card)}
+table{width:100%;border-collapse:collapse;font-size:.86rem;min-width:900px}
 th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
-th{color:var(--muted);font-size:.74rem;white-space:nowrap}
+th{color:var(--muted);font-size:.72rem;font-weight:800;background:rgba(100,116,139,.05);white-space:nowrap;position:sticky;top:0;z-index:2}
 .member-row:hover{background:rgba(37,99,235,.06);cursor:pointer}
-.pill{display:inline-block;padding:3px 9px;border-radius:999px;font-size:.74rem;font-weight:800}
-.pill.ok{background:rgba(22,163,74,.12);color:var(--success)}
-.pill.warn{background:rgba(217,119,6,.14);color:var(--warning)}
-.pill.danger{background:rgba(220,38,38,.12);color:var(--danger)}
-.pill.info{background:rgba(37,99,235,.12);color:var(--primary)}
-.pill.muted{background:rgba(100,116,139,.14);color:var(--muted)}
+.pill{display:inline-block;padding:3px 9px;border-radius:999px;font-size:.72rem;font-weight:800}
+.pill.ok{background:rgba(22,163,74,.14);color:var(--success)}
+.pill.warn{background:rgba(217,119,6,.16);color:var(--warning)}
+.pill.danger{background:rgba(220,38,38,.14);color:var(--danger)}
+.pill.info{background:rgba(37,99,235,.14);color:var(--primary)}
+.pill.muted{background:rgba(100,116,139,.16);color:var(--muted)}
 .row-actions{display:flex;gap:6px;flex-wrap:wrap}
 
-/* OVERLAY / MODAL */
-.overlay{position:fixed;inset:0;background:rgba(2,6,23,.55);display:none;align-items:flex-end;justify-content:center;z-index:100;padding:0}
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(2,6,23,.55);display:none;align-items:flex-end;justify-content:center;z-index:100;padding:0;backdrop-filter:blur(2px)}
 .overlay.open{display:flex}
-.sheet{width:min(760px,100%);max-height:92vh;overflow:auto;background:var(--card);border-radius:22px 22px 0 0;padding:18px}
-@media(min-width:768px){
-  .overlay{align-items:center;padding:24px}
-  .sheet{border-radius:22px;max-height:88vh}
-}
-.sheet-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.sheet-head h3{margin:0;flex:1}
-.close-btn{width:36px;height:36px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text)}
+.sheet{width:min(780px,100%);max-height:92vh;overflow-y:auto;background:var(--card);border-radius:22px 22px 0 0;padding:18px}
+@media(min-width:768px){.overlay{align-items:center;padding:24px}.sheet{border-radius:22px;max-height:88vh}}
+.sheet-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;position:sticky;top:0;background:var(--card);padding-bottom:8px;z-index:1}
+.sheet-head h3{margin:0;flex:1;font-size:1.05rem}
+.close-btn{width:36px;height:36px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:1rem}
 .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 .field label{display:block;font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:5px}
-.section-title{font-weight:800;margin:16px 0 8px;color:var(--primary)}
-.note{padding:10px 12px;border-radius:12px;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.14);font-size:.84rem}
-.note.warn{background:rgba(217,119,6,.1);border-color:rgba(217,119,6,.16)}
+.section-title{font-weight:800;margin:16px 0 8px;color:var(--primary);font-size:.9rem}
+.note{padding:10px 12px;border-radius:12px;background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.14);font-size:.84rem}
+.note.warn{background:rgba(217,119,6,.08);border-color:rgba(217,119,6,.2)}
 .footer-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}
+.list-item{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);align-items:center}
+.list-item:last-child{border-bottom:0}
 
+/* AI CHAT */
+.chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 180px);min-height:400px;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.chat-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:85%;padding:11px 14px;border-radius:16px;font-size:.9rem;line-height:1.55;white-space:pre-wrap;word-wrap:break-word}
+.msg.user{align-self:flex-end;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border-bottom-right-radius:4px}
+.msg.ai{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px}
+.msg.ai b{color:var(--primary)}
+.chat-input{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:var(--card)}
+.chat-input input{flex:1}
+.quick-q{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 10px}
+.quick-q button{border:1px solid var(--line);background:var(--card);padding:6px 10px;border-radius:999px;font-size:.78rem;color:var(--text);font-weight:600}
+
+/* TOAST */
 .toast-area{position:fixed;left:50%;transform:translateX(-50%);top:14px;z-index:300;display:flex;flex-direction:column;gap:8px;width:min(420px,calc(100% - 24px))}
-.toast{background:#111827;color:#fff;padding:11px 14px;border-radius:14px;box-shadow:var(--shadow);animation:fadeIn .2s ease}
-.toast.ok{border-left:4px solid var(--success)}
-.toast.bad{border-left:4px solid var(--danger)}
-.toast.warn{border-left:4px solid var(--warning)}
+.toast{background:#0f172a;color:#fff;padding:11px 14px;border-radius:14px;box-shadow:var(--shadow);animation:fadeIn .2s ease;font-size:.88rem;border-left:4px solid var(--success)}
+.toast.bad{border-left-color:var(--danger)}
+.toast.warn{border-left-color:var(--warning)}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 
-.menu-list{display:grid;gap:8px}
-.menu-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px;border-radius:14px;border:1px solid var(--line);background:var(--card);width:100%;text-align:left}
-.menu-item:hover{border-color:var(--primary)}
-.admin-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.admin-tab{border:1px solid var(--line);background:var(--card);padding:8px 12px;border-radius:999px;font-weight:700;color:var(--muted)}
+/* MISC */
+.admin-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.admin-tab{border:1px solid var(--line);background:var(--card);padding:7px 12px;border-radius:999px;font-weight:700;color:var(--muted);font-size:.82rem}
 .admin-tab.active{color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary2));border-color:transparent}
-.list-item{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
-.list-item:last-child{border-bottom:0}
-@media(max-width:700px){
-  .topbar{flex-wrap:wrap}
-  .mainnav{top:112px}
+.file-preview{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.file-preview .fp{padding:5px 9px;background:rgba(37,99,235,.1);border-radius:8px;font-size:.76rem;display:flex;gap:6px;align-items:center}
+.file-preview .fp button{border:0;background:transparent;color:var(--danger);font-size:.9rem}
+.report-bar{height:8px;background:rgba(100,116,139,.15);border-radius:999px;overflow:hidden;margin-top:6px}
+.report-bar>div{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:999px}
+
+@media(max-width:640px){
+  .hero-income .amt{font-size:2rem}
+  .income-top{padding:5px 10px}
+  .income-top b{font-size:.9rem}
+  .content{padding:12px}
 }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ============ LOGIN ============ -->
 <div id="gate" class="gate">
   <div class="login-card">
     <div class="logo">☁️</div>
     <div class="center">
       <h2 style="margin:0">ระบบฌาปนกิจ</h2>
-      <div class="muted">v42 Cloud Sync</div>
+      <div class="muted">v43 AI</div>
     </div>
 
     <div class="tabs">
@@ -141,13 +206,11 @@ th{color:var(--muted);font-size:.74rem;white-space:nowrap}
     </div>
 
     <form id="staffForm" onsubmit="return staffLogin(event)">
-      <div class="field" style="margin-bottom:10px">
-        <label>Username</label>
-        <input class="input" id="loginUser" value="admin99">
+      <div class="field" style="margin-bottom:10px"><label>Username</label>
+        <input class="input" id="loginUser" value="admin99" autocomplete="username">
       </div>
-      <div class="field" style="margin-bottom:10px">
-        <label>Password</label>
-        <input class="input" id="loginPass" type="password" value="admin123">
+      <div class="field" style="margin-bottom:10px"><label>Password</label>
+        <input class="input" id="loginPass" type="password" value="admin123" autocomplete="current-password">
       </div>
       <label class="small muted" style="display:flex;gap:8px;align-items:center;margin-bottom:12px">
         <input type="checkbox" id="rememberMe" checked> จำฉันไว้ในระบบ (30 วัน)
@@ -156,448 +219,345 @@ th{color:var(--muted);font-size:.74rem;white-space:nowrap}
     </form>
 
     <form id="memberForm" class="hidden" onsubmit="return memberLogin(event)">
-      <div class="field" style="margin-bottom:10px">
-        <label>เลขบัตรประชาชน (13 หลัก)</label>
-        <input class="input" id="loginIdCard" maxlength="13" placeholder="กรอกเลขบัตรประชาชน">
+      <div class="field" style="margin-bottom:10px"><label>เลขบัตรประชาชน (13 หลัก)</label>
+        <input class="input" id="loginIdCard" maxlength="13" placeholder="กรอกเลขบัตรประชาชน" inputmode="numeric">
       </div>
-      <button class="btn primary" style="width:100%">ตรวจสอบข้อมูล</button>
+      <button class="btn primary" style="width:100%">เข้าสู่ระบบสมาชิก</button>
     </form>
 
-    <div class="hint">
-      <b>Admin:</b> admin99 / admin123<br>
-      <b>Agent:</b> usa123 / usa123<br>
-      <b>ทดสอบสมาชิก:</b> 3700501101568
-    </div>
+    <form id="checkForm" class="hidden" onsubmit="return checkMember(event)">
+      <div class="field" style="margin-bottom:10px"><label>ตรวจสอบสถานะสมาชิก</label>
+        <input class="input" id="checkIdCard" maxlength="13" placeholder="เลขบัตรประชาชน" inputmode="numeric">
+      </div>
+      <button class="btn ghost" style="width:100%">ตรวจสอบ</button>
+      <div id="checkResult" style="margin-top:12px"></div>
+    </form>
+
     <div id="gateError" class="error"></div>
+    <div class="hint" id="devHint">
+      <b>สำหรับทดสอบ:</b> admin99 / admin123 · usa123 / usa123 · สมาชิก 3700501101568
+    </div>
   </div>
 </div>
 
-<!-- APP -->
-<div id="app" class="hidden">
-  <header class="topbar">
-    <div class="title">
-      <h1 id="orgName">ระบบฌาปนกิจ</h1>
-      <p id="orgSub">v42 Cloud Sync</p>
+<!-- ============ APP ============ -->
+<div id="app" class="shell hidden">
+  <div class="backdrop" id="backdrop" onclick="toggleSidebar(false)"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <div class="logo">☁️</div>
+      <div><h2 id="sidebarOrg">ระบบฌาปนกิจ</h2><p>v43 AI</p></div>
     </div>
-    <div class="spacer"></div>
-    <button id="backupPill" class="backup-pill" onclick="openOverlay('backupOverlay')">ไม่ได้ Backup มา 7 วัน</button>
-    <button class="icon-btn" onclick="toggleDark()" title="โหมดกลางคืน"><span id="darkIcon">🌙</span></button>
-    <button class="icon-btn" onclick="openOverlay('notifOverlay')" title="แจ้งเตือน">🔔<span id="notifBadge" class="badge hidden">0</span></button>
-    <button class="icon-btn" onclick="openOverlay('reportOverlay')" title="รายงาน">📊</button>
-    <button class="icon-btn" onclick="openOverlay('menuOverlay')" title="เมนู">☰</button>
-  </header>
-
-  <nav class="mainnav">
-    <button class="navbtn active" id="navHome" onclick="goHome()">หน้าแรก</button>
-    <button class="navbtn" onclick="openMember(null)">สมัคร</button>
-    <button class="navbtn" onclick="openOverlay('notifOverlay')">แจ้งเตือน <span id="navNotifCount">0</span></button>
-    <button class="navbtn" onclick="openOverlay('reportOverlay')">รายงาน</button>
-    <button class="navbtn" onclick="openOverlay('menuOverlay')">เมนู</button>
-  </nav>
-
-  <main class="container">
-    <section id="homePage">
-      <div class="kpis">
-        <div class="card kpi"><div class="label">สมาชิก</div><div class="value" id="kpiMembers">0</div><div class="sub">ทั้งหมด</div></div>
-        <div class="card kpi"><div class="label">รายรับเดือนนี้</div><div class="value" id="kpiIncome">฿0</div><div class="sub">รับชำระ</div></div>
-        <div class="card kpi"><div class="label">ค้างชำระ</div><div class="value" id="kpiOverdue">0</div><div class="sub">เดือนปัจจุบัน</div></div>
-        <div class="card kpi"><div class="label">คงเหลือ</div><div class="value" id="kpiBalance">฿0</div><div class="sub">รายรับ - รายจ่าย</div></div>
-      </div>
-
-      <div class="toolbar card" style="padding:12px">
-        <div class="search">
-          <span>🔍</span>
-          <input class="input" id="searchInput" placeholder="ค้นหา ชื่อ / เลขสมาชิก / เลขบัตร" oninput="onSearch(this.value)">
-        </div>
-        <button class="btn primary" onclick="openMember(null)">+ เพิ่มสมาชิก</button>
-        <button class="btn ghost" onclick="openOverlay('scanOverlay')">📷 สแกนบัตร</button>
-      </div>
-
-      <div class="chips" id="filterChips"></div>
-
-      <div id="bulkBar" class="bulkbar hidden">
-        <b>เลือกแล้ว <span id="selectedCount">0</span> ราย</b>
-        <div class="spacer"></div>
-        <button class="btn ghost small" onclick="clearSelected()">ยกเลิก</button>
-        <button class="btn success small" onclick="bulkPay()">รับชำระ</button>
-      </div>
-
-      <div class="card table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this.checked)"></th>
-              <th>เลขสมาชิก</th>
-              <th>ชื่อ-สกุล</th>
-              <th>เลขบัตรประชาชน</th>
-              <th>ผู้รับผลประโยชน์</th>
-              <th>วันสมัคร</th>
-              <th>สถานะ</th>
-              <th class="right">ค้างชำระ</th>
-              <th>จัดการ</th>
-            </tr>
-          </thead>
-          <tbody id="memberTable"></tbody>
-        </table>
-      </div>
-    </section>
-  </main>
-</div>
-
-<!-- MEMBER MODAL -->
-<div class="overlay" id="memberOverlay">
-  <div class="sheet">
-    <div class="sheet-head">
-      <h3 id="memberModalTitle">ข้อมูลสมาชิก</h3>
-      <button class="close-btn" onclick="closeOverlay('memberOverlay')">✕</button>
-    </div>
-
-    <input type="hidden" id="memberId">
-    <div class="grid2">
-      <div class="field"><label>รหัสสมาชิก *</label><input class="input" id="mReg"></div>
-      <div class="field"><label>เลขบัตรประชาชน *</label><input class="input" id="mIdCard" maxlength="13"></div>
-      <div class="field"><label>คำนำหน้า</label>
-        <select id="mPrefix" class="input">
-          <option>นาย</option><option>นาง</option><option>นางสาว</option><option>น.ส.</option>
-        </select>
-      </div>
-      <div class="field"><label>ชื่อ-สกุล *</label><input class="input" id="mName"></div>
-      <div class="field"><label>เบอร์โทร</label><input class="input" id="mPhone"></div>
-      <div class="field"><label>วันที่สมัคร</label><input class="input" id="mJoin" type="date"></div>
-      <div class="field"><label>สาย/เขต</label><input class="input" id="mLine" value="นางอุษา ณ วังขนาย"></div>
-      <div class="field"><label>ตัวแทน</label><input class="input" id="mAgent" value="นิภา ประเสริฐ"></div>
-      <div class="field"><label>สถานะ</label>
-        <select id="mStatus" class="input">
-          <option value="alive">ปกติ / มีชีวิต</option>
-          <option value="deceased">เสียชีวิต</option>
-          <option value="archived">เก็บถาวร</option>
-        </select>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+    <div class="sidebar-foot">
+      <div class="user-chip">
+        <div class="avatar" id="userAvatar">?</div>
+        <div style="flex:1;min-width:0"><b id="userName">—</b><span id="userRole">—</span></div>
+        <button class="icon-btn" style="background:transparent;color:var(--text);width:32px;height:32px" onclick="logout()" title="ออกจากระบบ">🚪</button>
       </div>
     </div>
+  </aside>
 
-    <div class="section-title">ผู้รับผลประโยชน์ ลำดับ 1</div>
-    <div class="grid2">
-      <div class="field"><label>ชื่อผู้รับ</label><input class="input" id="mBenName"></div>
-      <div class="field"><label>ความสัมพันธ์</label><input class="input" id="mBenRelation"></div>
-      <div class="field"><label>เบอร์ผู้รับ</label><input class="input" id="mBenPhone"></div>
-    </div>
-
-    <div class="field" style="margin-top:10px"><label>หมายเหตุ</label><textarea class="input" id="mNote" rows="3"></textarea></div>
-    <div class="note" style="margin-top:10px">📄 เอกสารแนบ: แนบสำเนาบัตร, ใบสมัคร (สูงสุด 5 ไฟล์)<br><input type="file" multiple style="margin-top:8px"></div>
-
-    <div class="footer-actions">
-      <button class="btn ghost" onclick="closeOverlay('memberOverlay')">ยกเลิก</button>
-      <button class="btn primary" onclick="saveMember()">บันทึกข้อมูล</button>
-    </div>
-  </div>
-</div>
-
-<!-- PAY MODAL -->
-<div class="overlay" id="payOverlay">
-  <div class="sheet" style="width:min(520px,100%)">
-    <div class="sheet-head">
-      <h3>รับชำระ</h3>
-      <button class="close-btn" onclick="closeOverlay('payOverlay')">✕</button>
-    </div>
-    <div id="paySummary"></div>
-    <div class="section-title">รวมทั้งสิ้น</div>
-    <div class="card center" style="padding:16px;font-size:1.6rem;font-weight:800" id="payTotal">฿0.00</div>
-    <div class="grid2" style="margin-top:12px">
-      <div class="field"><label>วันที่</label><input class="input" id="payDate" type="date"></div>
-      <div class="field"><label>วิธี</label>
-        <select class="input" id="payMethod"><option>เงินสด</option><option>โอน</option></select>
+  <!-- MAIN -->
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn" onclick="toggleSidebar(true)" title="เมนู">☰</button>
+      <div style="min-width:0">
+        <div style="font-size:.95rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="topbarTitle">ภาพรวม</div>
+        <div style="font-size:.7rem;opacity:.85" id="topbarSub">—</div>
       </div>
-      <div class="field"><label>ผู้เก็บ</label><input class="input" id="payCollector"></div>
-      <div class="field"><label>แนบหลักฐานการชำระเงิน (สลิป)</label><input type="file" class="input"></div>
-    </div>
-    <div class="footer-actions">
-      <button class="btn ghost" onclick="closeOverlay('payOverlay')">ยกเลิก</button>
-      <button class="btn success" onclick="savePayment()">ยืนยันการรับชำระ</button>
-    </div>
+      <div class="income-top" id="incomeTop">
+        <span>รายรับเดือนนี้</span>
+        <b>฿0</b>
+      </div>
+      <button class="icon-btn" onclick="openOverlay('notifOverlay')" title="แจ้งเตือน">🔔<span id="notifBadge" class="badge hidden">0</span></button>
+      <button class="icon-btn" onclick="toggleDark()" title="โหมดกลางคืน"><span id="darkIcon">🌙</span></button>
+    </header>
+
+    <main class="content" id="pageContent"></main>
   </div>
 </div>
 
-<!-- NOTIFICATION MODAL -->
-<div class="overlay" id="notifOverlay">
-  <div class="sheet">
-    <div class="sheet-head">
-      <h3>แจ้งเตือน</h3>
-      <button class="close-btn" onclick="closeOverlay('notifOverlay')">✕</button>
-    </div>
-    <div class="toolbar">
-      <button class="btn ghost small" onclick="renderNotifications()">อ่านทั้งหมด</button>
-      <button class="btn danger small" onclick="clearNotifications()">ล้างทั้งหมด</button>
-    </div>
-    <div id="notifList"></div>
+<!-- ============ MODALS ============ -->
+<div class="overlay" id="memberOverlay"><div class="sheet">
+  <div class="sheet-head"><h3 id="memberModalTitle">ข้อมูลสมาชิก</h3>
+    <button class="close-btn" onclick="closeOverlay('memberOverlay')">✕</button></div>
+  <input type="hidden" id="memberId">
+  <div class="grid2">
+    <div class="field"><label>รหัสสมาชิก *</label><input class="input" id="mReg"></div>
+    <div class="field"><label>เลขบัตรประชาชน *</label><input class="input" id="mIdCard" maxlength="13" inputmode="numeric"></div>
+    <div class="field"><label>คำนำหน้า</label>
+      <select id="mPrefix" class="input"><option value="นาย">นาย</option><option value="นาง">นาง</option><option value="นางสาว">นางสาว</option></select></div>
+    <div class="field"><label>ชื่อ-สกุล *</label><input class="input" id="mName"></div>
+    <div class="field"><label>เบอร์โทร</label><input class="input" id="mPhone" inputmode="tel"></div>
+    <div class="field"><label>วันที่สมัคร</label><input class="input" id="mJoin" type="date"></div>
+    <div class="field"><label>สาย/เขต</label><input class="input" id="mLine"></div>
+    <div class="field"><label>ตัวแทน</label><input class="input" id="mAgent"></div>
+    <div class="field"><label>สถานะ</label>
+      <select id="mStatus" class="input"><option value="alive">ปกติ / มีชีวิต</option><option value="deceased">เสียชีวิต</option><option value="archived">เก็บถาวร</option></select></div>
   </div>
-</div>
-
-<!-- REPORT MODAL -->
-<div class="overlay" id="reportOverlay">
-  <div class="sheet">
-    <div class="sheet-head">
-      <h3>รายงานและสถิติ</h3>
-      <button class="close-btn" onclick="closeOverlay('reportOverlay')">✕</button>
-    </div>
-    <div class="section-title">📈 สรุปรายรับ-รายจ่าย</div>
-    <div class="card" style="padding:14px" id="reportSummary"></div>
-    <div class="section-title">🍩 สัดส่วนสถานะสมาชิก</div>
-    <div class="card" style="padding:14px" id="reportStatus"></div>
-    <div class="footer-actions">
-      <button class="btn primary" onclick="exportCSV()">โหลดรายงาน Excel/CSV</button>
-    </div>
+  <div class="section-title">ผู้รับผลประโยชน์ ลำดับ 1</div>
+  <div class="grid2">
+    <div class="field"><label>ชื่อผู้รับ</label><input class="input" id="mBenName"></div>
+    <div class="field"><label>ความสัมพันธ์</label><input class="input" id="mBenRelation"></div>
+    <div class="field"><label>เบอร์ผู้รับ</label><input class="input" id="mBenPhone" inputmode="tel"></div>
   </div>
-</div>
-
-<!-- MENU MODAL -->
-<div class="overlay" id="menuOverlay">
-  <div class="sheet" style="width:min(420px,100%)">
-    <div class="sheet-head">
-      <h3>เมนู</h3>
-      <button class="close-btn" onclick="closeOverlay('menuOverlay')">✕</button>
-    </div>
-    <div class="menu-list">
-      <button class="menu-item" onclick="closeOverlay('menuOverlay');openOverlay('adminOverlay')"><span>จัดการระบบ</span><span>⚙️</span></button>
-      <button class="menu-item" onclick="toggleDark()"><span>โหมดกลางคืน</span><span id="menuDarkIcon">🌙</span></button>
-      <button class="menu-item" onclick="closeOverlay('menuOverlay');openOverlay('backupOverlay')"><span>Backup / Branding / LINE</span><span>☁️</span></button>
-      <button class="menu-item" onclick="closeOverlay('menuOverlay');openOverlay('settingsOverlay')"><span>ตั้งค่าการแจ้งเตือน</span><span>🔔</span></button>
-      <button class="menu-item" onclick="logout()"><span>ออกจากระบบ</span><span>🚪</span></button>
-    </div>
+  <div class="field" style="margin-top:10px"><label>หมายเหตุ</label><textarea class="input" id="mNote" rows="2"></textarea></div>
+  <div class="note" style="margin-top:10px">📄 เอกสารแนบ (รูปภาพ/PDF สูงสุด 5 ไฟล์)
+    <input type="file" id="mFiles" multiple accept="image/*,.pdf" style="margin-top:8px" onchange="handleMemberFiles(this)">
+    <div class="file-preview" id="mFilePreview"></div>
   </div>
-</div>
-
-<!-- ADMIN MODAL -->
-<div class="overlay" id="adminOverlay">
-  <div class="sheet">
-    <div class="sheet-head">
-      <h3>จัดการระบบ</h3>
-      <button class="close-btn" onclick="closeOverlay('adminOverlay')">✕</button>
-    </div>
-    <div class="admin-tabs" id="adminTabs"></div>
-    <div id="adminBody"></div>
+  <div class="footer-actions">
+    <button class="btn ghost" onclick="closeOverlay('memberOverlay')">ยกเลิก</button>
+    <button class="btn primary" onclick="saveMember()">บันทึกข้อมูล</button>
   </div>
-</div>
+</div></div>
 
-<!-- BACKUP / BRANDING / LINE -->
-<div class="overlay" id="backupOverlay">
-  <div class="sheet" style="width:min(560px,100%)">
-    <div class="sheet-head">
-      <h3>Backup & Branding</h3>
-      <button class="close-btn" onclick="closeOverlay('backupOverlay')">✕</button>
-    </div>
-
-    <div class="section-title">☁️ ดาวน์โหลด / นำเข้า Backup</div>
-    <div class="toolbar">
-      <button class="btn primary" onclick="downloadBackup()">ดาวน์โหลด Backup</button>
-      <button class="btn ghost" onclick="document.getElementById('importBackup').click()">นำเข้า Backup</button>
-      <input type="file" id="importBackup" class="hidden" accept=".json" onchange="importBackup(this)">
-    </div>
-
-    <div class="section-title">🖼️ โลโก้ & แบรนด์</div>
-    <div class="grid2">
-      <div class="field"><label>ชื่อระบบ</label><input class="input" id="brandOrg"></div>
-      <div class="field"><label>ที่อยู่</label><input class="input" id="brandAddress"></div>
-      <div class="field"><label>โทรศัพท์</label><input class="input" id="brandPhone"></div>
-    </div>
-    <div class="footer-actions">
-      <button class="btn primary" onclick="saveBrand()">บันทึกแบรนด์</button>
-    </div>
-
-    <div class="section-title">LINE Notify</div>
-    <div class="field"><label>LINE Token (สำหรับส่งแจ้งเตือน)</label><input class="input" id="lineToken" placeholder="ใส่ Token"></div>
-    <div class="footer-actions">
-      <button class="btn primary" onclick="saveLineToken()">บันทึก Token</button>
-    </div>
+<div class="overlay" id="payOverlay"><div class="sheet" style="width:min(560px,100%)">
+  <div class="sheet-head"><h3>รับชำระ</h3><button class="close-btn" onclick="closeOverlay('payOverlay')">✕</button></div>
+  <div id="paySummary"></div>
+  <div class="section-title">รวมทั้งสิ้น</div>
+  <div class="card center" style="padding:16px;font-size:1.6rem;font-weight:800;color:var(--success)" id="payTotal">฿0.00</div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="field"><label>วันที่</label><input class="input" id="payDate" type="date"></div>
+    <div class="field"><label>วิธี</label>
+      <select class="input" id="payMethod"><option>เงินสด</option><option>โอน</option><option>พร้อมเพย์</option></select></div>
+    <div class="field"><label>ผู้เก็บ</label><input class="input" id="payCollector"></div>
+    <div class="field"><label>สลิป (ถ้ามี)</label>
+      <input type="file" id="paySlip" accept="image/*" class="input" onchange="handlePaySlip(this)"></div>
   </div>
-</div>
-
-<!-- SETTINGS NOTIFICATION -->
-<div class="overlay" id="settingsOverlay">
-  <div class="sheet" style="width:min(460px,100%)">
-    <div class="sheet-head">
-      <h3>ตั้งค่าการแจ้งเตือน</h3>
-      <button class="close-btn" onclick="closeOverlay('settingsOverlay')">✕</button>
-    </div>
-    <label style="display:flex;gap:10px;align-items:center;margin-bottom:12px">
-      <input type="checkbox" id="notifyEnabled"> เปิดใช้งานแจ้งเตือน
-    </label>
-    <div class="field"><label>⚠️ แจ้งเตือนค้างชำระ</label>
-      <select class="input" id="overdueMode"><option>เปิด</option><option>ปิด</option></select>
-    </div>
-    <div class="field"><label>เตือน Backup ทุกกี่วัน</label><input class="input" id="backupDays" type="number" value="7"></div>
-    <div class="footer-actions">
-      <button class="btn ghost" onclick="closeOverlay('settingsOverlay')">ยกเลิก</button>
-      <button class="btn primary" onclick="saveSettings()">ตกลง</button>
-    </div>
+  <div id="paySlipPreview" class="file-preview"></div>
+  <div class="footer-actions">
+    <button class="btn ghost" onclick="closeOverlay('payOverlay')">ยกเลิก</button>
+    <button class="btn success" onclick="savePayment()">ยืนยันการรับชำระ</button>
   </div>
-</div>
+</div></div>
 
-<!-- SCAN -->
-<div class="overlay" id="scanOverlay">
-  <div class="sheet" style="width:min(480px,100%)">
-    <div class="sheet-head">
-      <h3>สแกนบัตรสมาชิก</h3>
-      <button class="close-btn" onclick="closeOverlay('scanOverlay')">✕</button>
-    </div>
-    <div class="note">ส่องกล้องไปที่ QR Code หรือบาร์โค้ดบนบัตรสมาชิก (หากไม่ทำงาน กรุณาเปิดผ่านลิงก์ https)</div>
-    <div class="center" style="padding:40px;background:rgba(37,99,235,.08);border-radius:16px;margin-top:12px;font-size:3rem">📷</div>
-    <div class="field" style="margin-top:12px"><label>หรือพิมพ์รหัสสมาชิก / เลขบัตร</label><input class="input" id="manualScan"></div>
-    <div class="footer-actions">
-      <button class="btn ghost" onclick="closeOverlay('scanOverlay')">ปิด</button>
-      <button class="btn primary" onclick="manualSearch()">ค้นหา</button>
-    </div>
+<div class="overlay" id="notifOverlay"><div class="sheet">
+  <div class="sheet-head"><h3>แจ้งเตือน</h3><button class="close-btn" onclick="closeOverlay('notifOverlay')">✕</button></div>
+  <div id="notifList"></div>
+</div></div>
+
+<div class="overlay" id="scanOverlay"><div class="sheet" style="width:min(500px,100%)">
+  <div class="sheet-head"><h3>สแกนบัตรสมาชิก</h3><button class="close-btn" onclick="closeOverlay('scanOverlay')">✕</button></div>
+  <div class="note">ส่อง QR/บาร์โค้ดด้วยกล้อง หรือพิมพ์รหัสสมาชิก/เลขบัตรด้านล่าง</div>
+  <div id="scanVideoWrap" style="margin-top:12px;border-radius:16px;overflow:hidden;background:#000;aspect-ratio:4/3;position:relative">
+    <video id="scanVideo" autoplay playsinline muted style="width:100%;height:100%;object-fit:cover;display:none"></video>
+    <div id="scanPlaceholder" style="position:absolute;inset:0;display:grid;place-items:center;font-size:3rem;color:#fff;opacity:.5">📷</div>
   </div>
-</div>
+  <div style="display:flex;gap:8px;margin-top:10px">
+    <button class="btn primary" style="flex:1" onclick="startScan()">เปิดกล้อง</button>
+    <button class="btn ghost" style="flex:1" onclick="stopScan()">ปิดกล้อง</button>
+  </div>
+  <div class="field" style="margin-top:12px"><label>หรือพิมพ์รหัสสมาชิก / เลขบัตร</label>
+    <input class="input" id="manualScan" inputmode="numeric"></div>
+  <div class="footer-actions">
+    <button class="btn ghost" onclick="closeOverlay('scanOverlay')">ปิด</button>
+    <button class="btn primary" onclick="manualSearch()">ค้นหา</button>
+  </div>
+</div></div>
+
+<div class="overlay" id="settingsOverlay"><div class="sheet" style="width:min(480px,100%)">
+  <div class="sheet-head"><h3>ตั้งค่าการแจ้งเตือน</h3><button class="close-btn" onclick="closeOverlay('settingsOverlay')">✕</button></div>
+  <label style="display:flex;gap:10px;align-items:center;margin-bottom:12px">
+    <input type="checkbox" id="notifyEnabled"> เปิดใช้งานแจ้งเตือนค้างชำระ</label>
+  <div class="field"><label>รูปแบบการแจ้งเตือนค้างชำระ</label>
+    <select class="input" id="overdueMode"><option value="list">แสดงรายการ</option><option value="summary">สรุปจำนวน</option><option value="off">ปิด</option></select></div>
+  <div class="field"><label>เตือน Backup ทุกกี่วัน</label>
+    <input class="input" id="backupDays" type="number" value="7" min="1" max="90"></div>
+  <div class="footer-actions">
+    <button class="btn ghost" onclick="closeOverlay('settingsOverlay')">ยกเลิก</button>
+    <button class="btn primary" onclick="saveSettings()">ตกลง</button>
+  </div>
+</div></div>
 
 <div class="toast-area" id="toastArea"></div>
 
 <script>
-/* =========================
-   DATA & UTIL
-========================= */
-const LS_KEY = 'v42_cloud_funeral';
+/* =========================================================
+   1) UTILITIES
+========================================================= */
+const LS_KEY = 'v43_funeral_db';
+const LS_DARK = 'v43_dark';
+const LS_SESSION = 'v43_session';
+
 let DB = null;
 let ME = null;
-let UI = { filter:'all', q:'', selected:new Set(), editingId:null, payIds:[], adminTab:'funds' };
+let UI = { page:'dashboard', filter:'all', q:'', selected:new Set(), editingId:null, payIds:[], adminTab:'funds', memberFiles:[], paySlip:null };
 
-const RAW_MEMBERS = [
-['02/2557/07/15/002','น.ส.จรูญ โพธิ์เย็น','3700501101568','','นายสยมพร โพธิ์เย็น','หลาน','15 ก.ค. 2557','เปลี่ยนผู้รับ 01-มิ.ย.-2569; ย้ายมาจาก 01/ศิวกร 24-พ.ค.-2569; ย้ายมาจาก 04/บุญเที่ยง 23/04/2568'],
-['02/2561/01/25/001','นายจำนง สินสุข','3700500724251','062-5077092','นายบุญยิ่ง สินสุข','อื่นๆ','25 ม.ค. 2561',''],
-['02/2561/01/25/002','นายไพโรจน์ ประเสริฐ','3700700849431','081-9958589','นางนิภา ประเสริฐ','อื่นๆ','25 ม.ค. 2561',''],
-['02/2561/01/25/004','นางวันเพ็ญ พันจุ้ย','3770700105032','092-6967593','นางน้ำผึ้ง นิตโย','อื่นๆ','25 ม.ค. 2561',''],
-['02/2561/01/25/005','นายจำปี ชื่นหุ่น','3710500745071','092-6967593','นางน้ำผึ้ง นิตโย','อื่นๆ','25 ม.ค. 2561',''],
-['02/2561/01/25/006','น.ส.สุภาภรณ์ จรุมเครือ','3700500520362','097-1790489','นายสงกราณต์ จรุมเครือ','อื่นๆ','25 ม.ค. 2561',''],
-['02/2561/01/25/008','นางหลง สินสุข','3700500724294','062-5077092','นายบุญยิ่ง สินสุข','อื่นๆ','25 ม.ค. 2561',''],
-['02/2561/01/25/009','นางวันดี แซ่โง้ว','3700500723379','092-5246726','นางอรัญญา ศรีจันทร์เฟื้อ','อื่นๆ','25 ม.ค. 2561',''],
-['02/2561/01/25/010','นางทองใบ จรุมเครือ','3700500520389','081-2543551','นายสงกราณต์ จรุมเครือ','อื่นๆ','25 ม.ค. 2561',''],
-['02/2562/12/25/007','นายบุญ สุรพลพินิจ','3700700849392','','นางนิภา ประเสริฐ','อื่นๆ','25 ธ.ค. 2562',''],
-['02/2562/12/25/011','นางนิภา ประเสริฐ','3700500723298','084-1335418','น.ส.นพวรรณ ประเสริฐ','อื่นๆ','25 ธ.ค. 2562',''],
-['02/2562/12/25/031','น.ส.ศิรดา วันนิยม','3800101705091','092-7969156','นายสิทธิพร โพธิ์เย็น','อื่นๆ','25 ธ.ค. 2562','เปลี่ยนผู้รับ 3/3/2566'],
-['02/2562/12/25/058','นางพรทิพย์ ฤดีสุขสกุล','5730100031336','087-4150975','นายปริญญา ฤดีสุขสกุล','อื่นๆ','25 ธ.ค. 2562',''],
-['02/2562/12/25/065','นายสุขุม พุ่มห่าน','3700500723182','084-5709567','นางสุภาภรณ์ สายพันธ์','อื่นๆ','25 ธ.ค. 2562',''],
-['02/2562/12/25/067','นายวุฒิพล สายพันธ์','3700100111511','085-4876567','นางสุภาภรณ์ สายพันธ์','อื่นๆ','25 ธ.ค. 2562',''],
-['02/2562/12/25/089','นางสุภาภรณ์ สายพันธ์','3700500723166','089-2563710','นายวุฒิพล สายพันธ์','อื่นๆ','25 ธ.ค. 2562',''],
-['02/2562/12/25/094','นายบุญโชติ โพธิผลิ','3700500723123','086-1657522','นางวันดี แซ่โง้ว','อื่นๆ','25 ธ.ค. 2562','เปลี่ยนผู้รับ 29-ธ.ค.-2568'],
-['02/2562/12/25/130','นางอำไพ พุ่มห่าน','3700500723115','032268129','นางสุภาภรณ์ สายพันธ์','อื่นๆ','25 ธ.ค. 2562',''],
-['02/2562/12/25/145','นายประสิทธิ์ สุรพลพินิจ','3709800125262','081-9958589','นายประกฤต สุรพลพินิจ','อื่นๆ','25 ธ.ค. 2562',''],
-['02/2562/12/25/169','นายชูศักดิ์ ฤดีสุขสกุล','3730101305255','081-1963878','นายปริญญา ฤดีสุขสกุล','อื่นๆ','25 ธ.ค. 2562',''],
-['02/2563/03/25/015','นายจง ผิวขำ','3700500722909','081-8567221','นางพุฒ ผิวขำ','อื่นๆ','25 มี.ค. 2563',''],
-['02/2563/06/25/010','น.ส.นิรัตนา นิตโย','3700500723310','085-3812680','นายนนท์ มีทรัพย์','อื่นๆ','25 มิ.ย. 2563',''],
-['02/2563/06/25/017','นายอนันต์ โพธิผลิ','3700500723140','095-2105147','นายพิพัฒน์ โพธิผลิ','อื่นๆ','25 มิ.ย. 2563','เปลี่ยนผู้รับ 28-เม.ย.-2568'],
-['02/2563/07/25/008','นายวิชัย เนตรสว่าง','3729900115269','085-9635561','นางอรุณ โพธิผลิ','อื่นๆ','25 ก.ค. 2563',''],
-['02/2563/08/25/009','น.ส.ปุก สายพันธ์','3700100111503','085-4876567','นายวุฒิ สายพันธ์','อื่นๆ','25 ส.ค. 2563',''],
-['02/2563/10/25/016','น.ส.ทองใบ ปินเปีย','3730500693178','083-7024281','นายสราวุฒิ พุฒิประภา','อื่นๆ','25 ต.ค. 2563',''],
-['02/2563/12/25/013','นายสังวรณ์ ต่ายแพ','3700500520052','087-0831974','นางสมบุญ ภาคีธง','อื่นๆ','25 ธ.ค. 2563',''],
-['02/2563/12/25/028','นายสังวาลย์ ต่ายแพ','3700500519968','098-1693557','นางสมบุญ ภาคีธง','อื่นๆ','25 ธ.ค. 2563',''],
-['02/2563/12/25/032','นายจาบ ชูเลิศ','3700500722763','089-0555688','นายอัครวัฒน์ ชูเลิศ','อื่นๆ','25 ธ.ค. 2563',''],
-['02/2563/12/25/044','นายสมาน มะลินิล','3190600340809','080-7371909','น.ส.พจมาน มะลินิล','อื่นๆ','25 ธ.ค. 2563',''],
-['02/2563/12/25/048','นางขัน ปลาฉลาด','5330401312427','081-0129083','น.ส.กฤติยา ภาคีธง','อื่นๆ','25 ธ.ค. 2563',''],
-['02/2563/12/25/053','นางคำฝอย สิงห์โคก','5450500051019','089-0555688','นายอัครวัฒน์ ชูเลิศ','อื่นๆ','25 ธ.ค. 2563',''],
-['02/2563/12/25/067','นายธนู สีลางาม','3700500728028','065-2465462','นางสมหวัง ลีลางาม','อื่นๆ','25 ธ.ค. 2563',''],
-['02/2563/12/25/070','น.ส.กิดฟ้า แซ่ตัน','2710300021178','082-2259146','นางปุณยนุช เต็กสุวรรณ','อื่นๆ','25 ธ.ค. 2563',''],
-['02/2563/12/25/078','นางประยูร ต่ายแพ','3700500519976','098-1693557','นายสังวาลย์ ต่ายแพ','อื่นๆ','25 ธ.ค. 2563',''],
-['02/2564/01/25/014','นายพันธุ์ แดงซิว','3630600225312','084-3456088','นายพิพัฒน์ โพธิผลิ','อื่นๆ','25 ม.ค. 2564','เปลี่ยนผู้รับ 20-มิ.ย.-2569'],
-['02/2564/01/25/018','นางมณี แดงซิว','3630600218723','084-3456088','นายพิพัฒน์ โพธิผลิ','อื่นๆ','25 ม.ค. 2564','เปลี่ยนผู้รับ 20-มิ.ย.-2569'],
-['02/2564/03/25/015','นายพิเชษฐ ม่วงโพธิ์','3700500722402','','นายธีรพงศ์ ม่วงโพธิ์','อื่นๆ','25 มี.ค. 2564',''],
-['02/2564/03/25/026','นายฐาพล มโนธรรมบุตร','4100500013481','062-4592603','นายประสิทธิ์ สุรพลพินิจ','อื่นๆ','25 มี.ค. 2564',''],
-['02/2564/04/25/001','น.ส.นงนุช ดวงตา','1710100113119','095-2105147','นางสมศรี ดวงตา','อื่นๆ','25 เม.ย. 2564',''],
-['02/2564/05/25/022','นางอำพร ภูมิพา','3710600573506','088-4572670','นายบุญชู ภูมิพา','อื่นๆ','25 พ.ค. 2564',''],
-['02/2564/06/25/037','นายสุรภาพ นิตโย','3700500723301','084-1335418','นางน้ำผึ้ง นิตโย','อื่นๆ','25 มิ.ย. 2564','เปลี่ยนผู้รับฯ 25/09/64'],
-['02/2564/11/25/053','นางวันทนา ปรีเปรม','3700500986159','086-1615510','นายอานันท์ ปรีเปรม','อื่นๆ','25 พ.ย. 2564',''],
-['02/2564/11/25/097','นายประยงค์ ศิริโพคา','3700500517256','098-9688014','น.ส.ณัชชา บุตรคำ','อื่นๆ','25 พ.ย. 2564',''],
-['02/2565/02/25/006','นางอรัญญา ศรีจันทร์เฟื้อ','3700500723395','087-1660453','น.ส.ณัฐวรรณ ศรีจันทร์เฟื้อ','อื่นๆ','25 ก.พ. 2565',''],
-['02/2565/06/25/010','นางวรรณภาภรณ์ ศรีสวัสดิ์','3102201629696','091-7262519','นายวินัย นัยมานพ','อื่นๆ','25 มิ.ย. 2565',''],
-['02/2565/06/25/013','นายพิสิฐ ศรีจันทร์เฟื้อ','3700100348422','087-1660453','น.ส.ณัฐวรรณ ศรีจันทร์เฟื้อ','อื่นๆ','25 มิ.ย. 2565',''],
-['02/2565/06/25/018','น.ส.วันดี ศรีสวัสดิ์','3102201629700','091-7262519','นายวัชระ จงจอหอ','อื่นๆ','25 มิ.ย. 2565',''],
-['02/2565/06/25/027','นายวินัย นัยมานพ','3141100119748','092-3318746','นางวรรณภาภรณ์ ศรีสวัสดิ์','อื่นๆ','25 มิ.ย. 2565',''],
-['02/2565/07/25/010','นายวีระ รุ่งโลหะเรืองรอง','3700500576503','085-1836325','น.ส.สุนันท์ อำนาจสิทธิชัย','ภรรยา','25 ก.ค. 2565',''],
-['02/2565/07/25/040','น.ส.สุนันท์ อำนาจสิทธิชัย','3102200646571','087-7548325','น.ส.รุ่งนภา รุ่งโลหะเรืองรอง','บุตร','25 ก.ค. 2565',''],
-['02/2565/11/25/050','นายคำรณ เมฆอินทร์','3700500829762','085-3812680','น.ส.นิรัตนา นิตโย','หลาน','25 พ.ย. 2565',''],
-['02/2565/12/01/013','นางรัชนีย์ ฉลองงาม','3700500724031','','นายสุวรรณ ฉลองงาม','สามี','01 ธ.ค. 2565',''],
-['02/2565/12/01/017','นางสมใจ ดวดเครือ','3700500519917','','น.ส.สุนิสา หนูอินทร์','บุตร','01 ธ.ค. 2565',''],
-['02/2565/12/01/021','นายสุรชัย ชุติมันส์วิสุทธิ์','3700500723409','094-6096480','น.ส.ณัฐวรรณ ศรีจันทร์เฟื้อ','หลาน','01 ธ.ค. 2565',''],
-['02/2565/12/01/024','นางพุฒ ผิวขำ','3449900280751','','น.ส.กัลญารัตร์ ลาวงค์','หลาน','01 ธ.ค. 2565',''],
-['02/2565/12/01/032','นางชนิดา เงินพุ่ม','3700500720485','','นายจรัล ดำขำ','สามี','01 ธ.ค. 2565',''],
-['02/2565/12/01/066','นายบุญรัตน์ ปานพวง','3700500723573','','น.ส.น้ำค้าง ปานพวง','น้องสาว','01 ธ.ค. 2565',''],
-['02/2565/12/01/075','น.ส.กัลญารัตร์ ลาวงค์','1709800320794','','นางพุฒ ผิวขำ','ยาย','01 ธ.ค. 2565',''],
-['02/2565/12/01/088','นายวสันต์ ดวดเครือ','3700500929147','','น.ส.สุนิสา หนูอินทร์','บุตร','01 ธ.ค. 2565',''],
-['02/2566/04/01/001','น.ส.ลักษมี สังกรณีย์','3710200059091','061-4041438','น.ส.เบญจมาศ สังกรณีย์','บุตร','01 เม.ย. 2566',''],
-['02/2566/11/01/010','นางอำพร พุตติ','3700500967448','092-8461631','นายสิทธิโชค พุตติ','บุตร','01 พ.ย. 2566',''],
-['02/2566/11/01/017','นายเจนต์ พุตติ','3700500727714','092-8461631','นางอำพร พุตติ','ภรรยา','01 พ.ย. 2566',''],
-['02/2567/01/01/002','นายสมยศ คนใหญ่','3700500967456','','นางอำพร พุตติ','พี่สาว','01 ม.ค. 2567',''],
-['02/2567/01/01/005','น.ส.ฉลวย บุญตา','5330400189982','','น.ส.กฤติยา ภาคีธง','หลาน','01 ม.ค. 2567',''],
-['02/2567/01/01/008','นายบุญเลิศ ทิมทอง','3700500723565','084-8937548','นายบุญรัตน์ ปานพวง','น้องชาย','01 ม.ค. 2567',''],
-['02/2567/01/01/012','น.ส.ทองสุข ปานพวง','3700500723581','084-8937548','นายบุญรัตน์ ปานพวง','พี่ชาย','01 ม.ค. 2567',''],
-['02/2567/01/01/051','นายไพฑูรย์ เปลี่ยวโต','3750100057657','','น.ส.สุกฤตา เปลี่ยวโต','บุตร','01 ม.ค. 2567',''],
-['02/2567/01/01/052','นางกัลยาพงษ์ พุตติ','3700500727722','062-5982789','น.ส.อุมาภรณ์ วรพุฒ','บุตร','01 ม.ค. 2567',''],
-['02/2567/01/01/061','น.ส.สุกฤตา เปลี่ยวโต','1709800326385','','นายไพฑูรย์ เปลี่ยวโต','บิดา','01 ม.ค. 2567',''],
-['02/2567/09/01/012','นายมณฑป เอกสิงหชัย','3300101816105','088-9812656','น.ส.กุลิสรา ศรีจันทร์เฟื้อ','หลาน','01 ก.ย. 2567',''],
-['02/2567/10/01/011','นายอนันต์ สินสุข','3700500724278','062-5077092','นางหลง สินสุข','มารดา','01 ต.ค. 2567',''],
-['02/2567/11/01/001','นายสมเกียรติ ศรีตันตนานนท์','3700500725746','061-5917836','นายณัฐพงศ์ ศรีตันตนานนท์','บุตร','01 พ.ย. 2567',''],
-['02/2567/11/01/003','นางมณฑา ศรีตันตนานนท์','3700500937093','089-9127839','นายณัฐพงศ์ ศรีตันตนานนท์','บุตร','01 พ.ย. 2567','']
-];
-
-const uid = p => (p||'id') + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = p => (p||'id')+'_'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt = n => new Intl.NumberFormat('th-TH',{style:'currency',currency:'THB',maximumFractionDigits:2}).format(Number(n)||0);
+const fmtShort = n => { n = Number(n)||0; if(n>=1e6) return '฿'+(n/1e6).toFixed(1)+'M'; if(n>=1e3) return '฿'+(n/1e3).toFixed(1)+'K'; return '฿'+n.toFixed(0); };
 const todayISO = () => { const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
 const curYM = () => todayISO().slice(0,7);
+const ymOf = iso => (iso||'').slice(0,7);
+const monthLabel = ym => { if(!ym) return '—'; const [y,m]=ym.split('-'); const mn=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']; return mn[+m-1]+' '+(+y+543); };
+const fdate = iso => { if(!iso) return '—'; const d=new Date(iso); if(isNaN(d)) return '—'; return d.getDate()+' '+['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'][d.getMonth()]+' '+(d.getFullYear()+543); };
+const thaiToISO = t => { const M={'ม.ค.':1,'ก.พ.':2,'มี.ค.':3,'เม.ย.':4,'พ.ค.':5,'มิ.ย.':6,'ก.ค.':7,'ส.ค.':8,'ก.ย.':9,'ต.ค.':10,'พ.ย.':11,'ธ.ค.':12};
+  const m=String(t||'').trim().match(/(\d{1,2})\s+([^\s]+)\s+(\d{4})/); if(!m) return todayISO();
+  const mm=M[m[2]]||1, yy=+m[3]-543; return `${yy}-${String(mm).padStart(2,'0')}-${String(m[1]).padStart(2,'0')}`; };
 
-function thaiToISO(thai){
-  const months = {'ม.ค.':1,'ก.พ.':2,'มี.ค.':3,'เม.ย.':4,'พ.ค.':5,'มิ.ย.':6,'ก.ค.':7,'ส.ค.':8,'ก.ย.':9,'ต.ค.':10,'พ.ย.':11,'ธ.ค.':12};
-  const m = String(thai).trim().match(/(\d{1,2})\s+([^\s]+)\s+(\d{4})/);
-  if(!m) return todayISO();
-  const mm = months[m[2]] || 1;
-  const yy = Number(m[3]) - 543;
-  return yy + '-' + String(mm).padStart(2,'0') + '-' + String(m[1]).padStart(2,'0');
-}
-function fdate(iso){
-  if(!iso) return '—';
-  const d = new Date(iso);
-  if(isNaN(d)) return '—';
-  const m = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
-  return d.getDate() + ' ' + m[d.getMonth()] + ' ' + (d.getFullYear()+543);
+/* =========================================================
+   2) DATA LAYER
+========================================================= */
+const RAW = [
+['02/2557/07/15/002','นางสาวจรูญ โพธิ์เย็น','3700501101568','','นายสยมพร โพธิ์เย็น','หลาน','15 ก.ค. 2557'],
+['02/2561/01/25/001','นายจำนง สินสุข','3700500724251','062-5077092','นายบุญยิ่ง สินสุข','ญาติ','25 ม.ค. 2561'],
+['02/2561/01/25/002','นายไพโรจน์ ประเสริฐ','3700700849431','081-9958589','นางนิภา ประเสริฐ','ญาติ','25 ม.ค. 2561'],
+['02/2561/01/25/004','นางวันเพ็ญ พันจุ้ย','3770700105032','092-6967593','นางน้ำผึ้ง นิตโย','ญาติ','25 ม.ค. 2561'],
+['02/2561/01/25/005','นายจำปี ชื่นหุ่น','3710500745071','092-6967593','นางน้ำผึ้ง นิตโย','ญาติ','25 ม.ค. 2561'],
+['02/2561/01/25/006','นางสาวสุภาภรณ์ จรุมเครือ','3700500520362','097-1790489','นายสงกราณต์ จรุมเครือ','ญาติ','25 ม.ค. 2561'],
+['02/2561/01/25/008','นางหลง สินสุข','3700500724294','062-5077092','นายบุญยิ่ง สินสุข','ญาติ','25 ม.ค. 2561'],
+['02/2561/01/25/009','นางวันดี แซ่โง้ว','3700500723379','092-5246726','นางอรัญญา ศรีจันทร์เฟื้อ','ญาติ','25 ม.ค. 2561'],
+['02/2561/01/25/010','นางทองใบ จรุมเครือ','3700500520389','081-2543551','นายสงกราณต์ จรุมเครือ','ญาติ','25 ม.ค. 2561'],
+['02/2562/12/25/007','นายบุญ สุรพลพินิจ','3700700849392','','นางนิภา ประเสริฐ','ญาติ','25 ธ.ค. 2562'],
+['02/2562/12/25/011','นางนิภา ประเสริฐ','3700500723298','084-1335418','นางสาวนพวรรณ ประเสริฐ','ญาติ','25 ธ.ค. 2562'],
+['02/2562/12/25/031','นางสาวศิรดา วันนิยม','3800101705091','092-7969156','นายสิทธิพร โพธิ์เย็น','ญาติ','25 ธ.ค. 2562'],
+['02/2562/12/25/058','นางพรทิพย์ ฤดีสุขสกุล','5730100031336','087-4150975','นายปริญญา ฤดีสุขสกุล','ญาติ','25 ธ.ค. 2562'],
+['02/2562/12/25/065','นายสุขุม พุ่มห่าน','3700500723182','084-5709567','นางสุภาภรณ์ สายพันธ์','ญาติ','25 ธ.ค. 2562'],
+['02/2562/12/25/067','นายวุฒิพล สายพันธ์','3700100111511','085-4876567','นางสุภาภรณ์ สายพันธ์','ญาติ','25 ธ.ค. 2562'],
+['02/2562/12/25/089','นางสุภาภรณ์ สายพันธ์','3700500723166','089-2563710','นายวุฒิพล สายพันธ์','ญาติ','25 ธ.ค. 2562'],
+['02/2562/12/25/094','นายบุญโชติ โพธิผลิ','3700500723123','086-1657522','นางวันดี แซ่โง้ว','ญาติ','25 ธ.ค. 2562'],
+['02/2562/12/25/130','นางอำไพ พุ่มห่าน','3700500723115','032268129','นางสุภาภรณ์ สายพันธ์','ญาติ','25 ธ.ค. 2562'],
+['02/2562/12/25/145','นายประสิทธิ์ สุรพลพินิจ','3709800125262','081-9958589','นายประกฤต สุรพลพินิจ','ญาติ','25 ธ.ค. 2562'],
+['02/2562/12/25/169','นายชูศักดิ์ ฤดีสุขสกุล','3730101305255','081-1963878','นายปริญญา ฤดีสุขสกุล','ญาติ','25 ธ.ค. 2562'],
+['02/2563/03/25/015','นายจง ผิวขำ','3700500722909','081-8567221','นางพุฒ ผิวขำ','ญาติ','25 มี.ค. 2563'],
+['02/2563/06/25/010','นางสาวนิรัตนา นิตโย','3700500723310','085-3812680','นายนนท์ มีทรัพย์','ญาติ','25 มิ.ย. 2563'],
+['02/2563/06/25/017','นายอนันต์ โพธิผลิ','3700500723140','095-2105147','นายพิพัฒน์ โพธิผลิ','ญาติ','25 มิ.ย. 2563'],
+['02/2563/07/25/008','นายวิชัย เนตรสว่าง','3729900115269','085-9635561','นางอรุณ โพธิผลิ','ญาติ','25 ก.ค. 2563'],
+['02/2563/08/25/009','นางสาวปุก สายพันธ์','3700100111503','085-4876567','นายวุฒิ สายพันธ์','ญาติ','25 ส.ค. 2563'],
+['02/2563/10/25/016','นางสาวทองใบ ปินเปีย','3730500693178','083-7024281','นายสราวุฒิ พุฒิประภา','ญาติ','25 ต.ค. 2563'],
+['02/2563/12/25/013','นายสังวรณ์ ต่ายแพ','3700500520052','087-0831974','นางสมบุญ ภาคีธง','ญาติ','25 ธ.ค. 2563'],
+['02/2563/12/25/028','นายสังวาลย์ ต่ายแพ','3700500519968','098-1693557','นางสมบุญ ภาคีธง','ญาติ','25 ธ.ค. 2563'],
+['02/2563/12/25/032','นายจาบ ชูเลิศ','3700500722763','089-0555688','นายอัครวัฒน์ ชูเลิศ','ญาติ','25 ธ.ค. 2563'],
+['02/2563/12/25/044','นายสมาน มะลินิล','3190600340809','080-7371909','นางสาวพจมาน มะลินิล','ญาติ','25 ธ.ค. 2563'],
+['02/2563/12/25/048','นางขัน ปลาฉลาด','5330401312427','081-0129083','นางสาวกฤติยา ภาคีธง','ญาติ','25 ธ.ค. 2563'],
+['02/2563/12/25/053','นางคำฝอย สิงห์โคก','5450500051019','089-0555688','นายอัครวัฒน์ ชูเลิศ','ญาติ','25 ธ.ค. 2563'],
+['02/2563/12/25/067','นายธนู สีลางาม','3700500728028','065-2465462','นางสมหวัง ลีลางาม','ญาติ','25 ธ.ค. 2563'],
+['02/2563/12/25/070','นางสาวกิดฟ้า แซ่ตัน','2710300021178','082-2259146','นางปุณยนุช เต็กสุวรรณ','ญาติ','25 ธ.ค. 2563'],
+['02/2563/12/25/078','นางประยูร ต่ายแพ','3700500519976','098-1693557','นายสังวาลย์ ต่ายแพ','ญาติ','25 ธ.ค. 2563'],
+['02/2564/01/25/014','นายพันธุ์ แดงซิว','3630600225312','084-3456088','นายพิพัฒน์ โพธิผลิ','ญาติ','25 ม.ค. 2564'],
+['02/2564/01/25/018','นางมณี แดงซิว','3630600218723','084-3456088','นายพิพัฒน์ โพธิผลิ','ญาติ','25 ม.ค. 2564'],
+['02/2564/03/25/015','นายพิเชษฐ ม่วงโพธิ์','3700500722402','','นายธีรพงศ์ ม่วงโพธิ์','ญาติ','25 มี.ค. 2564'],
+['02/2564/03/25/026','นายฐาพล มโนธรรมบุตร','4100500013481','062-4592603','นายประสิทธิ์ สุรพลพินิจ','ญาติ','25 มี.ค. 2564'],
+['02/2564/04/25/001','นางสาวนงนุช ดวงตา','1710100113119','095-2105147','นางสมศรี ดวงตา','ญาติ','25 เม.ย. 2564'],
+['02/2564/05/25/022','นางอำพร ภูมิพา','3710600573506','088-4572670','นายบุญชู ภูมิพา','ญาติ','25 พ.ค. 2564'],
+['02/2564/06/25/037','นายสุรภาพ นิตโย','3700500723301','084-1335418','นางน้ำผึ้ง นิตโย','ญาติ','25 มิ.ย. 2564'],
+['02/2564/11/25/053','นางวันทนา ปรีเปรม','3700500986159','086-1615510','นายอานันท์ ปรีเปรม','ญาติ','25 พ.ย. 2564'],
+['02/2564/11/25/097','นายประยงค์ ศิริโพคา','3700500517256','098-9688014','นางสาวณัชชา บุตรคำ','ญาติ','25 พ.ย. 2564'],
+['02/2565/02/25/006','นางอรัญญา ศรีจันทร์เฟื้อ','3700500723395','087-1660453','นางสาวณัฐวรรณ ศรีจันทร์เฟื้อ','ญาติ','25 ก.พ. 2565'],
+['02/2565/06/25/010','นางวรรณภาภรณ์ ศรีสวัสดิ์','3102201629696','091-7262519','นายวินัย นัยมานพ','ญาติ','25 มิ.ย. 2565'],
+['02/2565/06/25/013','นายพิสิฐ ศรีจันทร์เฟื้อ','3700100348422','087-1660453','นางสาวณัฐวรรณ ศรีจันทร์เฟื้อ','ญาติ','25 มิ.ย. 2565'],
+['02/2565/06/25/018','นางสาววันดี ศรีสวัสดิ์','3102201629700','091-7262519','นายวัชระ จงจอหอ','ญาติ','25 มิ.ย. 2565'],
+['02/2565/06/25/027','นายวินัย นัยมานพ','3141100119748','092-3318746','นางวรรณภาภรณ์ ศรีสวัสดิ์','ญาติ','25 มิ.ย. 2565'],
+['02/2565/07/25/010','นายวีระ รุ่งโลหะเรืองรอง','3700500576503','085-1836325','นางสาวสุนันท์ อำนาจสิทธิชัย','ภรรยา','25 ก.ค. 2565'],
+['02/2565/07/25/040','นางสาวสุนันท์ อำนาจสิทธิชัย','3102200646571','087-7548325','นางสาวรุ่งนภา รุ่งโลหะเรืองรอง','บุตร','25 ก.ค. 2565'],
+['02/2565/11/25/050','นายคำรณ เมฆอินทร์','3700500829762','085-3812680','นางสาวนิรัตนา นิตโย','หลาน','25 พ.ย. 2565'],
+['02/2565/12/01/013','นางรัชนีย์ ฉลองงาม','3700500724031','','นายสุวรรณ ฉลองงาม','สามี','01 ธ.ค. 2565'],
+['02/2565/12/01/017','นางสมใจ ดวดเครือ','3700500519917','','นางสาวสุนิสา หนูอินทร์','บุตร','01 ธ.ค. 2565'],
+['02/2565/12/01/021','นายสุรชัย ชุติมันส์วิสุทธิ์','3700500723409','094-6096480','นางสาวณัฐวรรณ ศรีจันทร์เฟื้อ','หลาน','01 ธ.ค. 2565'],
+['02/2565/12/01/024','นางพุฒ ผิวขำ','3449900280751','','นางสาวกัลญารัตร์ ลาวงค์','หลาน','01 ธ.ค. 2565'],
+['02/2565/12/01/032','นางชนิดา เงินพุ่ม','3700500720485','','นายจรัล ดำขำ','สามี','01 ธ.ค. 2565'],
+['02/2565/12/01/066','นายบุญรัตน์ ปานพวง','3700500723573','','นางสาวน้ำค้าง ปานพวง','น้องสาว','01 ธ.ค. 2565'],
+['02/2565/12/01/075','นางสาวกัลญารัตร์ ลาวงค์','1709800320794','','นางพุฒ ผิวขำ','ยาย','01 ธ.ค. 2565'],
+['02/2565/12/01/088','นายวสันต์ ดวดเครือ','3700500929147','','นางสาวสุนิสา หนูอินทร์','บุตร','01 ธ.ค. 2565'],
+['02/2566/04/01/001','นางสาวลักษมี สังกรณีย์','3710200059091','061-4041438','นางสาวเบญจมาศ สังกรณีย์','บุตร','01 เม.ย. 2566'],
+['02/2566/11/01/010','นางอำพร พุตติ','3700500967448','092-8461631','นายสิทธิโชค พุตติ','บุตร','01 พ.ย. 2566'],
+['02/2566/11/01/017','นายเจนต์ พุตติ','3700500727714','092-8461631','นางอำพร พุตติ','ภรรยา','01 พ.ย. 2566'],
+['02/2567/01/01/002','นายสมยศ คนใหญ่','3700500967456','','นางอำพร พุตติ','พี่สาว','01 ม.ค. 2567'],
+['02/2567/01/01/005','นางสาวฉลวย บุญตา','5330400189982','','นางสาวกฤติยา ภาคีธง','หลาน','01 ม.ค. 2567'],
+['02/2567/01/01/008','นายบุญเลิศ ทิมทอง','3700500723565','084-8937548','นายบุญรัตน์ ปานพวง','น้องชาย','01 ม.ค. 2567'],
+['02/2567/01/01/012','นางสาวทองสุข ปานพวง','3700500723581','084-8937548','นายบุญรัตน์ ปานพวง','พี่ชาย','01 ม.ค. 2567'],
+['02/2567/01/01/051','นายไพฑูรย์ เปลี่ยวโต','3750100057657','','นางสาวสุกฤตา เปลี่ยวโต','บุตร','01 ม.ค. 2567'],
+['02/2567/01/01/052','นางกัลยาพงษ์ พุตติ','3700500727722','062-5982789','นางสาวอุมาภรณ์ วรพุฒ','บุตร','01 ม.ค. 2567'],
+['02/2567/01/01/061','นางสาวสุกฤตา เปลี่ยวโต','1709800326385','','นายไพฑูรย์ เปลี่ยวโต','บิดา','01 ม.ค. 2567'],
+['02/2567/09/01/012','นายมณฑป เอกสิงหชัย','3300101816105','088-9812656','นางสาวกุลิสรา ศรีจันทร์เฟื้อ','หลาน','01 ก.ย. 2567'],
+['02/2567/10/01/011','นายอนันต์ สินสุข','3700500724278','062-5077092','นางหลง สินสุข','มารดา','01 ต.ค. 2567'],
+['02/2567/11/01/001','นายสมเกียรติ ศรีตันตนานนท์','3700500725746','061-5917836','นายณัฐพงศ์ ศรีตันตนานนท์','บุตร','01 พ.ย. 2567'],
+['02/2567/11/01/003','นางมณฑา ศรีตันตนานนท์','3700500937093','089-9127839','นายณัฐพงศ์ ศรีตันตนานนท์','บุตร','01 พ.ย. 2567']
+];
+
+// Build realistic payment history: monthly from join date until now
+function buildPayments(joinISO, amount=30){
+  const payments = [];
+  const [jy,jm] = joinISO.split('-').map(Number);
+  const now = new Date();
+  const nowY = now.getFullYear(), nowM = now.getMonth()+1;
+  let y=jy, m=jm;
+  // Skip current month sometimes to create "overdue" entries (30% chance)
+  while(y<nowY || (y===nowY && m<nowM)){
+    // Randomly skip ~10% of months to simulate missed payments
+    if(Math.random() > 0.08){
+      payments.push({ id:uid('p'), date:`${y}-${String(m).padStart(2,'0')}-25`, amount, method: Math.random()<0.7?'เงินสด':'โอน', collector:'นางอุษา ณ วังขนาย', months:[`${y}-${String(m).padStart(2,'0')}`] });
+    }
+    m++; if(m>12){m=1;y++;}
+  }
+  // 75% chance current month is paid
+  if(Math.random()<0.75){
+    payments.push({ id:uid('p'), date:todayISO(), amount, method:'เงินสด', collector:'นางอุษา ณ วังขนาย', months:[curYM()] });
+  }
+  return payments;
 }
 
 function defaultDB(){
-  const members = RAW_MEMBERS.map((r,i)=>({
-    id: uid('m'),
-    regNo: r[0],
-    prefix: '',
-    fullName: r[1],
-    idCard: r[2],
-    phone: r[3],
-    joinDate: thaiToISO(r[6]),
-    joinDateBE: r[6],
-    line: 'นางอุษา ณ วังขนาย',
-    agent: 'นิภา ประเสริฐ',
-    status: 'alive',
-    note: r[7],
-    beneficiary: {name:r[4], relation:r[5], phone:''},
-    payments: [],
-    documents: [],
-    familyCode: ''
-  }));
+  const members = RAW.map((r,i)=>{
+    const joinISO = thaiToISO(r[6]);
+    const status = (i===5||i===12) ? 'deceased' : (i===29 ? 'archived' : 'alive');
+    const nameParts = r[1].split(' ');
+    const prefix = ['นาย','นาง','นางสาว'].find(p=>r[1].startsWith(p)) || 'นาย';
+    const nameOnly = r[1].replace(/^(นาย|นาง|นางสาว)\s*/,'');
+    return {
+      id: uid('m'),
+      regNo: r[0],
+      prefix,
+      fullName: nameOnly,
+      idCard: r[2],
+      phone: r[3],
+      joinDate: joinISO,
+      line: 'นางอุษา ณ วังขนาย',
+      agent: 'นิภา ประเสริฐ',
+      status,
+      note: '',
+      beneficiary: { name:r[4], relation:r[5], phone:'' },
+      payments: status==='alive' ? buildPayments(joinISO, 30) : [],
+      documents: [],
+      slip: null
+    };
+  });
+
+  // Seed some expenses and payouts for realistic reports
+  const now = new Date();
+  const thisYM = curYM();
+  const lastMonth = new Date(now.getFullYear(), now.getMonth()-1, 15);
+  const lastYM = `${lastMonth.getFullYear()}-${String(lastMonth.getMonth()+1).padStart(2,'0')}`;
 
   return {
     users: {
       admin99:{pass:'admin123', name:'ผู้ดูแลระบบ', role:'Admin'},
       usa123:{pass:'usa123', name:'นางอุษา ณ วังขนาย', role:'Agent'}
     },
-    funds: [{id:'f1', name:'กองทุนฌาปนกิจ 4 ตำบล', amount:30, central:0}],
+    fund: { name:'กองทุนฌาปนกิจ 4 ตำบล', amount:30, central:15000 },
     members,
-    expenses: [],
-    payouts: [],
+    expenses: [
+      { id:uid('e'), detail:'ค่าจัดทำเอกสาร/พิมพ์ใบเสร็จ', amount:450, date:`${thisYM}-05` },
+      { id:uid('e'), detail:'ค่าน้ำ-ไฟ สำนักงาน', amount:850, date:`${thisYM}-08` }
+    ],
+    payouts: [
+      { id:uid('py'), memberId: members[0].id, memberName: members[0].fullName, amount:20000, date:`${lastYM}-20`, note:'จ่ายช่วยเหลือฌาปนกิจ' }
+    ],
     requests: [],
-    logs: [],
-    notificationsRead: false,
+    logs: [{ ts:new Date().toISOString(), text:'ระบบเริ่มต้นทำงาน' }],
     settings: {
       org: 'ระบบฌาปนกิจ 4 ตำบล',
-      sub: 'v42 Cloud Sync',
-      address: '',
-      phone: '',
+      sub: 'v43 AI',
+      address: 'ต.วังขนาย อ.ท่าม่วง จ.กาญจนบุรี',
+      phone: '034-xxx-xxx',
       lineToken: '',
-      notifyEnabled: false,
+      notifyEnabled: true,
+      overdueMode: 'list',
       backupDays: 7,
       lastBackup: ''
     }
@@ -605,44 +565,28 @@ function defaultDB(){
 }
 
 function loadDB(){
-  try{
+  try {
     const raw = localStorage.getItem(LS_KEY);
-    if(raw) DB = JSON.parse(raw);
-    else DB = defaultDB();
-  }catch(e){ DB = defaultDB(); }
+    DB = raw ? JSON.parse(raw) : defaultDB();
+    // Ensure new fields exist (forward compat)
+    if(!DB.fund) DB.fund = { name:'กองทุนฌาปนกิจ', amount:30, central:0 };
+    if(!DB.payouts) DB.payouts = [];
+    if(!DB.settings.overdueMode) DB.settings.overdueMode = 'list';
+  } catch(e){ DB = defaultDB(); }
 }
-function saveDB(){ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }
-function logIt(text){ DB.logs.unshift({ts:new Date().toISOString(), text}); DB.logs=DB.logs.slice(0,200); saveDB(); }
+function saveDB(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }catch(e){ toast('บันทึกไม่สำเร็จ: พื้นที่เต็ม','bad'); } }
+function logIt(text){ DB.logs.unshift({ts:new Date().toISOString(), text}); DB.logs = DB.logs.slice(0,300); saveDB(); }
 
-/* =========================
-   UI HELPERS
-========================= */
-function openOverlay(id){ document.getElementById(id).classList.add('open'); }
-function closeOverlay(id){ document.getElementById(id).classList.remove('open'); }
-function toast(msg, type='ok'){
-  const el = document.createElement('div');
-  el.className = 'toast ' + type;
-  el.textContent = msg;
-  document.getElementById('toastArea').appendChild(el);
-  setTimeout(()=> el.remove(), 3500);
-}
-
-function toggleDark(){
-  document.documentElement.classList.toggle('dark');
-  localStorage.setItem('darkMode', document.documentElement.classList.contains('dark') ? '1':'0');
-  const icon = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
-  document.getElementById('darkIcon').textContent = icon;
-  document.getElementById('menuDarkIcon').textContent = icon;
-}
-
-/* =========================
-   AUTH
-========================= */
+/* =========================================================
+   3) AUTH & SESSION
+========================================================= */
 function switchGateTab(tab){
   document.querySelectorAll('.tabbtn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
   document.getElementById('staffForm').classList.toggle('hidden', tab!=='staff');
-  document.getElementById('memberForm').classList.toggle('hidden', tab==='staff');
+  document.getElementById('memberForm').classList.toggle('hidden', tab!=='member');
+  document.getElementById('checkForm').classList.toggle('hidden', tab!=='check');
   document.getElementById('gateError').textContent = '';
+  document.getElementById('checkResult').innerHTML = '';
 }
 
 function staffLogin(e){
@@ -654,7 +598,12 @@ function staffLogin(e){
     document.getElementById('gateError').textContent = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
     return false;
   }
-  ME = {username:u, name:user.name, role:user.role};
+  ME = { username:u, name:user.name, role:user.role };
+  if(document.getElementById('rememberMe').checked){
+    localStorage.setItem(LS_SESSION, JSON.stringify({ type:'staff', username:u, exp: Date.now()+30*864e5 }));
+  } else {
+    localStorage.removeItem(LS_SESSION);
+  }
   enterApp();
   return false;
 }
@@ -667,121 +616,379 @@ function memberLogin(e){
     document.getElementById('gateError').textContent = 'ไม่พบเลขบัตรประชาชนในระบบ';
     return false;
   }
-  ME = {username:m.idCard, name:m.fullName, role:'Member', memberId:m.id};
+  ME = { username:m.idCard, name:m.fullName, role:'Member', memberId:m.id };
   enterApp();
+  return false;
+}
+
+function checkMember(e){
+  e.preventDefault();
+  const id = document.getElementById('checkIdCard').value.trim();
+  const m = DB.members.find(x=>x.idCard===id);
+  const out = document.getElementById('checkResult');
+  if(!m){
+    out.innerHTML = '<div class="note warn">ไม่พบข้อมูลสมาชิกในระบบ</div>';
+    return false;
+  }
+  const paid = paidCurrent(m);
+  out.innerHTML = `
+    <div class="note" style="margin-top:0">
+      <b>${esc(prefixName(m))}</b><br>
+      รหัส: ${esc(m.regNo)}<br>
+      สถานะ: ${paid ? '<span class="pill ok">ชำระแล้วเดือนนี้</span>' : '<span class="pill warn">ค้างชำระ</span>'}<br>
+      ผู้รับผลประโยชน์: ${esc(m.beneficiary?.name || '—')}
+    </div>`;
+  return false;
+}
+
+function tryAutoLogin(){
+  try {
+    const s = JSON.parse(localStorage.getItem(LS_SESSION) || 'null');
+    if(s && s.type==='staff' && s.exp > Date.now() && DB.users[s.username]){
+      ME = { username:s.username, name:DB.users[s.username].name, role:DB.users[s.username].role };
+      enterApp();
+      return true;
+    }
+  } catch(e){}
   return false;
 }
 
 function enterApp(){
   document.getElementById('gate').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
-  document.getElementById('orgName').textContent = DB.settings.org;
-  document.getElementById('orgSub').textContent = DB.settings.sub;
-  renderAll();
+  document.getElementById('sidebarOrg').textContent = DB.settings.org;
+  document.getElementById('userName').textContent = ME.name;
+  document.getElementById('userRole').textContent = ME.role;
+  document.getElementById('userAvatar').textContent = (ME.name||'?').charAt(0);
+  buildSidebar();
+  goPage('dashboard');
 }
 
 function logout(){
+  if(!confirm('ออกจากระบบ?')) return;
   ME = null;
+  localStorage.removeItem(LS_SESSION);
   location.reload();
 }
 
-/* =========================
-   RENDER HOME
-========================= */
-function fund(){ return DB.funds[0]; }
-
-function paidCurrent(m){
-  return (m.payments||[]).some(p => (p.months||[]).includes(curYM()));
-}
-function isOverdue(m){
-  return m.status === 'alive' && !paidCurrent(m);
-}
-function memberDueAmount(m){
-  return isOverdue(m) ? fund().amount : 0;
-}
-function totalIncomeThisMonth(){
-  let total = 0;
-  DB.members.forEach(m => {
-    (m.payments||[]).forEach(p => {
-      if(String(p.date||'').startsWith(curYM())) total += Number(p.amount)||0;
-    });
-  });
-  return total;
-}
-function totalPayouts(){ return DB.payouts.reduce((s,x)=>s+(Number(x.amount)||0),0); }
-function totalExpenses(){ return DB.expenses.reduce((s,x)=>s+(Number(x.amount)||0),0); }
-
-function renderAll(){
-  renderBackupPill();
-  renderKPIs();
-  renderFilterChips();
-  renderTable();
-  renderNotificationsBadge();
+/* =========================================================
+   4) SIDEBAR & ROUTING
+========================================================= */
+function toggleSidebar(open){
+  document.getElementById('sidebar').classList.toggle('open', open);
+  document.getElementById('backdrop').classList.toggle('open', open);
 }
 
-function renderBackupPill(){
-  const pill = document.getElementById('backupPill');
-  const last = DB.settings.lastBackup;
-  const days = DB.settings.backupDays || 7;
-  if(!last){
-    pill.classList.remove('hidden');
-    pill.textContent = `ไม่ได้ Backup มา ${days} วัน`;
-    return;
-  }
-  const diff = Math.floor((Date.now() - new Date(last).getTime())/86400000);
-  if(diff >= days){
-    pill.classList.remove('hidden');
-    pill.textContent = `ไม่ได้ Backup มา ${diff} วัน`;
-  }else{
-    pill.classList.add('hidden');
-  }
-}
+function buildSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  const items = [];
+  const isAdmin = ME.role==='Admin';
+  const isAgent = ME.role==='Agent';
+  const isMember = ME.role==='Member';
 
-function renderKPIs(){
-  const overdue = DB.members.filter(isOverdue).length;
-  const balance = totalIncomeThisMonth() - totalPayouts() - totalExpenses();
-  document.getElementById('kpiMembers').textContent = DB.members.length.toLocaleString();
-  document.getElementById('kpiIncome').textContent = fmt(totalIncomeThisMonth());
-  document.getElementById('kpiOverdue').textContent = overdue.toLocaleString();
-  document.getElementById('kpiBalance').textContent = fmt(balance);
-}
+  items.push({ key:'dashboard', icon:'📊', label:'ภาพรวม' });
+  if(!isMember) items.push({ key:'members', icon:'👥', label:'สมาชิก', count: DB.members.length });
+  items.push({ key:'ai', icon:'✨', label:'AI ผู้ช่วย' });
+  if(!isMember) items.push({ key:'payments', icon:'💰', label:'การชำระเงิน', count: DB.members.filter(isOverdue).length || 0 });
+  if(!isMember) items.push({ key:'reports', icon:'📈', label:'รายงาน' });
+  if(isAdmin) items.push({ key:'admin', icon:'⚙️', label:'จัดการระบบ' });
+  items.push({ key:'settings', icon:'🔔', label:'ตั้งค่า' });
 
-function renderFilterChips(){
-  const filters = [
-    ['all','ทั้งหมด'],
-    ['overdue','ค้าง'],
-    ['near','ใกล้ครบ'],
-    ['normal','ปกติ'],
-    ['pending','รออนุมัติ'],
-    ['archived','เก็บถาวร']
-  ];
-  document.getElementById('filterChips').innerHTML = filters.map(([k,label])=>{
-    return `<button class="chip ${UI.filter===k?'active':''}" onclick="setFilter('${k}')">${label}</button>`;
+  nav.innerHTML = items.map(it=>{
+    const badge = it.count ? `<span class="badge">${it.count}</span>` : '';
+    return `<button class="nav-item ${UI.page===it.key?'active':''}" onclick="goPage('${it.key}')">
+      <span class="ico">${it.icon}</span><span>${it.label}</span>${badge}</button>`;
   }).join('');
 }
 
-function setFilter(f){
-  UI.filter = f;
-  renderFilterChips();
-  renderTable();
+function goPage(page){
+  if(page==='members' && ME.role==='Member') return;
+  if(page==='admin' && ME.role!=='Admin') return;
+  UI.page = page;
+  UI.q = '';
+  toggleSidebar(false);
+  buildSidebar();
+  const titles = {
+    dashboard:['ภาพรวม','สรุปการเงินและสถานะสมาชิก'],
+    members:['สมาชิก','จัดการข้อมูลสมาชิกและผู้รับผลประโยชน์'],
+    payments:['การชำระเงิน','รับชำระและติดตามค้างชำระ'],
+    reports:['รายงาน','วิเคราะห์รายรับ-รายจ่าย'],
+    ai:['AI ผู้ช่วย','ถาม-ตอบและวิเคราะห์ข้อมูล'],
+    admin:['จัดการระบบ','ผู้ใช้ กองทุน รายจ่าย คำขอ'],
+    settings:['ตั้งค่า','การแจ้งเตือนและสำรองข้อมูล']
+  };
+  const [t,s] = titles[page] || ['—','—'];
+  document.getElementById('topbarTitle').textContent = t;
+  document.getElementById('topbarSub').textContent = s;
+  renderPage();
+  updateTopIncome();
 }
 
-function onSearch(q){
-  UI.q = q.trim().toLowerCase();
-  renderTable();
+function updateTopIncome(){
+  const inc = incomeThisMonth();
+  const el = document.getElementById('incomeTop');
+  el.querySelector('b').textContent = fmtShort(inc);
+  el.title = fmt(inc);
 }
+
+/* =========================================================
+   5) BUSINESS LOGIC
+========================================================= */
+function fundAmount(){ return Number(DB.fund.amount)||0; }
+function paidCurrent(m){ return (m.payments||[]).some(p => (p.months||[]).includes(curYM())); }
+function isOverdue(m){ return m.status==='alive' && !paidCurrent(m); }
+function overdueMembers(){ return DB.members.filter(isOverdue); }
+function prefixName(m){ return (m.prefix? m.prefix+' ':'') + (m.fullName||''); }
+
+function incomeThisMonth(){
+  let total = 0;
+  const ym = curYM();
+  DB.members.forEach(m => (m.payments||[]).forEach(p => {
+    if(ymOf(p.date) === ym) total += Number(p.amount)||0;
+  }));
+  return total;
+}
+function incomeOfMonth(ym){
+  let total = 0;
+  DB.members.forEach(m => (m.payments||[]).forEach(p => {
+    if(ymOf(p.date) === ym) total += Number(p.amount)||0;
+  }));
+  return total;
+}
+function expensesThisMonth(){ return DB.expenses.filter(e=>ymOf(e.date)===curYM()).reduce((s,x)=>s+(Number(x.amount)||0),0); }
+function payoutsThisMonth(){ return DB.payouts.filter(e=>ymOf(e.date)===curYM()).reduce((s,x)=>s+(Number(x.amount)||0),0); }
+function balanceThisMonth(){ return incomeThisMonth() - expensesThisMonth() - payoutsThisMonth(); }
+function collectionRate(){
+  const alive = DB.members.filter(m=>m.status==='alive').length;
+  if(!alive) return 0;
+  return Math.round((alive - overdueMembers().length) / alive * 100);
+}
+
+/* =========================================================
+   6) AI ENGINE — rule-based insights + chat
+========================================================= */
+const AI = {
+  insights(){
+    const inc = incomeThisMonth();
+    const prev = (()=>{ const d=new Date(); d.setMonth(d.getMonth()-1); return incomeOfMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`); })();
+    const change = prev ? Math.round((inc-prev)/prev*100) : 0;
+    const rate = collectionRate();
+    const overdue = overdueMembers();
+    const overdueAmount = overdue.length * fundAmount();
+    const balance = balanceThisMonth();
+    const central = Number(DB.fund.central)||0;
+
+    const tips = [];
+    if(change > 5) tips.push({ type:'ok', icon:'📈', text:`รายรับเดือนนี้ <b>+${change}%</b> เทียบเดือนก่อน อยู่ในเกณฑ์ดี` });
+    else if(change < -5) tips.push({ type:'warn', icon:'📉', text:`รายรับเดือนนี้ <b>${change}%</b> ต่ำกว่าเดือนก่อน ควรติดตามการจัดเก็บ` });
+
+    if(rate < 80) tips.push({ type:'warn', icon:'⚠️', text:`อัตราการจัดเก็บ <b>${rate}%</b> ต่ำกว่าเป้าหมาย (80%) มีค้าง ${overdue.length} ราย รวม ${fmt(overdueAmount)}` });
+    else tips.push({ type:'ok', icon:'✅', text:`อัตราการจัดเก็บ <b>${rate}%</b> อยู่ในเกณฑ์ดี` });
+
+    if(overdue.length > 15) tips.push({ type:'bad', icon:'🚨', text:`มีสมาชิกค้างชำระ <b>${overdue.length} ราย</b> ควรเร่งติดตาม` });
+    else if(overdue.length > 0) tips.push({ type:'warn', icon:'📋', text:`มีค้างชำระ ${overdue.length} ราย รวม ${fmt(overdueAmount)}` });
+
+    if(central < fundAmount()*30) tips.push({ type:'warn', icon:'🏦', text:`เงินกองทุนกลาง <b>${fmt(central)}</b> ต่ำกว่าเกณฑ์แนะนำ (${fmt(fundAmount()*30)})` });
+
+    if(balance < 0) tips.push({ type:'bad', icon:'💸', text:`เดือนนี้รายจ่ายสูงกว่ารายรับ <b>${fmt(balance)}</b> ควรตรวจสอบ` });
+    else if(balance > 0) tips.push({ type:'ok', icon:'💚', text:`เดือนนี้มีเงินคงเหลือ <b>${fmt(balance)}</b>` });
+
+    // Projection
+    const last3 = [0,1,2].map(i=>{ const d=new Date(); d.setMonth(d.getMonth()-i); return incomeOfMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`); });
+    const avg = Math.round(last3.reduce((s,x)=>s+x,0)/3);
+    tips.push({ type:'ok', icon:'🔮', text:`คาดการณ์รายรับเดือนหน้า <b>${fmt(avg)}</b> (จากค่าเฉลี่ย 3 เดือน)` });
+
+    // Top payers
+    const top = [...DB.members].filter(m=>m.status==='alive').map(m=>({ m, count:(m.payments||[]).length })).sort((a,b)=>b.count-a.count).slice(0,3);
+
+    return { inc, prev, change, rate, overdue:overdue.length, overdueAmount, balance, tips, avg, top };
+  },
+
+  chat(q){
+    const s = q.toLowerCase();
+    const inc = incomeThisMonth();
+    const prev = (()=>{ const d=new Date(); d.setMonth(d.getMonth()-1); return incomeOfMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`); })();
+    const change = prev ? Math.round((inc-prev)/prev*100) : 0;
+    const rate = collectionRate();
+    const overdue = overdueMembers();
+    const overdueAmount = overdue.length * fundAmount();
+
+    if(/รายรับ|income|รายได้/.test(s)){
+      const sign = change>=0?'+':'';
+      return `💰 <b>รายรับเดือนนี้</b> ${fmt(inc)}\nเดือนก่อน ${fmt(prev)} (${sign}${change}%)\n\nสมาชิกที่ชำระแล้ว ${DB.members.filter(m=>m.status==='alive'&&paidCurrent(m)).length} ราย / ทั้งหมด ${DB.members.filter(m=>m.status==='alive').length} ราย`;
+    }
+    if(/ค้าง|overdue/.test(s)){
+      if(!overdue.length) return '✅ ไม่มีสมาชิกค้างชำระในเดือนนี้';
+      const list = overdue.slice(0,8).map(m=>`• ${prefixName(m)} (${m.regNo})`).join('\n');
+      const more = overdue.length > 8 ? `\n... อีก ${overdue.length-8} ราย` : '';
+      return `⚠️ <b>ค้างชำระ ${overdue.length} ราย</b> รวม ${fmt(overdueAmount)}\n\n${list}${more}`;
+    }
+    if(/คาดการณ์|พยากรณ์|forecast/.test(s)){
+      const last3 = [0,1,2].map(i=>{ const d=new Date(); d.setMonth(d.getMonth()-i); return incomeOfMonth(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`); });
+      const avg = Math.round(last3.reduce((s,x)=>s+x,0)/3);
+      return `🔮 <b>คาดการณ์รายรับเดือนหน้า</b> ~${fmt(avg)}\n(จากค่าเฉลี่ย 3 เดือน: ${last3.map(x=>fmt(x)).join(' / ')})`;
+    }
+    if(/แนะนำ|คำแนะนำ|advice|ควร/.test(s)){
+      const tips = AI.insights().tips;
+      return '✨ <b>คำแนะนำจาก AI</b>\n\n' + tips.map(t=>`${t.icon} ${t.text.replace(/<[^>]+>/g,'')}`).join('\n');
+    }
+    if(/สมาชิก|member/.test(s) && /สรุป|ทั้งหมด|กี่/.test(s)){
+      const alive = DB.members.filter(m=>m.status==='alive').length;
+      const dead = DB.members.filter(m=>m.status==='deceased').length;
+      const arch = DB.members.filter(m=>m.status==='archived').length;
+      return `👥 <b>สรุปสมาชิก</b>\nทั้งหมด ${DB.members.length} ราย\nปกติ ${alive} · เสียชีวิต ${dead} · เก็บถาวร ${arch}`;
+    }
+    if(/กองทุน|ยอด|เงิน/.test(s)){
+      return `🏦 <b>สถานะกองทุน</b>\nเงินกลาง ${fmt(DB.fund.central||0)}\nเก็บต่อเดือน ${fmt(fundAmount())}\nรายรับเดือนนี้ ${fmt(inc)}\nคงเหลือเดือนนี้ ${fmt(balanceThisMonth())}`;
+    }
+    if(/รายงาน|สรุป|ภาพรวม/.test(s)){
+      return `📊 <b>ภาพรวมระบบ</b>\n\n• สมาชิกทั้งหมด: ${DB.members.length} ราย\n• รายรับเดือนนี้: ${fmt(inc)} (${change>=0?'+':''}${change}%)\n• อัตราการจัดเก็บ: ${rate}%\n• ค้างชำระ: ${overdue.length} ราย (${fmt(overdueAmount)})\n• คงเหลือเดือนนี้: ${fmt(balanceThisMonth())}`;
+    }
+    if(/สวัสดี|hello|hi/.test(s)){
+      return 'สวัสดีครับ 👋 ผมเป็น AI ผู้ช่วยระบบฌาปนกิจ\nลองถามได้เลย เช่น:\n• "รายรับเดือนนี้"\n• "ใครค้างชำระ"\n• "คาดการณ์เดือนหน้า"\n• "ให้คำแนะนำ"';
+    }
+    return '🤖 ผมเข้าใจคำถามบางส่วน ลองถามแบบนี้ครับ:\n• "รายรับเดือนนี้"\n• "ใครค้างชำระบ้าง"\n• "คาดการณ์รายรับ"\n• "ให้คำแนะนำ"\n• "สรุปภาพรวม"';
+  }
+};
+
+/* =========================================================
+   7) PAGE RENDERERS
+========================================================= */
+function renderPage(){
+  const c = document.getElementById('pageContent');
+  if(UI.page==='dashboard') c.innerHTML = renderDashboard();
+  else if(UI.page==='members') { c.innerHTML = renderMembersPage(); afterRenderMembers(); }
+  else if(UI.page==='payments') c.innerHTML = renderPaymentsPage();
+  else if(UI.page==='reports') c.innerHTML = renderReportsPage();
+  else if(UI.page==='ai') { c.innerHTML = renderAIPage(); afterRenderAI(); }
+  else if(UI.page==='admin') { c.innerHTML = renderAdminPage(); }
+  else if(UI.page==='settings') c.innerHTML = renderSettingsPage();
+  updateTopIncome();
+}
+
+function renderDashboard(){
+  if(ME.role==='Member') return renderMemberDashboard();
+  const ins = AI.insights();
+  const changeClass = ins.change>=0 ? 'trend-up' : 'trend-down';
+  const changeSign = ins.change>=0 ? '+' : '';
+  return `
+  <div class="hero-income">
+    <div class="lbl">💰 รายรับเดือนนี้ · ${monthLabel(curYM())}</div>
+    <div class="amt">${fmt(ins.inc)}</div>
+    <div class="sub">
+      <div>เดือนก่อน ${fmt(ins.prev)}</div>
+      <div class="${changeClass}">${changeSign}${ins.change}%</div>
+      <div>คาดการณ์ ${fmt(ins.avg)}</div>
+    </div>
+  </div>
+
+  <div class="kpis">
+    <div class="card kpi"><div class="label">สมาชิกทั้งหมด</div><div class="value">${DB.members.length}</div><div class="sub">ปกติ ${DB.members.filter(m=>m.status==='alive').length} ราย</div></div>
+    <div class="card kpi"><div class="label">อัตราการจัดเก็บ</div><div class="value">${ins.rate}%</div><div class="sub">เดือนนี้</div></div>
+    <div class="card kpi"><div class="label">ค้างชำระ</div><div class="value" style="color:${ins.overdue>0?'var(--warning)':'var(--success)'}">${ins.overdue}</div><div class="sub">${fmt(ins.overdueAmount)}</div></div>
+    <div class="card kpi"><div class="label">คงเหลือเดือนนี้</div><div class="value" style="color:${ins.balance>=0?'var(--success)':'var(--danger)'}">${fmt(ins.balance)}</div><div class="sub">หลังหักรายจ่าย</div></div>
+  </div>
+
+  <div class="ai-panel">
+    <div class="ai-head">
+      <div class="orb">✨</div>
+      <h3>AI วิเคราะห์สถานะการเงิน</h3>
+      <span class="ai-tag">AI INSIGHTS</span>
+    </div>
+    <div class="ai-tips">
+      ${ins.tips.map(t=>`<div class="ai-tip ${t.type}"><span class="icon">${t.icon}</span><div>${t.text}</div></div>`).join('')}
+    </div>
+  </div>
+
+  ${ins.top.length ? `
+  <div class="card" style="padding:16px;margin-bottom:16px">
+    <div class="section-title" style="margin-top:0">🏆 สมาชิกที่ชำระสม่ำเสมอ</div>
+    ${ins.top.map((t,i)=>`<div class="list-item"><div><b>${i+1}. ${esc(prefixName(t.m))}</b><div class="muted small">${esc(t.m.regNo)}</div></div><span class="pill ok">${t.count} ครั้ง</span></div>`).join('')}
+  </div>` : ''}
+
+  <div class="toolbar">
+    <button class="btn primary" onclick="openMember(null)">+ เพิ่มสมาชิก</button>
+    <button class="btn ghost" onclick="openOverlay('scanOverlay')">📷 สแกนบัตร</button>
+    <button class="btn ghost" onclick="goPage('ai')">✨ ถาม AI</button>
+    <button class="btn ghost" onclick="goPage('reports')">📈 ดูรายงาน</button>
+  </div>
+  `;
+}
+
+function renderMemberDashboard(){
+  const m = DB.members.find(x=>x.id===ME.memberId);
+  if(!m) return '<div class="note warn">ไม่พบข้อมูลสมาชิก</div>';
+  const paid = paidCurrent(m);
+  const history = (m.payments||[]).slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,12);
+  return `
+  <div class="hero-income">
+    <div class="lbl">สวัสดี · ${esc(prefixName(m))}</div>
+    <div class="amt" style="font-size:1.8rem">${esc(m.regNo)}</div>
+    <div class="sub">
+      <div>${paid ? '✅ ชำระแล้วเดือนนี้' : '⚠️ ยังไม่ชำระเดือนนี้'}</div>
+      <div>สมาชิกตั้งแต่ ${fdate(m.joinDate)}</div>
+    </div>
+  </div>
+  <div class="kpis">
+    <div class="card kpi"><div class="label">สถานะ</div><div class="value" style="font-size:1rem">${statusPill(m)}</div></div>
+    <div class="card kpi"><div class="label">ชำระสะสม</div><div class="value">${(m.payments||[]).length} ครั้ง</div></div>
+    <div class="card kpi"><div class="label">ผู้รับผลประโยชน์</div><div class="value" style="font-size:1rem">${esc(m.beneficiary?.name||'—')}</div><div class="sub">${esc(m.beneficiary?.relation||'')}</div></div>
+  </div>
+  <div class="card" style="padding:16px">
+    <div class="section-title" style="margin-top:0">📅 ประวัติการชำระล่าสุด</div>
+    ${history.length ? history.map(p=>`<div class="list-item"><div>${fdate(p.date)}<div class="muted small">${esc(p.method||'—')}</div></div><b>${fmt(p.amount)}</b></div>`).join('') : '<div class="muted">ยังไม่มีประวัติ</div>'}
+  </div>
+  `;
+}
+
+function renderMembersPage(){
+  return `
+  <div class="toolbar">
+    <div class="search"><span>🔍</span>
+      <input class="input" id="searchInput" placeholder="ค้นหา ชื่อ / เลขสมาชิก / เลขบัตร" value="${esc(UI.q)}" oninput="onSearch(this.value)"></div>
+    <button class="btn primary" onclick="openMember(null)">+ เพิ่มสมาชิก</button>
+    <button class="btn ghost" onclick="openOverlay('scanOverlay')">📷 สแกน</button>
+    <button class="btn ghost" onclick="exportCSV()">⬇️ ส่งออก CSV</button>
+  </div>
+  <div class="chips" id="filterChips">${renderFilterChips()}</div>
+  <div id="bulkBar" class="card ${UI.selected.size?'':'hidden'}" style="padding:10px 12px;margin-bottom:10px;display:flex;gap:8px;align-items:center">
+    <b>เลือกแล้ว <span id="selectedCount">${UI.selected.size}</span> ราย</b>
+    <div class="spacer"></div>
+    <button class="btn ghost small" onclick="clearSelected()">ยกเลิก</button>
+    <button class="btn success small" onclick="bulkPay()">รับชำระ</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this.checked)"></th>
+        <th>เลขสมาชิก</th><th>ชื่อ-สกุล</th><th>เลขบัตร</th><th>ผู้รับผลประโยชน์</th>
+        <th>วันสมัคร</th><th>สถานะ</th><th class="right">ค้าง</th><th>จัดการ</th>
+      </tr></thead>
+      <tbody id="memberTable"></tbody>
+    </table>
+  </div>`;
+}
+
+function renderFilterChips(){
+  const filters = [['all','ทั้งหมด'],['overdue','ค้าง'],['normal','ปกติ'],['deceased','เสียชีวิต'],['archived','เก็บถาวร']];
+  return filters.map(([k,l])=>`<button class="chip ${UI.filter===k?'active':''}" onclick="setFilter('${k}')">${l}</button>`).join('');
+}
+function setFilter(f){ UI.filter=f; renderPage(); }
+
+function afterRenderMembers(){ renderTable(); }
+
+function onSearch(q){ UI.q=q; renderTable(); }
 
 function filteredMembers(){
   let list = [...DB.members];
   if(UI.q){
-    list = list.filter(m => [m.regNo,m.fullName,m.idCard,m.phone,m.beneficiary?.name].join(' ').toLowerCase().includes(UI.q));
+    const q = UI.q.toLowerCase();
+    list = list.filter(m => [m.regNo, m.fullName, m.prefix, m.idCard, m.phone, m.beneficiary?.name].join(' ').toLowerCase().includes(q));
   }
-  const nowMonth = new Date().getMonth()+1;
   if(UI.filter==='overdue') list = list.filter(isOverdue);
   if(UI.filter==='normal') list = list.filter(m=>m.status==='alive' && !isOverdue(m));
-  if(UI.filter==='near') list = list.filter(m=>m.status==='alive' && new Date(m.joinDate).getMonth()+1 === nowMonth);
-  if(UI.filter==='pending') list = list.filter(m => DB.requests.some(r=>r.memberId===m.id && r.status==='pending'));
-  if(UI.filter==='archived') list = list.filter(m => m.status!=='alive');
+  if(UI.filter==='deceased') list = list.filter(m=>m.status==='deceased');
+  if(UI.filter==='archived') list = list.filter(m=>m.status==='archived');
   return list;
 }
 
@@ -793,26 +1000,26 @@ function statusPill(m){
 }
 
 function renderTable(){
-  const list = filteredMembers();
   const tbody = document.getElementById('memberTable');
-  tbody.innerHTML = list.map(m=>{
-    return `<tr class="member-row" data-id="${m.id}">
+  if(!tbody) return;
+  const list = filteredMembers();
+  tbody.innerHTML = list.map(m=>`
+    <tr class="member-row" data-id="${m.id}">
       <td><input type="checkbox" class="rowcheck" data-id="${m.id}" ${UI.selected.has(m.id)?'checked':''}></td>
       <td style="white-space:nowrap">${esc(m.regNo)}</td>
-      <td><b>${esc(m.fullName)}</b><div class="muted small">${esc(m.phone||'')}</div></td>
+      <td><b>${esc(prefixName(m))}</b><div class="muted small">${esc(m.phone||'')}</div></td>
       <td>${esc(m.idCard)}</td>
       <td>${esc(m.beneficiary?.name||'—')}<div class="muted small">${esc(m.beneficiary?.relation||'')}</div></td>
       <td style="white-space:nowrap">${fdate(m.joinDate)}</td>
       <td>${statusPill(m)}</td>
-      <td class="right">${memberDueAmount(m)>0?fmt(memberDueAmount(m)):'<span class="pill ok">ชำระแล้ว</span>'}</td>
+      <td class="right">${isOverdue(m)?fmt(fundAmount()):'<span class="pill ok">ชำระแล้ว</span>'}</td>
       <td>
         <div class="row-actions">
           <button class="btn small ghost" data-act="edit">แก้ไข</button>
-          <button class="btn small success" data-act="pay">รับชำระ</button>
+          ${m.status==='alive' && isOverdue(m) ? '<button class="btn small success" data-act="pay">รับชำระ</button>' : ''}
         </div>
       </td>
-    </tr>`;
-  }).join('') || `<tr><td colspan="9" class="center muted" style="padding:30px">ไม่พบข้อมูล</td></tr>`;
+    </tr>`).join('') || `<tr><td colspan="9" class="center muted" style="padding:30px">ไม่พบข้อมูล</td></tr>`;
 
   tbody.querySelectorAll('.member-row').forEach(row=>{
     row.addEventListener('click', e=>{
@@ -820,20 +1027,16 @@ function renderTable(){
       openMember(row.dataset.id);
     });
   });
-
   tbody.querySelectorAll('.rowcheck').forEach(cb=>{
     cb.addEventListener('click', e=> e.stopPropagation());
     cb.addEventListener('change', ()=> toggleSelect(cb.dataset.id, cb.checked));
   });
-
   tbody.querySelectorAll('[data-act="edit"]').forEach(btn=>{
     btn.addEventListener('click', e=>{ e.stopPropagation(); openMember(btn.closest('tr').dataset.id); });
   });
-
   tbody.querySelectorAll('[data-act="pay"]').forEach(btn=>{
     btn.addEventListener('click', e=>{ e.stopPropagation(); openPay([btn.closest('tr').dataset.id]); });
   });
-
   renderBulkBar();
 }
 
@@ -842,35 +1045,312 @@ function toggleSelect(id, checked){
   renderBulkBar();
 }
 function toggleSelectAll(checked){
-  filteredMembers().forEach(m=> checked ? UI.selected.add(m.id) : UI.selected.delete(m.id));
+  filteredMembers().forEach(m => checked ? UI.selected.add(m.id) : UI.selected.delete(m.id));
   renderTable();
 }
 function clearSelected(){
   UI.selected.clear();
-  document.getElementById('selectAll').checked = false;
+  const sa = document.getElementById('selectAll'); if(sa) sa.checked = false;
   renderTable();
 }
 function renderBulkBar(){
   const bar = document.getElementById('bulkBar');
-  document.getElementById('selectedCount').textContent = UI.selected.size;
+  if(!bar) return;
   bar.classList.toggle('hidden', UI.selected.size===0);
-}
-function goHome(){ closeAllOverlays(); renderAll(); }
-
-function closeAllOverlays(){
-  document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('open'));
+  const cnt = document.getElementById('selectedCount'); if(cnt) cnt.textContent = UI.selected.size;
 }
 
-/* =========================
-   MEMBER CRUD
-========================= */
+function renderPaymentsPage(){
+  const overdue = overdueMembers();
+  const recent = [];
+  DB.members.forEach(m => (m.payments||[]).forEach(p => {
+    if(p.date && p.date >= addMonths(todayISO(), -1)) recent.push({ ...p, memberName: prefixName(m), regNo: m.regNo, idCard: m.idCard });
+  }));
+  recent.sort((a,b)=>b.date.localeCompare(a.date));
+
+  return `
+  <div class="kpis">
+    <div class="card kpi"><div class="label">รายรับเดือนนี้</div><div class="value">${fmt(incomeThisMonth())}</div><div class="sub">${monthLabel(curYM())}</div></div>
+    <div class="card kpi"><div class="label">ค้างชำระ</div><div class="value" style="color:var(--warning)">${overdue.length}</div><div class="sub">รวม ${fmt(overdue.length*fundAmount())}</div></div>
+    <div class="card kpi"><div class="label">ผู้ชำระแล้ว</div><div class="value">${DB.members.filter(m=>m.status==='alive'&&paidCurrent(m)).length}</div><div class="sub">เดือนนี้</div></div>
+  </div>
+
+  <div class="toolbar">
+    ${overdue.length ? '<button class="btn success" onclick="payAllOverdue()">💰 รับชำระค้างทั้งหมด ('+overdue.length+' ราย)</button>' : '<span class="pill ok">ไม่มีค้างชำระ 🎉</span>'}
+    <button class="btn ghost" onclick="goPage('members')">ไปที่รายชื่อสมาชิก</button>
+  </div>
+
+  <div class="section-title">⚠️ รายการค้างชำระ (${overdue.length} ราย)</div>
+  <div class="table-wrap" style="margin-bottom:20px">
+    <table>
+      <thead><tr><th>เลขสมาชิก</th><th>ชื่อ-สกุล</th><th>เบอร์โทร</th><th class="right">ยอดค้าง</th><th>จัดการ</th></tr></thead>
+      <tbody>
+        ${overdue.length ? overdue.map(m=>`<tr class="member-row">
+          <td>${esc(m.regNo)}</td>
+          <td><b>${esc(prefixName(m))}</b></td>
+          <td>${esc(m.phone||'—')}</td>
+          <td class="right"><b>${fmt(fundAmount())}</b></td>
+          <td><button class="btn small success" onclick="openPay(['${m.id}'])">รับชำระ</button></td>
+        </tr>`).join('') : '<tr><td colspan="5" class="center muted" style="padding:30px">ไม่มีรายการค้างชำระ</td></tr>'}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-title">📜 รายการรับชำระล่าสุด (30 วัน)</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>วันที่</th><th>สมาชิก</th><th>วิธี</th><th>ผู้เก็บ</th><th class="right">จำนวน</th></tr></thead>
+      <tbody>
+        ${recent.slice(0,50).map(p=>`<tr>
+          <td>${fdate(p.date)}</td>
+          <td><b>${esc(p.memberName)}</b><div class="muted small">${esc(p.regNo)}</div></td>
+          <td>${esc(p.method||'—')}</td>
+          <td>${esc(p.collector||'—')}</td>
+          <td class="right"><b style="color:var(--success)">${fmt(p.amount)}</b></td>
+        </tr>`).join('') || '<tr><td colspan="5" class="center muted" style="padding:30px">ยังไม่มีรายการ</td></tr>'}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function addMonths(iso, n){ const d=new Date(iso); d.setMonth(d.getMonth()+n); return d.toISOString().slice(0,10); }
+
+function renderReportsPage(){
+  // Build last 6 months
+  const months = [];
+  for(let i=5;i>=0;i--){
+    const d = new Date(); d.setMonth(d.getMonth()-i);
+    const ym = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    months.push({ ym, income: incomeOfMonth(ym) });
+  }
+  const max = Math.max(...months.map(x=>x.income), 1);
+
+  const allExpenses = DB.expenses.reduce((s,x)=>s+(Number(x.amount)||0),0);
+  const allPayouts = DB.payouts.reduce((s,x)=>s+(Number(x.amount)||0),0);
+  const allIncome = DB.members.reduce((s,m)=> s + (m.payments||[]).reduce((a,p)=>a+(Number(p.amount)||0),0), 0);
+
+  return `
+  <div class="hero-income" style="background:linear-gradient(135deg,#059669,#16a34a 60%,#65a30d)">
+    <div class="lbl">💵 รายรับรวมทั้งหมด (ตั้งแต่เริ่มระบบ)</div>
+    <div class="amt">${fmt(allIncome)}</div>
+    <div class="sub">
+      <div>รายจ่าย ${fmt(allExpenses)}</div>
+      <div>จ่ายช่วยเหลือ ${fmt(allPayouts)}</div>
+      <div>คงเหลือ ${fmt(allIncome-allExpenses-allPayouts)}</div>
+    </div>
+  </div>
+
+  <div class="card" style="padding:16px;margin-bottom:16px">
+    <div class="section-title" style="margin-top:0">📊 รายรับ 6 เดือนย้อนหลัง</div>
+    ${months.map(m=>`
+      <div style="margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:4px">
+          <span>${monthLabel(m.ym)}</span><b>${fmt(m.income)}</b>
+        </div>
+        <div class="report-bar"><div style="width:${(m.income/max*100).toFixed(1)}%"></div></div>
+      </div>`).join('')}
+  </div>
+
+  <div class="grid2">
+    <div class="card" style="padding:16px">
+      <div class="section-title" style="margin-top:0">📅 เดือนนี้</div>
+      <div class="list-item"><span>รายรับ</span><b style="color:var(--success)">${fmt(incomeThisMonth())}</b></div>
+      <div class="list-item"><span>รายจ่าย</span><b style="color:var(--danger)">${fmt(expensesThisMonth())}</b></div>
+      <div class="list-item"><span>จ่ายช่วยเหลือ</span><b style="color:var(--danger)">${fmt(payoutsThisMonth())}</b></div>
+      <div class="list-item"><span>คงเหลือ</span><b>${fmt(balanceThisMonth())}</b></div>
+    </div>
+
+    <div class="card" style="padding:16px">
+      <div class="section-title" style="margin-top:0">👥 สถานะสมาชิก</div>
+      <div class="list-item"><span>ทั้งหมด</span><b>${DB.members.length}</b></div>
+      <div class="list-item"><span>ปกติ</span><b style="color:var(--success)">${DB.members.filter(m=>m.status==='alive').length}</b></div>
+      <div class="list-item"><span>ค้างชำระ</span><b style="color:var(--warning)">${overdueMembers().length}</b></div>
+      <div class="list-item"><span>เสียชีวิต</span><b style="color:var(--danger)">${DB.members.filter(m=>m.status==='deceased').length}</b></div>
+      <div class="list-item"><span>เก็บถาวร</span><b class="muted">${DB.members.filter(m=>m.status==='archived').length}</b></div>
+    </div>
+  </div>
+
+  <div class="toolbar" style="margin-top:16px">
+    <button class="btn primary" onclick="exportCSV()">⬇️ ส่งออก CSV สมาชิก</button>
+    <button class="btn ghost" onclick="exportPaymentsCSV()">⬇️ ส่งออกประวัติชำระ</button>
+  </div>`;
+}
+
+function renderAIPage(){
+  return `
+  <div class="ai-panel" style="margin-bottom:12px">
+    <div class="ai-head">
+      <div class="orb">✨</div>
+      <h3>AI ผู้ช่วยระบบฌาปนกิจ</h3>
+      <span class="ai-tag">AI</span>
+    </div>
+    <div class="small muted">ถามเรื่องรายรับ ค้างชำระ สมาชิก การเงิน หรือขอคำแนะนำจาก AI ได้เลย</div>
+  </div>
+  <div class="chat-wrap">
+    <div class="chat-body" id="chatBody">
+      <div class="msg ai">สวัสดีครับ 👋 ผมเป็น AI ผู้ช่วย\nถามได้เลย เช่น "รายรับเดือนนี้", "ใครค้างชำระ", "คาดการณ์รายรับ", "ให้คำแนะนำ"</div>
+    </div>
+    <div class="quick-q">
+      <button onclick="askAI('รายรับเดือนนี้')">💰 รายรับ</button>
+      <button onclick="askAI('ใครค้างชำระบ้าง')">⚠️ ค้างชำระ</button>
+      <button onclick="askAI('คาดการณ์รายรับ')">🔮 คาดการณ์</button>
+      <button onclick="askAI('ให้คำแนะนำ')">✨ คำแนะนำ</button>
+      <button onclick="askAI('สรุปภาพรวม')">📊 ภาพรวม</button>
+    </div>
+    <div class="chat-input">
+      <input class="input" id="chatInput" placeholder="พิมพ์คำถาม..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="btn primary" onclick="sendChat()">ส่ง</button>
+    </div>
+  </div>`;
+}
+
+function afterRenderAI(){
+  const inp = document.getElementById('chatInput');
+  if(inp) setTimeout(()=>inp.focus(), 100);
+}
+
+function sendChat(){
+  const inp = document.getElementById('chatInput');
+  const q = (inp.value||'').trim();
+  if(!q) return;
+  inp.value = '';
+  askAI(q);
+}
+
+function askAI(q){
+  const body = document.getElementById('chatBody');
+  if(!body) return;
+  body.insertAdjacentHTML('beforeend', `<div class="msg user">${esc(q)}</div>`);
+  body.scrollTop = body.scrollHeight;
+  setTimeout(()=>{
+    const ans = AI.chat(q);
+    body.insertAdjacentHTML('beforeend', `<div class="msg ai">${ans.replace(/\n/g,'<br>')}</div>`);
+    body.scrollTop = body.scrollHeight;
+  }, 250);
+}
+
+function renderAdminPage(){
+  const tabs = [['funds','กองทุน'],['users','ผู้ใช้'],['expenses','รายจ่าย'],['payouts','จ่ายช่วยเหลือ'],['logs','ประวัติ']];
+  return `
+  <div class="admin-tabs">
+    ${tabs.map(([k,l])=>`<button class="admin-tab ${UI.adminTab===k?'active':''}" onclick="setAdminTab('${k}')">${l}</button>`).join('')}
+  </div>
+  <div class="card" style="padding:16px" id="adminBody">${renderAdminBody()}</div>`;
+}
+function setAdminTab(t){ UI.adminTab = t; renderPage(); }
+
+function renderAdminBody(){
+  if(UI.adminTab==='funds'){
+    return `
+      <div class="grid2">
+        <div class="field"><label>ชื่อกองทุน</label><input class="input" id="fundName" value="${esc(DB.fund.name)}"></div>
+        <div class="field"><label>ยอดเก็บต่อเดือน (บาท)</label><input class="input" id="fundAmount" type="number" value="${DB.fund.amount}"></div>
+        <div class="field"><label>เงินกลางกองทุน</label><input class="input" id="fundCentral" type="number" value="${DB.fund.central||0}"></div>
+      </div>
+      <div class="footer-actions"><button class="btn primary" onclick="saveFund()">บันทึก</button></div>`;
+  }
+  if(UI.adminTab==='users'){
+    return Object.entries(DB.users).map(([u,x])=>
+      `<div class="list-item"><div><b>${esc(x.name)}</b><div class="muted small">@${esc(u)}</div></div><span class="pill info">${esc(x.role)}</span></div>`
+    ).join('');
+  }
+  if(UI.adminTab==='expenses'){
+    return `
+      <div class="section-title" style="margin-top:0">เพิ่มรายจ่าย</div>
+      <div class="grid2">
+        <div class="field"><label>รายละเอียด</label><input class="input" id="expDetail"></div>
+        <div class="field"><label>จำนวนเงิน</label><input class="input" id="expAmount" type="number"></div>
+        <div class="field"><label>วันที่</label><input class="input" id="expDate" type="date" value="${todayISO()}"></div>
+      </div>
+      <div class="footer-actions"><button class="btn primary" onclick="addExpense()">บันทึก</button></div>
+      <div class="section-title">รายการรายจ่าย</div>
+      ${DB.expenses.length ? DB.expenses.map(e=>`<div class="list-item"><div><b>${esc(e.detail)}</b><div class="muted small">${fdate(e.date)}</div></div><div><b>${fmt(e.amount)}</b> <button class="btn small ghost" onclick="delExpense('${e.id}')">ลบ</button></div></div>`).join('') : '<div class="muted">ยังไม่มีรายจ่าย</div>'}`;
+  }
+  if(UI.adminTab==='payouts'){
+    return `
+      <div class="section-title" style="margin-top:0">จ่ายเงินช่วยเหลือ</div>
+      <div class="grid2">
+        <div class="field"><label>สมาชิก</label>
+          <select class="input" id="pyMember">${DB.members.filter(m=>m.status==='alive').map(m=>`<option value="${m.id}">${esc(prefixName(m))} (${esc(m.regNo)})</option>`).join('')}</select></div>
+        <div class="field"><label>จำนวนเงิน</label><input class="input" id="pyAmount" type="number"></div>
+        <div class="field"><label>วันที่</label><input class="input" id="pyDate" type="date" value="${todayISO()}"></div>
+        <div class="field"><label>หมายเหตุ</label><input class="input" id="pyNote" value="จ่ายช่วยเหลือฌาปนกิจ"></div>
+      </div>
+      <div class="footer-actions"><button class="btn primary" onclick="addPayout()">บันทึก</button></div>
+      <div class="section-title">รายการจ่ายช่วยเหลือ</div>
+      ${DB.payouts.length ? DB.payouts.map(p=>`<div class="list-item"><div><b>${esc(p.memberName)}</b><div class="muted small">${fdate(p.date)} · ${esc(p.note||'')}</div></div><div><b style="color:var(--danger)">${fmt(p.amount)}</b> <button class="btn small ghost" onclick="delPayout('${p.id}')">ลบ</button></div></div>`).join('') : '<div class="muted">ยังไม่มีรายการ</div>'}`;
+  }
+  if(UI.adminTab==='logs'){
+    return DB.logs.length
+      ? DB.logs.slice(0,80).map(l=>`<div class="list-item"><div>${esc(l.text)}</div><div class="muted small">${new Date(l.ts).toLocaleString('th-TH')}</div></div>`).join('')
+      : '<div class="muted">ยังไม่มีประวัติ</div>';
+  }
+  return '';
+}
+
+function renderSettingsPage(){
+  return `
+  <div class="card" style="padding:16px;margin-bottom:16px">
+    <div class="section-title" style="margin-top:0">🔔 การแจ้งเตือน</div>
+    <label style="display:flex;gap:10px;align-items:center;margin-bottom:12px">
+      <input type="checkbox" id="notifyEnabled" ${DB.settings.notifyEnabled?'checked':''}> เปิดแจ้งเตือนค้างชำระ</label>
+    <div class="field"><label>รูปแบบ</label>
+      <select class="input" id="overdueMode">
+        <option value="list" ${DB.settings.overdueMode==='list'?'selected':''}>แสดงรายการ</option>
+        <option value="summary" ${DB.settings.overdueMode==='summary'?'selected':''}>สรุปจำนวน</option>
+        <option value="off" ${DB.settings.overdueMode==='off'?'selected':''}>ปิด</option>
+      </select></div>
+    <div class="field"><label>เตือน Backup ทุก (วัน)</label>
+      <input class="input" id="backupDays" type="number" min="1" max="90" value="${DB.settings.backupDays||7}"></div>
+    <div class="footer-actions"><button class="btn primary" onclick="saveSettings()">บันทึก</button></div>
+  </div>
+
+  <div class="card" style="padding:16px;margin-bottom:16px">
+    <div class="section-title" style="margin-top:0">🏢 ข้อมูลองค์กร</div>
+    <div class="grid2">
+      <div class="field"><label>ชื่อระบบ</label><input class="input" id="brandOrg" value="${esc(DB.settings.org)}"></div>
+      <div class="field"><label>ที่อยู่</label><input class="input" id="brandAddress" value="${esc(DB.settings.address||'')}"></div>
+      <div class="field"><label>โทรศัพท์</label><input class="input" id="brandPhone" value="${esc(DB.settings.phone||'')}"></div>
+    </div>
+    <div class="footer-actions"><button class="btn primary" onclick="saveBrand()">บันทึก</button></div>
+  </div>
+
+  <div class="card" style="padding:16px;margin-bottom:16px">
+    <div class="section-title" style="margin-top:0">💬 LINE Notify</div>
+    <div class="field"><label>Token</label>
+      <input class="input" id="lineToken" type="password" value="${esc(DB.settings.lineToken||'')}" placeholder="ใส่ Token (ไม่บังคับ)"></div>
+    <div class="note small" style="margin-top:8px">หากใส่ Token ระบบจะส่งสรุปค้างชำระเข้ากลุ่ม LINE เมื่อกดปุ่มทดสอบด้านล่าง</div>
+    <div class="footer-actions">
+      <button class="btn ghost" onclick="testLine()">ทดสอบส่ง LINE</button>
+      <button class="btn primary" onclick="saveLineToken()">บันทึก Token</button>
+    </div>
+  </div>
+
+  <div class="card" style="padding:16px">
+    <div class="section-title" style="margin-top:0">☁️ สำรองข้อมูล</div>
+    <div class="note small" style="margin-bottom:10px">สำรองล่าสุด: ${DB.settings.lastBackup ? fdate(DB.settings.lastBackup.slice(0,10)) : 'ยังไม่มี'}</div>
+    <div class="toolbar">
+      <button class="btn primary" onclick="downloadBackup()">⬇️ ดาวน์โหลด Backup</button>
+      <button class="btn ghost" onclick="document.getElementById('importBackup').click()">⬆️ นำเข้า Backup</button>
+      <input type="file" id="importBackup" class="hidden" accept=".json" onchange="importBackup(this)">
+      <button class="btn danger" onclick="resetDB()">🗑️ รีเซ็ตข้อมูลทั้งหมด</button>
+    </div>
+  </div>`;
+}
+
+/* =========================================================
+   8) MEMBER CRUD
+========================================================= */
 function openMember(id){
+  if(ME.role==='Member' && id !== ME.memberId){ toast('ไม่มีสิทธิ์','bad'); return; }
   UI.editingId = id;
+  UI.memberFiles = [];
   const m = id ? DB.members.find(x=>x.id===id) : null;
   document.getElementById('memberModalTitle').textContent = m ? 'ข้อมูลสมาชิก' : 'สมัครสมาชิก';
   document.getElementById('memberId').value = m?.id || '';
-  document.getElementById('mReg').value = m?.regNo || ('02/' + (new Date().getFullYear()+543) + '/00/00/000');
+  document.getElementById('mReg').value = m?.regNo || `02/${new Date().getFullYear()+543}/00/00/000`;
   document.getElementById('mIdCard').value = m?.idCard || '';
+  document.getElementById('mPrefix').value = m?.prefix || 'นาย';
   document.getElementById('mName').value = m?.fullName || '';
   document.getElementById('mPhone').value = m?.phone || '';
   document.getElementById('mJoin').value = m?.joinDate || todayISO();
@@ -881,7 +1361,28 @@ function openMember(id){
   document.getElementById('mBenRelation').value = m?.beneficiary?.relation || '';
   document.getElementById('mBenPhone').value = m?.beneficiary?.phone || '';
   document.getElementById('mNote').value = m?.note || '';
+  document.getElementById('mFilePreview').innerHTML = '';
+  document.getElementById('mFiles').value = '';
   openOverlay('memberOverlay');
+}
+
+function handleMemberFiles(input){
+  const files = [...input.files].slice(0,5);
+  UI.memberFiles = [];
+  const preview = document.getElementById('mFilePreview');
+  preview.innerHTML = '';
+  let pending = files.length;
+  if(!pending) return;
+  files.forEach(f=>{
+    if(f.size > 500*1024){ toast(`ไฟล์ ${f.name} ใหญ่เกิน 500KB`,'warn'); pending--; return; }
+    const r = new FileReader();
+    r.onload = ()=>{
+      UI.memberFiles.push({ name:f.name, type:f.type, data:r.result });
+      preview.insertAdjacentHTML('beforeend', `<div class="fp">📎 ${esc(f.name)} <button onclick="this.parentElement.remove()">×</button></div>`);
+      if(--pending===0) toast('แนบไฟล์แล้ว '+UI.memberFiles.length+' ไฟล์');
+    };
+    r.readAsDataURL(f);
+  });
 }
 
 function saveMember(){
@@ -889,6 +1390,7 @@ function saveMember(){
   const data = {
     regNo: document.getElementById('mReg').value.trim(),
     idCard: document.getElementById('mIdCard').value.trim(),
+    prefix: document.getElementById('mPrefix').value,
     fullName: document.getElementById('mName').value.trim(),
     phone: document.getElementById('mPhone').value.trim(),
     joinDate: document.getElementById('mJoin').value,
@@ -902,375 +1404,368 @@ function saveMember(){
       phone: document.getElementById('mBenPhone').value.trim()
     }
   };
-
   if(!data.regNo || !data.fullName || !data.idCard){
-    toast('กรุณากรอกข้อมูลสำคัญให้ครบ', 'bad');
-    return;
+    toast('กรุณากรอกข้อมูลสำคัญให้ครบ','bad'); return;
   }
-
+  if(data.idCard.length !== 13 || !/^\d{13}$/.test(data.idCard)){
+    toast('เลขบัตรประชาชนต้องเป็นตัวเลข 13 หลัก','bad'); return;
+  }
   if(id){
     const m = DB.members.find(x=>x.id===id);
+    if(!m){ toast('ไม่พบสมาชิก','bad'); return; }
     Object.assign(m, data);
-    logIt('แก้ไขสมาชิก ' + m.fullName);
+    if(UI.memberFiles.length) m.documents = (m.documents||[]).concat(UI.memberFiles);
+    logIt('แก้ไขสมาชิก '+data.fullName);
     toast('บันทึกข้อมูลสำเร็จ');
   }else{
-    DB.members.push({
-      id: uid('m'),
-      payments: [],
-      documents: [],
-      familyCode: '',
-      ...data
-    });
-    logIt('เพิ่มสมาชิกใหม่ ' + data.fullName);
+    DB.members.push({ id: uid('m'), payments:[], documents: UI.memberFiles, slip:null, ...data });
+    logIt('เพิ่มสมาชิกใหม่ '+data.fullName);
     toast('สมัครสมาชิกสำเร็จ');
   }
-
   saveDB();
   closeOverlay('memberOverlay');
-  renderAll();
+  renderPage();
 }
 
-/* =========================
-   PAYMENT
-========================= */
+/* =========================================================
+   9) PAYMENT
+========================================================= */
 function openPay(ids){
-  const payable = ids
-    .map(id => DB.members.find(m=>m.id===id))
-    .filter(m => m && m.status==='alive' && !paidCurrent(m));
-
-  if(!payable.length){
-    toast('ไม่มีรายการที่ต้องชำระในเดือนนี้', 'warn');
-    return;
-  }
-
+  const payable = ids.map(id=>DB.members.find(m=>m.id===id)).filter(m=>m && m.status==='alive' && !paidCurrent(m));
+  if(!payable.length){ toast('ไม่มีรายการที่ต้องชำระ','warn'); return; }
   UI.payIds = payable.map(m=>m.id);
-  const amount = payable.length * fund().amount;
-
+  UI.paySlip = null;
+  document.getElementById('paySlipPreview').innerHTML = '';
+  document.getElementById('paySlip').value = '';
+  const amount = payable.length * fundAmount();
   document.getElementById('paySummary').innerHTML = payable.map(m=>
-    `<div class="list-item"><div><b>${esc(m.fullName)}</b><div class="muted small">${esc(m.regNo)}</div></div><b>${fmt(fund().amount)}</b></div>`
+    `<div class="list-item"><div><b>${esc(prefixName(m))}</b><div class="muted small">${esc(m.regNo)}</div></div><b>${fmt(fundAmount())}</b></div>`
   ).join('');
-
   document.getElementById('payTotal').textContent = fmt(amount);
   document.getElementById('payDate').value = todayISO();
   document.getElementById('payCollector').value = ME?.name || '';
   openOverlay('payOverlay');
 }
 
-function bulkPay(){
-  openPay([...UI.selected]);
+function handlePaySlip(input){
+  const f = input.files[0];
+  if(!f) return;
+  if(f.size > 500*1024){ toast('ไฟล์ใหญ่เกิน 500KB','bad'); input.value=''; return; }
+  const r = new FileReader();
+  r.onload = ()=>{ UI.paySlip = { name:f.name, type:f.type, data:r.result };
+    document.getElementById('paySlipPreview').innerHTML = `<div class="fp">📎 ${esc(f.name)}</div>`; };
+  r.readAsDataURL(f);
 }
 
 function savePayment(){
   const date = document.getElementById('payDate').value;
   const method = document.getElementById('payMethod').value;
-  const collector = document.getElementById('payCollector').value;
-
+  const collector = document.getElementById('payCollector').value.trim();
+  if(!date){ toast('กรุณาเลือกวันที่','bad'); return; }
   UI.payIds.forEach(id=>{
     const m = DB.members.find(x=>x.id===id);
     if(!m) return;
-    m.payments.push({
-      id: uid('p'),
-      date,
-      amount: fund().amount,
-      method,
-      collector,
-      months: [curYM()]
-    });
+    if(!m.payments) m.payments = [];
+    m.payments.push({ id:uid('p'), date, amount:fundAmount(), method, collector, months:[curYM()], slip: UI.paySlip });
   });
-
-  logIt('รับชำระเงิน ' + UI.payIds.length + ' ราย');
+  logIt(`รับชำระ ${UI.payIds.length} ราย รวม ${fmt(UI.payIds.length*fundAmount())}`);
   saveDB();
   closeOverlay('payOverlay');
-  clearSelected();
-  renderAll();
-  toast('ยืนยันการรับชำระสำเร็จ');
+  UI.selected.clear();
+  renderPage();
+  toast('ยืนยันการรับชำระ '+UI.payIds.length+' ราย');
 }
 
-/* =========================
-   NOTIFICATIONS
-========================= */
-function overdueMembers(){ return DB.members.filter(isOverdue); }
+function bulkPay(){ openPay([...UI.selected]); }
+function payAllOverdue(){ openPay(overdueMembers().map(m=>m.id)); }
 
-function renderNotificationsBadge(){
-  const count = overdueMembers().length;
-  const badge = document.getElementById('notifBadge');
-  const navCount = document.getElementById('navNotifCount');
-  badge.textContent = count;
-  navCount.textContent = count;
-  badge.classList.toggle('hidden', count===0);
-}
-
-function renderNotifications(){
-  const list = overdueMembers();
-  document.getElementById('notifList').innerHTML = list.length
-    ? list.map(m=>`<div class="list-item"><div><b>${esc(m.fullName)}</b><div class="muted small">${esc(m.regNo)} · ค้าง ${fmt(fund().amount)}</div></div><span class="pill warn">ค้าง</span></div>`).join('')
-    : '<div class="muted center" style="padding:30px">ไม่มีการแจ้งเตือน</div>';
-}
-function clearNotifications(){
-  renderNotifications();
-  toast('ล้างการแจ้งเตือนแล้ว (ข้อมูลค้างชำระยังอยู่)', 'warn');
-}
-
-/* =========================
-   REPORT
-========================= */
-function renderReport(){
-  const income = totalIncomeThisMonth();
-  const expense = totalExpenses();
-  const payout = totalPayouts();
-  const balance = income - expense - payout;
-
-  document.getElementById('reportSummary').innerHTML = `
-    <div class="list-item"><span>รายรับเดือนนี้</span><b>${fmt(income)}</b></div>
-    <div class="list-item"><span>รายจ่าย</span><b>${fmt(expense)}</b></div>
-    <div class="list-item"><span>จ่ายเงินช่วยเหลือ</span><b>${fmt(payout)}</b></div>
-    <div class="list-item"><span>คงเหลือ</span><b>${fmt(balance)}</b></div>
-  `;
-
-  const alive = DB.members.filter(m=>m.status==='alive').length;
-  const overdue = overdueMembers().length;
-  const deceased = DB.members.filter(m=>m.status==='deceased').length;
-  const archived = DB.members.filter(m=>m.status==='archived').length;
-
-  document.getElementById('reportStatus').innerHTML = `
-    <div class="list-item"><span>ทั้งหมด</span><b>${DB.members.length}</b></div>
-    <div class="list-item"><span>ปกติ/มีชีวิต</span><b>${alive}</b></div>
-    <div class="list-item"><span>ค้างชำระ</span><b>${overdue}</b></div>
-    <div class="list-item"><span>เสียชีวิต</span><b>${deceased}</b></div>
-    <div class="list-item"><span>เก็บถาวร</span><b>${archived}</b></div>
-  `;
-}
-
-function exportCSV(){
-  let csv = '\ufeffเลขสมาชิก,ชื่อ-สกุล,เลขบัตรประชาชน,เบอร์โทร,วันสมัคร,สถานะ,ผู้รับผลประโยชน์,ความสัมพันธ์,หมายเหตุ,ค้างชำระ\n';
-  DB.members.forEach(m=>{
-    csv += [
-      '"'+m.regNo+'"',
-      '"'+m.fullName+'"',
-      "'"+m.idCard,
-      '"'+(m.phone||'')+'"',
-      '"'+fdate(m.joinDate)+'"',
-      '"'+(m.status==='alive'?'ปกติ':m.status)+'"',
-      '"'+(m.beneficiary?.name||'')+'"',
-      '"'+(m.beneficiary?.relation||'')+'"',
-      '"'+(m.note||'')+'"',
-      memberDueAmount(m)
-    ].join(',') + '\n';
-  });
-
-  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'report-members.csv';
-  a.click();
-  toast('โหลดรายงาน CSV/Excel แล้ว');
-}
-
-/* =========================
-   ADMIN
-========================= */
-function openAdmin(tab){
-  UI.adminTab = tab || 'funds';
-  renderAdminTabs();
-  renderAdminBody();
-  openOverlay('adminOverlay');
-}
-function renderAdminTabs(){
-  const tabs = [
-    ['funds','กองทุน'],
-    ['users','ผู้ใช้'],
-    ['expenses','รายจ่าย'],
-    ['requests','คำขอ'],
-    ['logs','ประวัติ']
-  ];
-  document.getElementById('adminTabs').innerHTML = tabs.map(([k,label])=>
-    `<button class="admin-tab ${UI.adminTab===k?'active':''}" onclick="openAdmin('${k}')">${label}</button>`
-  ).join('');
-}
-function renderAdminBody(){
-  const body = document.getElementById('adminBody');
-  if(UI.adminTab==='funds'){
-    body.innerHTML = `
-      <div class="section-title">กองทุน</div>
-      <div class="grid2">
-        <div class="field"><label>ชื่อกองทุน *</label><input class="input" id="fundName" value="${esc(fund().name)}"></div>
-        <div class="field"><label>ยอดเก็บต่อเดือน (บาท) *</label><input class="input" id="fundAmount" type="number" value="${fund().amount}"></div>
-        <div class="field"><label>ยอดเงินกลาง *</label><input class="input" id="fundCentral" type="number" value="${fund().central||0}"></div>
-      </div>
-      <div class="footer-actions"><button class="btn primary" onclick="saveFund()">บันทึก</button></div>
-    `;
-  }
-  if(UI.adminTab==='users'){
-    body.innerHTML = Object.entries(DB.users).map(([u,x])=>
-      `<div class="list-item"><div><b>${esc(x.name)}</b><div class="muted small">@${esc(u)}</div></div><span class="pill info">${esc(x.role)}</span></div>`
-    ).join('');
-  }
-  if(UI.adminTab==='expenses'){
-    body.innerHTML = `
-      <div class="section-title">บันทึกรายจ่าย</div>
-      <div class="grid2">
-        <div class="field"><label>รายละเอียด *</label><input class="input" id="expDetail"></div>
-        <div class="field"><label>จำนวนเงิน *</label><input class="input" id="expAmount" type="number"></div>
-        <div class="field"><label>วันที่</label><input class="input" id="expDate" type="date" value="${todayISO()}"></div>
-      </div>
-      <div class="footer-actions"><button class="btn primary" onclick="addExpense()">บันทึกรายจ่าย</button></div>
-      <div style="margin-top:14px">
-        ${DB.expenses.map(e=>`<div class="list-item"><div><b>${esc(e.detail)}</b><div class="muted small">${fdate(e.date)}</div></div><b>${fmt(e.amount)}</b></div>`).join('') || '<div class="muted">ยังไม่มีรายจ่าย</div>'}
-      </div>
-    `;
-  }
-  if(UI.adminTab==='requests'){
-    body.innerHTML = DB.requests.length
-      ? DB.requests.map(r=>`<div class="list-item"><div><b>${esc(r.memberName||'')}</b><div class="muted small">${esc(r.field)}: ${esc(r.newValue)}</div></div><span class="pill warn">${r.status}</span></div>`).join('')
-      : '<div class="muted">ไม่มีคำขอ</div>';
-  }
-  if(UI.adminTab==='logs'){
-    body.innerHTML = DB.logs.length
-      ? DB.logs.map(l=>`<div class="list-item"><div>${esc(l.text)}</div><div class="muted small">${new Date(l.ts).toLocaleString('th-TH')}</div></div>`).join('')
-      : '<div class="muted">ยังไม่มีประวัติ</div>';
-  }
-}
-function saveFund(){
-  fund().name = document.getElementById('fundName').value.trim();
-  fund().amount = Number(document.getElementById('fundAmount').value)||0;
-  fund().central = Number(document.getElementById('fundCentral').value)||0;
-  saveDB(); renderAll(); toast('บันทึกกองทุนแล้ว');
-}
+/* =========================================================
+   10) EXPENSES / PAYOUTS
+========================================================= */
 function addExpense(){
   const detail = document.getElementById('expDetail').value.trim();
   const amount = Number(document.getElementById('expAmount').value)||0;
   const date = document.getElementById('expDate').value;
-  if(!detail || !amount){ toast('กรุณากรอกรายละเอียดและจำนวนเงิน','bad'); return; }
-  DB.expenses.unshift({id:uid('e'), detail, amount, date});
-  saveDB(); renderAdminBody(); renderAll(); toast('บันทึกรายจ่ายแล้ว');
+  if(!detail || !amount){ toast('กรุณากรอกข้อมูล','bad'); return; }
+  DB.expenses.unshift({ id:uid('e'), detail, amount, date });
+  saveDB(); renderPage(); toast('บันทึกรายจ่ายแล้ว');
+}
+function delExpense(id){ if(!confirm('ลบรายจ่ายนี้?')) return; DB.expenses = DB.expenses.filter(e=>e.id!==id); saveDB(); renderPage(); toast('ลบแล้ว'); }
+
+function addPayout(){
+  const memberId = document.getElementById('pyMember').value;
+  const m = DB.members.find(x=>x.id===memberId);
+  const amount = Number(document.getElementById('pyAmount').value)||0;
+  const date = document.getElementById('pyDate').value;
+  const note = document.getElementById('pyNote').value.trim();
+  if(!m || !amount){ toast('กรุณากรอกข้อมูล','bad'); return; }
+  DB.payouts.unshift({ id:uid('py'), memberId, memberName:prefixName(m), amount, date, note });
+  saveDB(); renderPage(); toast('บันทึกจ่ายช่วยเหลือแล้ว');
+}
+function delPayout(id){ if(!confirm('ลบรายการนี้?')) return; DB.payouts = DB.payouts.filter(p=>p.id!==id); saveDB(); renderPage(); toast('ลบแล้ว'); }
+
+function saveFund(){
+  DB.fund.name = document.getElementById('fundName').value.trim();
+  DB.fund.amount = Number(document.getElementById('fundAmount').value)||0;
+  DB.fund.central = Number(document.getElementById('fundCentral').value)||0;
+  saveDB(); renderPage(); toast('บันทึกกองทุนแล้ว');
 }
 
-/* =========================
-   BACKUP / BRAND / LINE / SETTINGS
-========================= */
-function openBackupModal(){
-  document.getElementById('brandOrg').value = DB.settings.org;
-  document.getElementById('brandAddress').value = DB.settings.address || '';
-  document.getElementById('brandPhone').value = DB.settings.phone || '';
-  document.getElementById('lineToken').value = DB.settings.lineToken || '';
-  openOverlay('backupOverlay');
+/* =========================================================
+   11) SETTINGS / BACKUP / LINE
+========================================================= */
+function saveSettings(){
+  DB.settings.notifyEnabled = document.getElementById('notifyEnabled').checked;
+  DB.settings.overdueMode = document.getElementById('overdueMode').value;
+  DB.settings.backupDays = Number(document.getElementById('backupDays').value)||7;
+  saveDB(); toast('บันทึกการตั้งค่าแล้ว');
 }
 function saveBrand(){
   DB.settings.org = document.getElementById('brandOrg').value.trim();
   DB.settings.address = document.getElementById('brandAddress').value.trim();
   DB.settings.phone = document.getElementById('brandPhone').value.trim();
   saveDB();
-  document.getElementById('orgName').textContent = DB.settings.org;
-  toast('บันทึกแบรนด์แล้ว');
+  document.getElementById('sidebarOrg').textContent = DB.settings.org;
+  toast('บันทึกข้อมูลองค์กรแล้ว');
 }
 function saveLineToken(){
   DB.settings.lineToken = document.getElementById('lineToken').value.trim();
-  saveDB();
-  toast('บันทึก LINE Token แล้ว');
+  saveDB(); toast('บันทึก LINE Token แล้ว');
+}
+async function testLine(){
+  const token = document.getElementById('lineToken').value.trim();
+  if(!token){ toast('กรุณาใส่ Token ก่อน','bad'); return; }
+  const msg = `ทดสอบระบบฌาปนกิจ\nสมาชิกทั้งหมด ${DB.members.length} ราย\nค้างชำระ ${overdueMembers().length} ราย`;
+  try{
+    const r = await fetch('https://notify-api.line.me/api/notify', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/x-www-form-urlencoded', 'Authorization':'Bearer '+token },
+      body:'message='+encodeURIComponent('\n'+msg)
+    });
+    if(r.ok) toast('ส่ง LINE สำเร็จ');
+    else toast('ส่งไม่สำเร็จ (ตรวจสอบ Token)','bad');
+  }catch(e){ toast('ส่งไม่สำเร็จ (CORS หรือเครือข่าย)','bad'); }
 }
 function downloadBackup(){
   DB.settings.lastBackup = new Date().toISOString();
   saveDB();
-  const blob = new Blob([JSON.stringify(DB,null,2)], {type:'application/json'});
+  const blob = new Blob([JSON.stringify(DB,null,2)], { type:'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'backup-v42.json';
+  a.download = `backup-v43-${todayISO()}.json`;
   a.click();
-  renderBackupPill();
   toast('ดาวน์โหลด Backup แล้ว');
+  renderPage();
 }
 function importBackup(input){
-  const file = input.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = ()=> {
+  const f = input.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ()=>{
     try{
-      const data = JSON.parse(reader.result);
-      if(!data.members) throw new Error('รูปแบบไม่ถูกต้อง');
-      DB = data;
-      saveDB();
-      renderAll();
-      closeOverlay('backupOverlay');
+      const data = JSON.parse(r.result);
+      if(!data.members || !Array.isArray(data.members)) throw new Error('รูปแบบไม่ถูกต้อง');
+      if(!confirm('นำเข้า Backup จะแทนที่ข้อมูลปัจจุบัน ยืนยัน?')) return;
+      DB = data; saveDB();
       toast('นำเข้า Backup สำเร็จ');
-    }catch(e){
-      toast('ไฟล์ Backup ไม่ถูกต้อง', 'bad');
-    }
+      renderPage();
+    }catch(e){ toast('ไฟล์ไม่ถูกต้อง','bad'); }
   };
-  reader.readAsText(file);
+  r.readAsText(f);
   input.value = '';
 }
-function saveSettings(){
-  DB.settings.notifyEnabled = document.getElementById('notifyEnabled').checked;
-  DB.settings.backupDays = Number(document.getElementById('backupDays').value)||7;
-  saveDB();
-  closeOverlay('settingsOverlay');
-  renderBackupPill();
-  toast('บันทึกการตั้งค่าแจ้งเตือนแล้ว');
-}
-function openSettingsModal(){
-  document.getElementById('notifyEnabled').checked = !!DB.settings.notifyEnabled;
-  document.getElementById('backupDays').value = DB.settings.backupDays || 7;
-  openOverlay('settingsOverlay');
+function resetDB(){
+  if(!confirm('ลบข้อมูลทั้งหมดและเริ่มใหม่? (ไม่สามารถกู้คืนได้)')) return;
+  if(!confirm('ยืนยันอีกครั้ง?')) return;
+  localStorage.removeItem(LS_KEY);
+  location.reload();
 }
 
-/* =========================
-   SCAN
-========================= */
+/* =========================================================
+   12) CSV EXPORT
+========================================================= */
+function csvCell(v){
+  v = String(v ?? '');
+  if(/[",\n\r]/.test(v)) return '"'+v.replace(/"/g,'""')+'"';
+  return v;
+}
+function exportCSV(){
+  const head = ['เลขสมาชิก','คำนำหน้า','ชื่อ-สกุล','เลขบัตร','เบอร์โทร','วันสมัคร','สถานะ','ผู้รับผลประโยชน์','ความสัมพันธ์','ค้างชำระ','ชำระสะสม'];
+  const rows = [head.join(',')];
+  DB.members.forEach(m=>{
+    rows.push([
+      m.regNo, m.prefix, m.fullName, m.idCard, m.phone||'', fdate(m.joinDate),
+      m.status==='alive'?'ปกติ':(m.status==='deceased'?'เสียชีวิต':'เก็บถาวร'),
+      m.beneficiary?.name||'', m.beneficiary?.relation||'',
+      isOverdue(m) ? fundAmount() : 0,
+      (m.payments||[]).length
+    ].map(csvCell).join(','));
+  });
+  const blob = new Blob(['\ufeff'+rows.join('\n')], { type:'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `members-${todayISO()}.csv`;
+  a.click();
+  toast('ส่งออก CSV แล้ว');
+}
+function exportPaymentsCSV(){
+  const rows = [['วันที่','เลขสมาชิก','ชื่อ','วิธี','ผู้เก็บ','จำนวน'].join(',')];
+  DB.members.forEach(m=>{
+    (m.payments||[]).forEach(p=>{
+      rows.push([p.date, m.regNo, prefixName(m), p.method||'', p.collector||'', p.amount].map(csvCell).join(','));
+    });
+  });
+  const blob = new Blob(['\ufeff'+rows.join('\n')], { type:'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `payments-${todayISO()}.csv`;
+  a.click();
+  toast('ส่งออกประวัติชำระแล้ว');
+}
+
+/* =========================================================
+   13) SCAN
+========================================================= */
+let scanStream = null;
+async function startScan(){
+  try{
+    scanStream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'environment' } });
+    const v = document.getElementById('scanVideo');
+    v.srcObject = scanStream;
+    v.style.display = 'block';
+    document.getElementById('scanPlaceholder').style.display = 'none';
+    if('BarcodeDetector' in window){
+      const det = new window.BarcodeDetector({ formats:['qr_code','code_128','ean_13'] });
+      const loop = async ()=>{
+        if(!scanStream) return;
+        try{
+          const codes = await det.detect(v);
+          if(codes.length){
+            const raw = codes[0].rawValue;
+            stopScan();
+            closeOverlay('scanOverlay');
+            const m = DB.members.find(x=>x.idCard===raw || x.regNo===raw);
+            if(m) openMember(m.id);
+            else toast('ไม่พบข้อมูลที่ตรงกับ: '+raw,'warn');
+            return;
+          }
+        }catch(e){}
+        requestAnimationFrame(loop);
+      };
+      loop();
+    } else {
+      toast('เบราว์เซอร์ไม่รองรับ BarcodeDetector ใช้ช่องพิมพ์ด้านล่างแทน','warn');
+    }
+  }catch(e){ toast('เปิดกล้องไม่สำเร็จ: '+e.message,'bad'); }
+}
+function stopScan(){
+  if(scanStream){ scanStream.getTracks().forEach(t=>t.stop()); scanStream = null; }
+  const v = document.getElementById('scanVideo');
+  if(v){ v.style.display = 'none'; v.srcObject = null; }
+  const ph = document.getElementById('scanPlaceholder');
+  if(ph) ph.style.display = 'grid';
+}
 function manualSearch(){
   const q = document.getElementById('manualScan').value.trim();
+  if(!q){ toast('กรุณากรอกรหัส','bad'); return; }
   const m = DB.members.find(x=>x.regNo.includes(q) || x.idCard.includes(q));
-  if(!m){ toast('ไม่พบข้อมูล', 'bad'); return; }
+  if(!m){ toast('ไม่พบข้อมูล','bad'); return; }
   closeOverlay('scanOverlay');
   openMember(m.id);
 }
 
-/* =========================
-   INIT
-========================= */
-document.addEventListener('click', e=>{
-  if(e.target.classList && e.target.classList.contains('overlay')){
-    e.target.classList.remove('open');
-  }
-});
+/* =========================================================
+   14) NOTIFICATIONS
+========================================================= */
+function updateNotifBadge(){
+  const count = overdueMembers().length;
+  const b = document.getElementById('notifBadge');
+  if(!b) return;
+  b.textContent = count;
+  b.classList.toggle('hidden', count===0);
+}
+function openNotif(){
+  const list = overdueMembers();
+  const mode = DB.settings.overdueMode || 'list';
+  let html = '';
+  if(mode==='off') html = '<div class="muted center" style="padding:30px">ปิดการแจ้งเตือน</div>';
+  else if(!list.length) html = '<div class="muted center" style="padding:30px">ไม่มีการแจ้งเตือน 🎉</div>';
+  else if(mode==='summary') html = `<div class="note warn">มีสมาชิกค้างชำระ ${list.length} ราย รวม ${fmt(list.length*fundAmount())}</div>`;
+  else html = list.map(m=>`<div class="list-item"><div><b>${esc(prefixName(m))}</b><div class="muted small">${esc(m.regNo)} · ค้าง ${fmt(fundAmount())}</div></div><span class="pill warn">ค้าง</span></div>`).join('');
+  document.getElementById('notifList').innerHTML = html;
+  openOverlay('notifOverlay');
+}
 
+/* =========================================================
+   15) OVERLAY / TOAST / DARK
+========================================================= */
+function openOverlay(id){
+  document.getElementById(id).classList.add('open');
+  if(id==='notifOverlay') openNotif();
+}
+function closeOverlay(id){
+  document.getElementById(id).classList.remove('open');
+  if(id==='scanOverlay') stopScan();
+}
+function toast(msg, type='ok'){
+  const el = document.createElement('div');
+  el.className = 'toast '+type;
+  el.textContent = msg;
+  document.getElementById('toastArea').appendChild(el);
+  setTimeout(()=>el.remove(), 3500);
+}
+function toggleDark(){
+  document.documentElement.classList.toggle('dark');
+  const dark = document.documentElement.classList.contains('dark');
+  localStorage.setItem(LS_DARK, dark?'1':'0');
+  const icon = dark?'☀️':'🌙';
+  const d = document.getElementById('darkIcon'); if(d) d.textContent = icon;
+}
+
+/* =========================================================
+   16) INIT
+========================================================= */
+document.addEventListener('click', e=>{
+  if(e.target.classList && e.target.classList.contains('overlay')) e.target.classList.remove('open');
+});
 document.addEventListener('keydown', e=>{
-  if(e.key==='Escape') closeAllOverlays();
+  if(e.key==='Escape'){
+    document.querySelectorAll('.overlay.open').forEach(o=>o.classList.remove('open'));
+    toggleSidebar(false);
+    stopScan();
+  }
 });
 
 (function init(){
   loadDB();
-  if(localStorage.getItem('darkMode')==='1'){
+  if(localStorage.getItem(LS_DARK)==='1'){
     document.documentElement.classList.add('dark');
-    document.getElementById('darkIcon').textContent = '☀️';
+    const d = document.getElementById('darkIcon'); if(d) d.textContent = '☀️';
   }
-
-  // bind menu buttons that need overlay-specific setup
-  document.querySelector('[onclick="closeOverlay(\'menuOverlay\');openOverlay(\'backupOverlay\')"]')?.addEventListener('click', openBackupModal);
-  document.querySelector('[onclick="closeOverlay(\'menuOverlay\');openOverlay(\'settingsOverlay\')"]')?.addEventListener('click', openSettingsModal);
-
-  // report open hook
-  const reportObserver = new MutationObserver(()=>{});
-  document.querySelectorAll('[onclick*="reportOverlay"]').forEach(btn=>{
-    btn.addEventListener('click', renderReport);
-  });
-
-  // notification open hook
-  document.querySelectorAll('[onclick*="notifOverlay"]').forEach(btn=>{
-    btn.addEventListener('click', renderNotifications);
-  });
-
-  // admin open hook from menu
-  document.querySelectorAll('[onclick*="adminOverlay"]').forEach(btn=>{
-    if(btn.textContent.includes('จัดการระบบ')){
-      btn.addEventListener('click', ()=> openAdmin('funds'));
-    }
-  });
-
-  // backup pill already opens backupOverlay by inline onclick, but fill fields
-  document.getElementById('backupPill').addEventListener('click', openBackupModal);
-
-  renderAll();
+  // Try auto-login
+  if(tryAutoLogin()){
+    updateNotifBadge();
+    return;
+  }
+  // Patch overlay buttons
+  const origOpenOverlay = window.openOverlay;
+  window.openOverlay = function(id){
+    origOpenOverlay(id);
+    if(id==='notifOverlay') openNotif();
+  };
 })();
+
+// Override click handlers for notif open
+document.querySelectorAll('[onclick*="notifOverlay"]').forEach(b=>{
+  b.addEventListener('click', e=>{ e.preventDefault(); openNotif(); });
+});
+
+// Re-bind after enterApp for notification button
+const origEnterApp = window.enterApp;
+window.enterApp = function(){
+  origEnterApp();
+  updateNotifBadge();
+};
+
 </script>
 </body>
 </html>
