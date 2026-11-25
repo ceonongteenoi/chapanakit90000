@@ -4,7 +4,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ฌาปนกิจ 90,000 บาท 4 ตำบล · v48 รวมระบบ</title>
+<title>ฌาปนกิจ 90,000 บาท 4 ตำบล · v49 รวมระบบ</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap');
@@ -296,7 +296,7 @@ tr:last-child td{border-bottom:0}
       <div id="checkResult" style="margin-top:12px"></div>
     </form>
     <div id="gateError" class="error"></div>
-    <div class="hint"><b>ทดสอบ:</b> admin99 / admin123 · usa123 / usa123 · สมาชิก 3700501101568</div>
+    <div class="hint"><b>ทดสอบ:</b> admin99 / admin123 · usa123 / usa123 · สมาชิกใช้เลขบัตร 13 หลักอย่างเดียว (เช่น 3700501101568)</div>
   </div>
 </div>
 
@@ -554,7 +554,7 @@ function defaultDB(){
   return {
     version:VER,
     users:{
-      adminKong:{pass:'254097',name:'ผู้ดูแลระบบ',role:'Admin'},
+      admin99:{pass:'admin123',name:'ผู้ดูแลระบบ',role:'Admin'},
       usa123:{pass:'usa123',name:'นางอุษา ณ วังขนาย',role:'Agent'}
     },
     funds:[
@@ -959,10 +959,8 @@ function memberDash(){
     <div class="list-item"><div><b>ลำดับ 1: ${esc(m.b1?.name||'—')}</b><div class="muted small">${esc(m.b1?.relation||'')}</div></div></div>
     ${m.b2?.name?`<div class="list-item"><div><b>ลำดับ 2: ${esc(m.b2.name)}</b></div></div>`:''}
   </div>
-  <div class="card" style="padding:16px">
-    <div class="section-title" style="margin-top:0">📅 ประวัติชำระ</div>
-    ${hist.length?hist.map(p=>`<div class="list-item"><div>${fdate(p.date)}<div class="muted small">${p.type==='monthly'?(p.months||[]).map(x=>mLbl(x.ym||x)).join(', '):p.type==='annual'?'ค่าบำรุง':'ค่าสมัคร'}</div></div><b>${fmt(p.amount)}</b></div>`).join(''):'<div class="muted">ยังไม่มี</div>'}
-  </div>`;
+  ${memberHistHTML(m)}
+  `;
 }
 
 function membersHTML(){
@@ -1131,17 +1129,11 @@ function aiHTML(){
   return `
   <div class="ai-panel" style="margin-bottom:12px">
     <div class="ai-head"><div class="orb">✨</div><h3>AI ผู้ช่วย</h3><span class="ai-tag">AI</span></div>
-    <div class="small muted">ถามเรื่องรายรับ กองทุน อัตรา ค้างชำระ เงินจ่าย</div>
+    <div class="small muted">${aiHint()}</div>
   </div>
   <div class="chat-wrap">
-    <div class="chat-body" id="chatBody"><div class="msg ai">สวัสดีครับ 👋\nลองถาม: "รายรับเดือนนี้", "กองทุน", "อัตรา", "ใครค้างชำระ", "ตารางเงินจ่าย"</div></div>
-    <div class="quick-q">
-      <button onclick="askAI('รายรับเดือนนี้')">💰 รายรับ</button>
-      <button onclick="askAI('กองทุนทั้งหมด')">🏦 กองทุน</button>
-      <button onclick="askAI('อัตราเดือนนี้')">📊 อัตรา</button>
-      <button onclick="askAI('ใครค้างชำระบ้าง')">⚠️ ค้าง</button>
-      <button onclick="askAI('ตารางเงินจ่าย')">💵 เงินจ่าย</button>
-    </div>
+    <div class="chat-body" id="chatBody"><div class="msg ai">${aiWelcome()}</div></div>
+    ${aiChips()}
     <div class="chat-input"><input class="input" id="chatInput" placeholder="พิมพ์..." onkeydown="if(event.key==='Enter')sendChat()"><button class="btn primary" onclick="sendChat()">ส่ง</button></div>
   </div>`;
 }
@@ -1442,7 +1434,7 @@ function changeMyPass(){
   ['oldPass','newPass','confPass'].forEach(id=>document.getElementById(id).value='');
   toast('เปลี่ยนรหัสสำเร็จ');
 }
-function backup(){if(ME.role!=='Admin')return;DB.settings.lastBackup=new Date().toISOString();saveDB();const b=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`backup-v48-${today()}.json`;a.click();toast('ดาวน์โหลดแล้ว');renderPage();}
+function backup(){if(ME.role!=='Admin')return;DB.settings.lastBackup=new Date().toISOString();saveDB();const b=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`backup-v49-${todayBE()}.json`;a.click();toast('ดาวน์โหลดแล้ว');renderPage();}
 function impBackup(input){
   if(ME.role!=='Admin'){input.value='';return;}
   const f=input.files[0];if(!f)return;
@@ -1722,19 +1714,18 @@ function exportCSV(){
   DB.members.forEach(m=>{
     const diseases=Object.entries(m.health||{}).filter(([k,v])=>v).map(([k])=>HEALTH_LABELS[k]).join('|')||'ปกติ';
     const fundNames=(m.fundIds||[]).map(id=>fundById(id)?.name||id).join('|');
-    rows.push([m.regNo,m.prefix+' '+m.fullName,m.idCard,m.birthDate,calcAge(m.birthDate)||'',m.phone||'',fdate(m.joinDate),m.status,fundNames,monthAmount(m,curYM()),debtMonths(m).length,totalDebt(m),totalAnnualDebt(m),diseases]);
+    rows.push([m.regNo,m.prefix+' '+m.fullName,m.idCard,fdate(m.birthDate),calcAge(m.birthDate)||'',m.phone||'',fdate(m.joinDate),m.status,fundNames,monthAmount(m,curYM()),debtMonths(m).length,totalDebt(m),totalAnnualDebt(m),diseases]);
   });
-  downloadCSV(`members-v46-${today()}.csv`,rows);toast('ส่งออกแล้ว');
+  downloadCSV(`members-v49-${todayBE()}.csv`,rows);toast('ส่งออกแล้ว');
 }
 function exportPayCSV(){
   const h=['วันที่','รหัส','ชื่อ','ประเภท','รายละเอียด','วิธี','ผู้เก็บ','จำนวน'];
   const rows=[h];
   DB.members.forEach(m=>(m.payments||[]).forEach(p=>{
     const detail=p.type==='monthly'?(p.months||[]).map(x=>mLbl(x.ym||x)).join('|'):p.type==='annual'?(p.years||[]).map(y=>y+543).join('|'):'-';
-    rows.push([p.date,m.regNo,prefixName(m),p.type,detail,p.method||'',p.collector||'',p.amount]);
+    rows.push([fdate(p.date),m.regNo,prefixName(m),p.type,detail,p.method||'',p.collector||'',p.amount]);
   }));
-  rows.sort((a,b)=>String(b[0]).localeCompare(String(a[0])));
-  downloadCSV(`payments-v46-${today()}.csv`,rows);toast('ส่งออกแล้ว');
+  downloadCSV(`payments-v49-${todayBE()}.csv`,rows);toast('ส่งออกแล้ว');
 }
 
 /* ============ HELPERS ============ */
@@ -2071,7 +2062,7 @@ return{S,blank,parseReader,parseCSV,checks,verdictOf,paperHTML,BACK,benefit,pers
 const p2=n=>String(n).padStart(2,'0');
 const afQ=()=>(DB.queue=DB.queue||[]);
 const afOthers=ex=>DB.members.filter(m=>m.id!==ex).map(m=>({id:m.id,nid:m.idCard}));
-UI.ap={mode:'reader',text:'',csv:'',d:null,fee:true};
+UI.ap={mode:'scan',text:'',csv:'',d:null,fee:true,pre:{},idImg:null,scanMsg:''};
 UI.apSide='both';
 function toAF(m){
   const x=m.af||{},[y,mo,dd]=(m.birthDate||'').split('-').map(Number),d=AF.blank(),h=m.health||{};
@@ -2095,15 +2086,16 @@ function fromAF(d,status){
     health:{cancer:h.cancer,heart:h.heart,kidney:h.kidney,liver:h.liver,diabetes:h.diabetes,bed:h.bedridden},
     b1:{name:b[0].name,relation:b[0].rel,phone:b[0].tel,idCard:'',age:null,coSign:false},b2:{name:b[1].name,relation:b[1].rel,phone:b[1].tel,idCard:''},
     note:'',payments:[],annualFees:[],
-    af:{addr:d.addr,couple:d.couple,spouse:d.spouse,nidExpiry:d.nidExpiry,docs:d.docs,aids:h.aids,selfcare:h.selfcare,b1addr:b[0].addr,sig:d.sig,ack:d.ack,src:d.src,edition:AF.EDITION}};
+    af:{addr:d.addr,couple:d.couple,spouse:d.spouse,nidExpiry:d.nidExpiry,docs:d.docs,att:Object.fromEntries(Object.entries(d.att||{}).filter(e=>e[0]!=='idCard')),aids:h.aids,selfcare:h.selfcare,b1addr:b[0].addr,sig:d.sig,ack:d.ack,src:d.src,edition:AF.EDITION}};
 }
 const afPill=v=>v==='pass'?'<span class="pill ok">ผ่านเกณฑ์</span>':v==='warn'?'<span class="pill warn">ผ่าน (ขาดบางรายการ)</span>':'<span class="pill danger">ไม่ผ่านเกณฑ์</span>';
 const afBox=(t,inner)=>`<div class="card" style="margin-bottom:14px"><div style="padding:14px"><div class="section-title">${t}</div>${inner}</div></div>`;
 
 function afManual(){
-  const f=(id,l,v,ex)=>`<div class="field"><label>${l}</label><input class="input" id="mn_${id}" value="${esc(v||'')}" ${ex||''}></div>`;
-  const cb=(id,l)=>`<label class="health-item"><input type="checkbox" id="mn_${id}"> ${l}</label>`;
-  return `<div class="grid2"><div class="field"><label>คำนำหน้า</label><select class="input" id="mn_prefix"><option>นาย</option><option>นาง</option><option>นางสาว</option></select></div>${f('name','ชื่อ-สกุล')}
+  const P=UI.ap.pre||{};
+  const f=(id,l,v,ex)=>`<div class="field"><label>${l}</label><input class="input" id="mn_${id}" value="${esc(P[id]!==undefined?P[id]:(v||''))}" ${ex||''}></div>`;
+  const cb=(id,l)=>`<label class="health-item"><input type="checkbox" id="mn_${id}" ${P[id]?'checked':''}> ${l}</label>`;
+  return `<div class="grid2"><div class="field"><label>คำนำหน้า</label><select class="input" id="mn_prefix">${['นาย','นาง','นางสาว'].map(x=>`<option${P.prefix===x?' selected':''}>${x}</option>`).join('')}</select></div>${f('name','ชื่อ-สกุล')}
   ${f('nid','เลขบัตรประชาชน','','maxlength="13" inputmode="numeric"')}${f('birth','วันเกิด','','type="date"')}${f('exp','บัตรหมดอายุ','','type="date"')}${f('tel','โทรศัพท์','','inputmode="tel"')}
   ${f('no','บ้านเลขที่')}${f('moo','หมู่')}${f('tambon','ตำบล')}${f('amphoe','อำเภอ')}${f('prov','จังหวัด')}${f('spouse','ชื่อคู่สมรส')}
   ${f('c1','ผู้สมัครคู่ (กรณีอายุ 60)')}${f('c1age','อายุผู้สมัครคู่','','type="number"')}
@@ -2114,20 +2106,25 @@ function afManual(){
 }
 function afManualCheck(){
   const v=i=>document.getElementById('mn_'+i)?.value.trim()||'',c=i=>!!document.getElementById('mn_'+i)?.checked,d=AF.blank();
+  UI.ap.pre={};document.querySelectorAll('[id^="mn_"]').forEach(e=>{UI.ap.pre[e.id.slice(3)]=e.type==='checkbox'?e.checked:e.value;});
   d.prefix=v('prefix');d.name=v('name');d.nid=v('nid').replace(/\D/g,'');d.nidExpiry=v('exp');d.spouse=v('spouse');
   const b=v('birth');if(b){const[y,m,dd]=b.split('-').map(Number);d.bd=dd;d.bm=m;d.by=y+543;}
   Object.assign(d.addr,{no:v('no'),moo:v('moo'),tambon:v('tambon'),amphoe:v('amphoe'),province:v('prov'),tel:v('tel').replace(/\D/g,'')});
   d.couple[0]={name:v('c1'),age:v('c1age')};d.bens[0]={name:v('b1'),rel:v('r1'),tel:v('t1').replace(/\D/g,''),addr:[d.addr.no,d.addr.moo?'หมู่ '+d.addr.moo:'',d.addr.tambon?'ต.'+d.addr.tambon:''].filter(Boolean).join(' ')};
   AF.DISEASES.concat(AF.EXTRA).forEach(([k])=>d.health[k]=c('h_'+k));AF.DOCS.forEach(([k])=>d.docs[k]=c('d_'+k));
-  d.joinDate=iso10();d.age=AF.ageAt(b,d.joinDate);d.ack=true;d.fee={paid:UI.ap.fee,date:d.joinDate,method:'cash'};d.src='manual';
+  d.joinDate=iso10();d.age=AF.ageAt(b,d.joinDate);d.ack=true;d.fee={paid:UI.ap.fee,date:d.joinDate,method:'cash'};d.src=UI.ap.mode==='scan'?'scan':'manual';
+  const o=UI.ap.d;if(o){d.att=o.att||{};d.sig=o.sig||d.sig;}
+  if(UI.ap.idImg){d.att=d.att||{};d.att.idCard=UI.ap.idImg;}
+  AF.DOCS.forEach(([k])=>{if(d.att&&d.att[k])d.docs[k]=true;});
   UI.ap.d=d;renderPage();
 }
 const iso10=()=>new Date().toISOString().slice(0,10);
 function afHTML(){
   const a=UI.ap,q=afQ(),pend=DB.members.filter(m=>m.status==='pending');
-  const modes=[['reader','เครื่องอ่านบัตร'],['csv','นำเข้า CSV'],['manual','กรอกเอง']];
+  const modes=[['scan','📷 สแกนบัตร'],['reader','เครื่องอ่านบัตร'],['csv','นำเข้า CSV'],['manual','กรอกเอง']];
   let body;
-  if(a.mode==='reader')body=`<div class="field"><label>ข้อมูลจากเครื่องอ่านบัตร (วางข้อความหรือ JSON)</label><textarea class="input" rows="4" oninput="UI.ap.text=this.value" placeholder="เลข13หลัก|นาย|ชื่อ|สกุล|วัน/เดือน/ปีเกิด">${esc(a.text)}</textarea></div>
+  if(a.mode==='scan')body=afScanBody();
+  else if(a.mode==='reader')body=`<div class="field"><label>ข้อมูลจากเครื่องอ่านบัตร (วางข้อความหรือ JSON)</label><textarea class="input" rows="4" oninput="UI.ap.text=this.value" placeholder="เลข13หลัก|นาย|ชื่อ|สกุล|วัน/เดือน/ปีเกิด">${esc(a.text)}</textarea></div>
     <div class="toolbar"><button class="btn primary" onclick="afParse()">อ่านและตรวจสอบ</button><button class="btn ghost" onclick="afSample()">สุ่มตัวอย่างบัตร</button></div>`;
   else if(a.mode==='csv')body=`<div class="field"><label>วาง CSV (เลขบัตร, ชื่อ-สกุล, วันเกิด, ตำบล, โทร, ผู้รับผลประโยชน์, ความสัมพันธ์, โทรผู้รับ)</label><textarea class="input" rows="5" id="apCsv" oninput="UI.ap.csv=this.value">${esc(a.csv)}</textarea></div>
     <div class="toolbar"><input type="file" accept=".csv,.txt" onchange="afCsvFile(this)"><button class="btn primary" onclick="afCsvQueue()">นำเข้าคิว</button></div>`;
@@ -2387,7 +2384,7 @@ function afQueueHTML(){const q=afQ().map(x=>({x,v:AF.verdictOf(x.d,afOthers())})
 function afRunSel(all){const items=all?afQ():afQ().filter(x=>UI.qsel.has(x.id));if(!items.length){toast('ไม่มีรายการ','bad');return;}let ok=0,bad=0,dup=0;
   items.forEach(x=>{const m=afCommit(x.d);if(!m)dup++;else if(m.status==='pending')ok++;else bad++;});DB.queue=afQ().filter(x=>!items.includes(x));UI.qsel.clear();saveDB();toast(`ผ่าน ${ok} · ไม่ผ่าน ${bad}${dup?' · ซ้ำ '+dup:''}`);renderPage();buildSidebar();}
 function afQDelSel(){if(!UI.qsel.size||!confirm('ลบที่เลือก?'))return;DB.queue=afQ().filter(x=>!UI.qsel.has(x.id));UI.qsel.clear();saveDB();renderPage();buildSidebar();}
-function afQueueCSV(){const r=[['เลขบัตร','ชื่อ-สกุล','วันเกิด','อายุ','ตำบล','โทร','ผลตรวจ','ข้อที่ไม่ผ่าน']];afQ().forEach(x=>{const d=x.d,v=AF.verdictOf(d,afOthers());r.push([d.nid,d.prefix+d.name,`${d.bd}/${d.bm}/${d.by}`,d.age,d.addr.tambon,d.addr.tel,v.v,v.hard.map(c=>c.cl).join('/')]);});afDl('คิวรับสมัคร-'+afToday()+'.csv',afCsv(r),'text/csv');}
+function afQueueCSV(){const r=[['เลขบัตร','ชื่อ-สกุล','วันเกิด','อายุ','ตำบล','โทร','ผลตรวจ','ข้อที่ไม่ผ่าน']];afQ().forEach(x=>{const d=x.d,v=AF.verdictOf(d,afOthers());r.push([d.nid,d.prefix+d.name,`${d.bd}/${d.bm}/${d.by}`,d.age,d.addr.tambon,d.addr.tel,v.v,v.hard.map(c=>c.cl).join('/')]);});afDl('คิวรับสมัคร-'+todayBE()+'.csv',afCsv(r),'text/csv');}
 function afPendHTML(){const P=DB.members.filter(m=>m.status==='pending');if(!P.length)return '<div class="muted">ไม่มีใบสมัครรออนุมัติ</div>';
   return P.map(m=>{const v=AF.verdictOf(toAF(m),afOthers(m.id));return `<div class="list-item"><span>${ME.role==='Admin'?`<input type="checkbox" ${UI.psel.has(m.id)?'checked':''} onchange="afSel('p','${m.id}',this.checked)"> `:''}<b>${esc(prefixName(m))}</b> <span class="muted small">${esc(m.idCard)} · สมัคร ${fdate(m.joinDate)}</span></span><span>${afPill(v.v)} <button class="btn small ghost" onclick="afPaper('${m.id}')">📄</button><button class="btn small ghost" onclick="afMsg(['${m.id}'])">✉️</button>${ME.role==='Admin'?`<button class="btn small success" onclick="afApprove('${m.id}')">อนุมัติ</button><button class="btn small danger" onclick="afReject('${m.id}')">ไม่ผ่าน</button>`:''}</span></div>`;}).join('')+
   `<div class="toolbar">${ME.role==='Admin'?`<button class="btn primary" onclick="afApproveSel()">อนุมัติที่เลือก (${UI.psel.size})</button>`:''}<button class="btn ghost" onclick="afMsg([...UI.psel])">✉️ ข้อความที่เลือก</button></div>`;}
@@ -2432,7 +2429,7 @@ function afSettingsExtra(){const d=Object.assign({},AF.S.settings.doc,DB.docSet|
 function afDocSave(){const g=i=>document.getElementById('ds_'+i);DB.docSet={ink:g('ink').value,dfs:+g('dfs').value,mono:g('mono').checked,guides:g('guides').checked};afDocApply();saveDB();toast('บันทึกแล้ว');}
 function afRtAdd(){const n=document.getElementById('rt_n').value.trim();if(!n)return;(DB.routes=DB.routes||[]).push({id:uid('rt'),name:n,zone:document.getElementById('rt_z').value.trim()});saveDB();renderPage();}
 function afRtDel(id){if(!confirm('ลบสายนี้?'))return;DB.routes=(DB.routes||[]).filter(r=>r.id!==id);saveDB();renderPage();}
-function afLogCSV(){afDl('ประวัติ-'+afToday()+'.csv',afCsv([['เวลา','ผู้ใช้','รายการ']].concat((DB.logs||[]).map(l=>[l.ts||l.at||'',l.by||l.user||'',l.text||l.t||l.msg||'']))),'text/csv');}
+function afLogCSV(){afDl('ประวัติ-'+todayBE()+'.csv',afCsv([['เวลา','ผู้ใช้','รายการ']].concat((DB.logs||[]).map(l=>[beDT(l.ts||l.at||''),l.by||l.user||'',l.text||l.t||l.msg||'']))),'text/csv');}
 function afRulesTxt(){afDl('ระเบียบ-'+AF.EDITION.replace('/','-')+'.txt',AF.BACK.map(c=>c.n+' '+c.t).join('\n'));}
 function afAttPurge(){if(!confirm('ลบรูปเอกสารแนบทั้งหมดเพื่อคืนพื้นที่? ลบแล้วกู้คืนไม่ได้'))return;let n=0;DB.members.forEach(m=>{if(m.af&&m.af.att){n+=Object.keys(m.af.att).length;m.af.att={};}});saveDB();toast('ลบรูป '+n+' ไฟล์');}
 
@@ -2475,7 +2472,7 @@ async function hydrate(root){for(const im of(root||document).querySelectorAll('i
 const comp=(f,max,q,flt)=>new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const s=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);const x=c.getContext('2d');if(flt)x.filter=flt;x.drawImage(im,0,0,c.width,c.height);ok(c.toDataURL('image/jpeg',q));};im.onerror=no;im.src=r.result;};r.onerror=no;r.readAsDataURL(f);});
 const fnv=s=>{let h=2166136261;for(let i=0;i<s.length;i+=7){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return(h>>>0).toString(36)+s.length;};
 const thumb=id=>id?`<img class="v48th" data-att="${id}" alt="" onclick="v48View('${id}')">`:'';
-window.v48View=async id=>{const v=await aGet(id);if(!v){toast('ไม่พบรูป','bad');return;}const o=document.createElement('div');o.className='v48lb';o.innerHTML=`<img src="${v}" alt=""><a class="btn small primary" href="${v}" download="หลักฐาน-${today()}.jpg" onclick="event.stopPropagation()">⬇️ ดาวน์โหลด</a>`;o.onclick=()=>o.remove();document.body.appendChild(o);};
+window.v48View=async id=>{const v=await aGet(id);if(!v){toast('ไม่พบรูป','bad');return;}const o=document.createElement('div');o.className='v48lb';o.innerHTML=`<img src="${v}" alt=""><a class="btn small primary" href="${v}" download="หลักฐาน-${todayBE()}.jpg" onclick="event.stopPropagation()">⬇️ ดาวน์โหลด</a>`;o.onclick=()=>o.remove();document.body.appendChild(o);};
 
 /* ===== แนบสลิปตอนรับชำระ ===== */
 function injectPay(){const g=document.querySelector('#payOverlay .footer-actions');if(!g||$('v48Slip'))return;
@@ -2529,7 +2526,7 @@ function xHTML(m){let h=`<div class="section-title">🪪 สแกน/อ่า�
 function extras(id){const sh=document.querySelector('#memberOverlay .sheet');let b=$('v48X');if(!b){b=document.createElement('div');b.id='v48X';sh.querySelector('.footer-actions').before(b);}if(UI.v48m!==(id||null)){UI.v48all=false;UI.v48id=null;UI.v48exp=null;}UI.v48m=id||null;b.innerHTML=xHTML(id?mem(id):null);hydrate(b);}
 const _om=openMember;openMember=function(id){_om(id);if($('memberOverlay').classList.contains('open')){UI.v48m=-1;extras(id);}};
 window.v48Rx=a=>extras(a);const pay=(a,b)=>{const m=mem(a);return[m,m&&(m.payments||[]).find(x=>x.id===b)];};
-window.v48Ed=(a,b,k,v)=>{if(!isA())return;const[m,p]=pay(a,b);if(!p)return;const o=p[k];p[k]=k==='amount'?Math.max(0,+v||0):v;logIt(`แก้ชำระ ${m.fullName} ${k}: ${o} → ${p[k]}`);saveDB();updateTopIncome();toast('แก้ไขแล้ว');};
+window.v48Ed=(a,b,k,v)=>{if(!isA())return;const[m,p]=pay(a,b);if(!p)return;const o=p[k];p[k]=k==='amount'?Math.max(0,+v||0):v;logIt(`แก้ชำระ ${m.fullName} ${k}: ${k==='date'?fdate(o):o} → ${k==='date'?fdate(p[k]):p[k]}`);saveDB();updateTopIncome();toast('แก้ไขแล้ว');};
 window.v48DelPay=(a,b)=>{if(!isA())return;const[m,p]=pay(a,b);if(!p||!confirm('ลบรายการชำระนี้? เดือน/ปีที่เกี่ยวข้องจะกลับเป็นค้าง'))return;
  if(p.type==='annual')m.annualFees=(m.annualFees||[]).filter(f=>!(p.years||[]).includes(f.year));if(p.type==='join'){m.joinFeePaid=false;m.joinFeeDate='';}
  m.payments=m.payments.filter(x=>x.id!==b);if(p.slip&&!allPays().some(x=>x.p.slip===p.slip))aDel(p.slip);logIt(`ลบรายการชำระ ${m.fullName} ${fmt(p.amount)} (${fdate(p.date)})`);saveDB();extras(a);renderPage();};
@@ -2546,17 +2543,25 @@ const _li=logIt;logIt=function(t){_li(t);if(DB.logs[0]&&ME)DB.logs[0].by=ME.name
 const _ls=loginStaff;loginStaff=function(e){e.preventDefault();let k={};try{k=JSON.parse(localStorage.getItem('v48_f')||'{}');}catch(x){}
  if(k.u>Date.now()){$('gateError').textContent='ลองผิดหลายครั้ง ล็อกชั่วคราวอีก '+Math.ceil((k.u-Date.now())/6e4)+' นาที';return false;}
  _ls(e);if(ME)localStorage.removeItem('v48_f');else{const n=(k.n||0)+1;localStorage.setItem('v48_f',JSON.stringify(n>=5?{n:0,u:Date.now()+3e5}:{n}));if(n>=5)$('gateError').textContent='ผิดครบ 5 ครั้ง ล็อก 5 นาที';}return false;};
-['loginIdCard','checkIdCard'].forEach((id,i)=>{const f=$(id);if(f)f.closest('.field').insertAdjacentHTML('afterend',`<div class="field" style="margin-bottom:10px"><label>วันเกิด (ยืนยันตัวตน)</label><input class="input" type="date" id="${i?'checkBirth':'loginBirth'}"></div>`);});
-const bOk=(a,b)=>{const m=DB.members.find(x=>x.idCard===$(a).value.trim());return!!(m&&m.birthDate&&m.birthDate===$(b).value);};
-const _lm=loginMember;loginMember=function(e){if(!bOk('loginIdCard','loginBirth')){e.preventDefault();$('gateError').textContent='เลขบัตรหรือวันเกิดไม่ถูกต้อง';return false;}return _lm(e);};
-const _cm=checkMember;checkMember=function(e){if(!bOk('checkIdCard','checkBirth')){e.preventDefault();$('checkResult').innerHTML='<div class="note warn">เลขบัตรหรือวันเกิดไม่ถูกต้อง</div>';return false;}return _cm(e);};
+/* v49: สมาชิกเข้าสู่ระบบ/เช็กสถานะด้วยเลขบัตรประชาชนอย่างเดียว (กันเดาเลขรัวๆ: ผิด 5 ครั้งล็อก 5 นาที) */
+const mFail=()=>{try{return JSON.parse(localStorage.getItem('v49_mf')||'{}');}catch(x){return{};}};
+const mGuard=(out)=>{const k=mFail();if(k.u>Date.now()){out('ลองผิดหลายครั้ง ล็อกชั่วคราวอีก '+Math.ceil((k.u-Date.now())/6e4)+' นาที');return false;}return true;};
+const mMark=ok=>{if(ok){localStorage.removeItem('v49_mf');return;}const k=mFail(),n=(k.n||0)+1;localStorage.setItem('v49_mf',JSON.stringify(n>=5?{n:0,u:Date.now()+3e5}:{n}));};
+const _lm=loginMember;loginMember=function(e){e.preventDefault();const id=$('loginIdCard').value.replace(/\D/g,'');$('loginIdCard').value=id;
+ if(!mGuard(t=>$('gateError').textContent=t))return false;
+ if(!DB.members.some(x=>x.idCard===id)){mMark(false);$('gateError').textContent='ไม่พบเลขบัตรนี้ในทะเบียน';return false;}
+ mMark(true);return _lm(e);};
+const _cm=checkMember;checkMember=function(e){e.preventDefault();const id=$('checkIdCard').value.replace(/\D/g,'');$('checkIdCard').value=id;
+ if(!mGuard(t=>$('checkResult').innerHTML='<div class="note warn">'+t+'</div>'))return false;
+ if(!DB.members.some(x=>x.idCard===id)){mMark(false);$('checkResult').innerHTML='<div class="note warn">ไม่พบข้อมูล</div>';return false;}
+ mMark(true);return _cm(e);};
 let idle;const rst=()=>{clearTimeout(idle);idle=setTimeout(()=>{if(ME){localStorage.removeItem(LS_SES);location.reload();}},9e5);};['click','keydown','touchstart'].forEach(v=>addEventListener(v,rst,{passive:true}));rst();
 const _ea=enterApp;enterApp=function(){_ea();fab();if(isA()&&DB.users.admin99&&DB.users.admin99.pass==='admin123')setTimeout(()=>toast('🔐 ยังใช้รหัสผ่านเริ่มต้น — เปลี่ยนที่ ตั้งค่า ก่อนใช้งานจริง','warn'),900);};
 const kb=()=>{let n=0;for(const k in localStorage)n+=(localStorage.getItem(k)||'').length;return Math.round(n*2/1024);};
-const stHTML=()=>{const k=kb(),p=Math.min(100,Math.round(k/5120*100));return `<div class="card" style="padding:16px;margin-top:16px"><div class="section-title" style="margin-top:0">🛡️ สำรองข้อมูล + รูปหลักฐาน (v48)</div><div class="small muted">พื้นที่ข้อมูลหลัก ${k} KB / ~5,120 KB (${p}%)</div><div class="v48bar"><i style="width:${p}%"></i></div><div class="v48row" style="margin-top:10px"><button class="btn primary" onclick="v48Bk()">⬇️ สำรองข้อมูล + รูปทั้งหมด</button><label class="btn ghost">⬆️ นำเข้าไฟล์สำรอง<input type="file" accept=".json" hidden onchange="v48Rs(this)"></label></div><div class="small muted" style="margin-top:8px">รูปสลิป/บัตรเก็บในเบราว์เซอร์เครื่องนี้ ถ้าล้างข้อมูลเบราว์เซอร์จะหาย — กดสำรองเป็นประจำ</div></div>`;};
+const stHTML=()=>{const k=kb(),p=Math.min(100,Math.round(k/5120*100));return `<div class="card" style="padding:16px;margin-top:16px"><div class="section-title" style="margin-top:0">🛡️ สำรองข้อมูล + รูปหลักฐาน (v49)</div><div class="small muted">พื้นที่ข้อมูลหลัก ${k} KB / ~5,120 KB (${p}%)</div><div class="v48bar"><i style="width:${p}%"></i></div><div class="v48row" style="margin-top:10px"><button class="btn primary" onclick="v48Bk()">⬇️ สำรองข้อมูล + รูปทั้งหมด</button><label class="btn ghost">⬆️ นำเข้าไฟล์สำรอง<input type="file" accept=".json" hidden onchange="v48Rs(this)"></label></div><div class="small muted" style="margin-top:8px">รูปสลิป/บัตรเก็บในเบราว์เซอร์เครื่องนี้ ถ้าล้างข้อมูลเบราว์เซอร์จะหาย — กดสำรองเป็นประจำ</div></div>`;};
 const _st=settingsHTML;settingsHTML=()=>_st()+stHTML();
 window.v48Bk=async()=>{if(!isA())return;const d=await idb(),att={};await new Promise(ok=>{const q=d.transaction('a').objectStore('a').openCursor();q.onsuccess=()=>{const c=q.result;if(c){att[c.key]=c.value;c.continue();}else ok();};});
- DB.settings.lastBackup=new Date().toISOString();saveDB();const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({v:48,db:DB,att})],{type:'application/json'}));a.download=`สำรอง-v48-${today()}.json`;a.click();toast('ดาวน์โหลดไฟล์สำรองแล้ว');};
+ DB.settings.lastBackup=new Date().toISOString();saveDB();const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({v:48,db:DB,att})],{type:'application/json'}));a.download=`สำรอง-v49-${todayBE()}.json`;a.click();toast('ดาวน์โหลดไฟล์สำรองแล้ว');};
 window.v48Rs=inp=>{const f=inp.files[0];if(!f||!isA())return;const r=new FileReader();r.onload=async()=>{try{const j=JSON.parse(r.result),db=j.db||j;if(!db.members)throw 0;if(!confirm('นำเข้าจะแทนที่ข้อมูลปัจจุบันทั้งหมด ดำเนินการ?'))return;for(const k in(j.att||{}))await tx('readwrite',s=>s.put(j.att[k],k));localStorage.setItem(LS,JSON.stringify(db));location.reload();}catch(e){toast('ไฟล์ไม่ถูกต้อง','bad');}};r.readAsText(f);};
 
 /* ===== ลูกเล่น: เอฟเฟกต์ / ค้นหาด่วน / พลุ ===== */
@@ -2574,9 +2579,315 @@ function pal(){if($('v48P')||!ME)return;const o=document.createElement('div');o.
  q.oninput=go;go();q.focus();q.onkeydown=e=>{if(e.key==='Escape')o.remove();if(e.key==='Enter'){const f=R.querySelector('.v48it');if(f)f.click();}};}
 window.v48Pal=pal;addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'&&ME){e.preventDefault();pal();}});
 function fab(){if($('v48F')||!ME)return;const f=document.createElement('div');f.id='v48F';f.innerHTML=`<button class="v48fb" onclick="v48Pal()" title="ค้นหาด่วน (Ctrl+K)">🔍</button>${ME.role!=='Member'?'<button class="v48fb" onclick="openMember(null)" title="เพิ่มสมาชิก">➕</button>':''}`;document.body.appendChild(f);}
+window.v48Lib={comp,loadT,parseCard,aPut,aGet,thumb,hydrate,fnv};
 if(ME){fab();renderPage();}
 })();
 </script>
+<script id="v49">
+/* ===================== v49 ===================== */
+/* ---------- ตัวช่วยวันที่ พ.ศ. ---------- */
+function todayBE(){const d=new Date();return String(d.getDate()).padStart(2,'0')+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+(d.getFullYear()+543);}
+function beDT(ts){if(!ts)return '';const d=new Date(ts);if(isNaN(d))return String(ts);return d.getDate()+' '+MTH[d.getMonth()]+' '+(d.getFullYear()+543)+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
+
+/* ---------- ช่องเลือกวันที่เป็น พ.ศ. (แทน input date/month ของเบราว์เซอร์ที่อาจโชว์ ค.ศ.) ---------- */
+(function(){
+const MF=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const nat=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value'),p2=n=>String(n).padStart(2,'0');
+const curBE=new Date().getFullYear()+543;
+function conv(inp){
+  const t=inp.type;if(inp.dataset.be||(t!=='date'&&t!=='month'))return;
+  inp.dataset.be=t;const v0=inp.value;inp.type='hidden';nat.set.call(inp,v0);
+  const mk=(ph,o)=>{const s=document.createElement('select');s.className='input';s.innerHTML=`<option value="">${ph}</option>`+o;return s;};
+  const dS=t==='date'?mk('วัน',Array.from({length:31},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('')):null;
+  const mS=mk('เดือน',MF.map((x,i)=>`<option value="${i+1}">${x}</option>`).join(''));
+  let ys='';for(let y=curBE+15;y>=curBE-110;y--)ys+=`<option value="${y}">${y}</option>`;
+  const yS=mk('พ.ศ.',ys),w=document.createElement('span');w.className='bedate';
+  if(dS)w.append(dS);w.append(mS,yS);inp.after(w);
+  const show=v=>{const m=/^(\d{4})-(\d{2})(?:-(\d{2}))?/.exec(v||'');
+    if(!m){if(dS)dS.value='';mS.value='';yS.value='';return;}
+    const by=String(+m[1]+543);if(![...yS.options].some(o=>o.value===by))yS.add(new Option(by,by));
+    yS.value=by;mS.value=String(+m[2]);if(dS)dS.value=m[3]?String(+m[3]):'';};
+  const commit=()=>{let out='';const y=yS.value,m=mS.value;
+    if(y&&m&&(!dS||dS.value)){const yy=+y-543,mm=+m,dim=new Date(yy,mm,0).getDate();
+      if(dS){let dd=+dS.value;if(dd>dim){dd=dim;dS.value=String(dd);}out=`${yy}-${p2(mm)}-${p2(dd)}`;}else out=`${yy}-${p2(mm)}`;}
+    nat.set.call(inp,out);inp.dispatchEvent(new Event('input',{bubbles:true}));inp.dispatchEvent(new Event('change',{bubbles:true}));};
+  [dS,mS,yS].forEach(s=>s&&s.addEventListener('change',commit));
+  Object.defineProperty(inp,'value',{configurable:true,get(){return nat.get.call(inp);},set(v){nat.set.call(inp,v);show(v);}});
+  show(v0);
+}
+const run=r=>{if(!r||r.nodeType!==1)return;if(r.matches&&r.matches('input[type=date],input[type=month]'))conv(r);r.querySelectorAll&&r.querySelectorAll('input[type=date],input[type=month]').forEach(conv);};
+new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(run))).observe(document.body,{childList:true,subtree:true});
+run(document.body);
+})();
+
+/* ---------- สมาชิก: ประวัติการชำระย้อนหลัง ---------- */
+UI.mh={y:'all',n:15};
+function mhYear(y){UI.mh.y=y;UI.mh.n=15;renderPage();}
+function mhMore(){UI.mh.n+=25;renderPage();}
+function payDesc(p){return p.type==='monthly'?(p.months||[]).map(x=>mLbl(x.ym||x)).join(', '):p.type==='annual'?'ค่าบำรุงรายปี '+(p.years||[]).map(y=>y+543).join(', '):'ค่าสมัครแรกเข้า';}
+function mhReceipt(mid,pid){const m=DB.members.find(x=>x.id===mid),p=m&&(m.payments||[]).find(x=>x.id===pid);
+  if(!p||(ME.role==='Member'&&ME.memberId!==mid))return;
+  afReceipt({no:p.receipt||('RC-'+String(p.id).slice(-6).toUpperCase()),name:prefixName(m),code:m.regNo,date:p.date,total:p.amount,items:[{t:payDesc(p),a:p.amount}]});}
+function mhGrid(m,yr){
+  const paid={};(m.payments||[]).forEach(p=>{if(p.type==='monthly')(p.months||[]).forEach(x=>{const ym=x.ym||x;paid[ym]=(x&&x.total!=null)?+x.total:monthAmount(m,ym);});});
+  const debt=new Set(debtMonths(m)),start=String(m.startCoverage||addMon(String(m.joinDate).slice(0,7)+'-01',1)).slice(0,7),cur=curYM();
+  let h='';for(let mo=1;mo<=12;mo++){const ym=yr+'-'+String(mo).padStart(2,'0');let st='na',tx='—';
+    if(paid[ym]!==undefined){st='ok';tx='✅ '+fmt(paid[ym]).replace('.00','');}
+    else if(debt.has(ym)){st='bad';tx='❌ ค้าง';}
+    else if(ym>=start&&ym<=cur){st='wait';tx='⏳ รอชำระ';}
+    h+=`<div class="mhc ${st}"><b>${MTH[mo-1]}</b><span>${tx}</span></div>`;}
+  return h;
+}
+function memberHistHTML(m){
+  const h=UI.mh,pays=(m.payments||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))),cy=new Date().getFullYear();
+  const yrs=[...new Set(pays.map(p=>+String(p.date).slice(0,4)).concat([cy]))].sort((a,b)=>b-a);
+  const sel=h.y==='all'?pays:pays.filter(p=>+String(p.date).slice(0,4)===+h.y);
+  const tot=a=>a.reduce((s,p)=>s+(+p.amount||0),0),gy=h.y==='all'?cy:+h.y,M="'"+m.id+"'";
+  const chips=`<div class="chips" style="margin-bottom:10px"><button class="chip ${h.y==='all'?'active':''}" onclick="mhYear('all')">ทั้งหมด</button>${yrs.map(y=>`<button class="chip ${+h.y===y?'active':''}" onclick="mhYear(${y})">พ.ศ. ${y+543}</button>`).join('')}</div>`;
+  const rows=sel.slice(0,h.n).map(p=>`<div class="list-item"><div><b>${fdate(p.date)}</b><div class="muted small">${esc(payDesc(p))}</div><div class="muted small">${esc(p.method||'เงินสด')}${p.collector?' · ผู้รับ '+esc(p.collector):''}${p.ref?' · อ้างอิง '+esc(p.ref):''}</div>${p.slip&&window.v48Lib?v48Lib.thumb(p.slip):''}</div><div style="text-align:right"><b>${fmt(p.amount)}</b><div><button class="btn small ghost" onclick="mhReceipt(${M},'${p.id}')">🧾 ใบเสร็จ</button></div></div></div>`).join('')||'<div class="muted">ไม่มีรายการในช่วงนี้</div>';
+  const ann=(()=>{const un=new Set(unpaidAnnualYears(m)),pd=new Set((m.annualFees||[]).map(f=>f.year)),jy=+String(m.joinDate).slice(0,4);let o='';for(let y=cy;y>=jy;y--){if(pd.has(y))o+=`<span class="pill ok">✅ ${y+543}</span> `;else if(un.has(y))o+=`<span class="pill danger">❌ ${y+543}</span> `;}return o||'<span class="muted">—</span>';})();
+  const rds=[];(DB.rounds||[]).forEach(r=>(r.entries||[]).forEach(e=>{if(e.memberId===m.id)rds.push({r,e});}));
+  const leg=[];((DB.legacy&&DB.legacy.rounds)||[]).forEach(r=>(r.entries||[]).forEach(e=>{if(e.name&&(e.name===m.fullName||e.name===prefixName(m)))leg.push({r,e});}));
+  const rdH=rds.concat(leg).map(({r,e})=>`<div class="list-item"><div><b>${esc(r.no||'')}</b> ${esc(r.title||'')}<div class="muted small">${e.paid?'ชำระแล้ว '+fdate(e.paidAt):'ยังไม่ชำระ'}</div></div><div><b>${fmt(e.amount)}</b> ${e.paid?'<span class="pill ok">ชำระแล้ว</span>':'<span class="pill warn">ค้าง</span>'}</div></div>`).join('');
+  return `<div class="card" style="padding:16px;margin-bottom:16px">
+    <div class="section-title" style="margin-top:0">📅 ประวัติการชำระเงิน (ย้อนหลังทั้งหมด)</div>${chips}
+    <div class="kpis" style="margin-bottom:10px"><div class="card kpi"><div class="label">${h.y==='all'?'ชำระรวมทั้งหมด':'ชำระรวมปี พ.ศ. '+(+h.y+543)}</div><div class="value" style="font-size:1.1rem">${fmt(tot(sel))}</div><div class="sub">${sel.length} รายการ</div></div>
+    <div class="card kpi"><div class="label">ชำระรวมตลอดการเป็นสมาชิก</div><div class="value" style="font-size:1.1rem">${fmt(tot(pays))}</div><div class="sub">${pays.length} รายการ</div></div></div>
+    <div class="section-title">ตารางรายเดือน ปี พ.ศ. ${gy+543}</div><div class="mhg">${mhGrid(m,gy)}</div>
+    <div class="muted small" style="margin:6px 0 12px">✅ ชำระแล้ว · ❌ ค้างชำระ · ⏳ ถึงรอบแล้วรอชำระ · — ยังไม่อยู่ในช่วงคุ้มครอง</div>
+    <div class="section-title">รายการชำระ</div>${rows}${sel.length>h.n?`<button class="btn small ghost" style="margin-top:8px" onclick="mhMore()">แสดงเพิ่ม (เหลือ ${sel.length-h.n})</button>`:''}
+    <div class="section-title">ค่าบำรุงรายปี</div><div>${ann}</div>
+    ${m.joinFeePaid?`<div class="muted small" style="margin-top:8px">ค่าสมัครแรกเข้า ชำระเมื่อ ${fdate(m.joinFeeDate||m.joinDate)}</div>`:'<div class="muted small" style="margin-top:8px">⚠️ ยังไม่ได้ชำระค่าสมัครแรกเข้า</div>'}
+    ${rdH?`<div class="section-title">เงินงวดรายศพ</div>${rdH}`:''}
+  </div>`;
+}
+
+/* ---------- รับสมัคร: สแกนบัตร → ตรวจ 14 ข้อทันที ---------- */
+const thNum=s=>String(s||'').replace(/[๐-๙]/g,c=>'๐๑๒๓๔๕๖๗๘๙'.indexOf(c));
+function parseAddrCard(t){
+  t=thNum(t).replace(/[ \t]+/g,' ');const r={},g=(re)=>{const m=t.match(re);return m?m[1].trim():'';};
+  r.no=g(/ที่อยู่\s*([0-9]+(?:\/[0-9]+)?)/);r.moo=g(/หมู่(?:ที่)?\s*([0-9]{1,2})/);
+  r.tambon=g(/(?:ตำบล|ต\.)\s*([ก-๙]{2,})/);r.amphoe=g(/(?:อำเภอ|อ\.)\s*([ก-๙]{2,})/);r.prov=g(/(?:จังหวัด|จ\.)\s*([ก-๙]{2,})/);
+  return r;}
+function afScanBody(){const a=UI.ap;
+  return `<div class="note">ถ่ายหน้าบัตรประชาชนให้เห็นตัวเลข 13 หลักชัด ๆ ไม่สะท้อนแสง — ระบบอ่านเลขบัตร ชื่อ วันเกิด วันหมดอายุ ที่อยู่ แล้ว<b>ตรวจเกณฑ์ 14 ข้อให้ทันที</b> และแนบรูปบัตรเป็นเอกสารข้อ 1.2</div>
+  <div class="v48row" style="margin:10px 0"><label class="btn primary">📷 ถ่ายรูปบัตร<input type="file" accept="image/*" capture="environment" hidden onchange="afScan(this)"></label><label class="btn ghost">🖼 เลือกรูปจากเครื่อง<input type="file" accept="image/*" hidden onchange="afScan(this)"></label></div>
+  <div id="afScanMsg" class="small muted">${a.scanMsg||'ยังไม่ได้สแกน — หรือกรอกข้อมูลเองในฟอร์มด้านล่างได้เลย'}</div>
+  ${a.idImg?`<img src="${a.idImg}" alt="" style="max-width:260px;width:100%;border-radius:10px;margin:8px 0;display:block">`:''}
+  <div class="section-title">ข้อมูลผู้สมัคร — ตรวจ/แก้ให้ตรงกับบัตรจริง แล้วกด “ตรวจสอบ”</div>${afManual()}`;}
+async function afScan(inp){
+  const f=inp.files[0];inp.value='';if(!f)return;const L=window.v48Lib,set=t=>{UI.ap.scanMsg=t;const e=document.getElementById('afScanMsg');if(e)e.innerHTML=t;};
+  if(!L){toast('ระบบสแกนไม่พร้อม','bad');return;}
+  UI.ap.pre={};UI.ap.d=null;UI.ap.idImg=null;set('⏳ กำลังเตรียมรูป…');
+  try{UI.ap.idImg=await L.comp(f,1000,.7);}catch(e){set('❌ อ่านรูปไม่สำเร็จ');return;}
+  try{
+    set('⏳ โหลดตัวอ่านภาษาไทย (ครั้งแรกต้องต่ออินเทอร์เน็ต สักครู่)…');await L.loadT();
+    const img=await L.comp(f,1800,.92,'grayscale(1) contrast(1.35)');
+    const w=await Tesseract.createWorker(['tha','eng'],1,{logger:m=>{if(m.status==='recognizing text')set('🔍 กำลังอ่านบัตร '+Math.round(m.progress*100)+'%');}});
+    const{data}=await w.recognize(img);await w.terminate();
+    const txt=data.text||'',r=L.parseCard(txt),ad=parseAddrCard(txt),P={};
+    if(r.prefix)P.prefix=r.prefix;if(r.name)P.name=r.name;if(r.nid)P.nid=r.nid;if(r.birth)P.birth=r.birth;if(r.exp)P.exp=r.exp;
+    ['no','moo','tambon','amphoe','prov'].forEach(k=>{if(ad[k])P[k]=ad[k];});
+    UI.ap.pre=P;
+    const got=[r.nid?'เลขบัตร':'',r.name?'ชื่อ':'',r.birth?'วันเกิด':'',r.exp?'วันหมดอายุ':'',ad.tambon?'ที่อยู่':''].filter(Boolean),miss=['เลขบัตร','ชื่อ','วันเกิด','วันหมดอายุ'].filter(x=>!got.includes(x));
+    UI.ap.scanMsg=(r.nid&&!r.okId?'⚠️ เลขบัตรไม่ผ่าน checksum อ่านผิดหรือไม่ — ตรวจเทียบบัตรจริง<br>':'')+'✅ อ่านได้: '+(got.join(', ')||'ไม่มี')+(miss.length?'<br>⚠️ อ่านไม่ได้: '+miss.join(', ')+' — กรอกเองด้านล่าง':'')+'<br>ตรวจทานให้ตรงกับบัตรจริงก่อนกดบันทึก';
+    renderPage();afManualCheck();toast(r.nid?'สแกนแล้ว — ตรวจเกณฑ์ให้ด้านล่าง':'อ่านได้ไม่ครบ ตรวจและกรอกเพิ่ม',r.nid?'':'warn');
+  }catch(e){
+    set('⚠️ อ่านอัตโนมัติไม่สำเร็จ ('+esc(e.message||'ตรวจสอบอินเทอร์เน็ต')+') — แนบรูปบัตรแล้ว กรอกข้อมูลเองได้');renderPage();}
+}
+/* ย้ายรูปบัตรของผู้สมัครไปเก็บใน IndexedDB ตอนบันทึกเข้าระบบ (ไม่กินพื้นที่ localStorage) */
+(function(){
+  const _ac=afCommit;afCommit=function(d){const img=d&&d.att&&d.att.idCard,m=_ac(d);
+    if(m&&img&&window.v48Lib){v48Lib.aPut(img).then(id=>{m.idImg=id;saveDB();}).catch(()=>{});}return m;};
+  ['afSave','afQueueAdd'].forEach(n=>{const f=window[n];window[n]=function(){const r=f.apply(this,arguments);
+    if(!UI.ap.d){UI.ap.pre={};UI.ap.idImg=null;UI.ap.scanMsg='';renderPage();}return r;};});
+})();
+
+/* ---------- AI ผู้ช่วย: เข้าใจข้อมูลทั้งระบบ (ทำงานในเครื่อง ไม่ส่งข้อมูลออกนอก) ---------- */
+const AIK=(()=>{
+const isMem=()=>!!ME&&ME.role==='Member',isAdm=()=>!!ME&&ME.role==='Admin';
+const pool=()=>isMem()?DB.members.filter(m=>m.id===ME.memberId):DB.members;
+const tb=m=>String((m.af&&m.af.addr&&m.af.addr.tambon)||'').replace(/^(ต\.|ตำบล)\s*/,'').trim();
+const STH={alive:'สมาชิกปกติ',suspended:'ถูกตัดสิทธิ์',deceased:'เสียชีวิต',archived:'เก็บถาวร',pending:'รออนุมัติ',rejected:'ไม่ผ่านเกณฑ์'};
+const nm=m=>prefixName(m),ageOf=m=>m.birthDate?calcAge(m.birthDate):null,p2=n=>String(n).padStart(2,'0');
+const maskId=id=>id?'•••••••••'+String(id).slice(-4):'—';
+const sumP=(m,f)=>(m.payments||[]).filter(f||(()=>true)).reduce((s,p)=>s+(+p.amount||0),0);
+const MF=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const monthIdx=t=>{for(let i=0;i<12;i++)if(t.includes(MF[i])||t.includes(MTH[i])||t.includes(MTH[i].replace(/\./g,'')))return i+1;return 0;};
+const STAFF_ONLY='🔒 ข้อมูลส่วนนี้ดูได้เฉพาะเจ้าหน้าที่ครับ\nสมาชิกถามเรื่องของตัวเองได้ เช่น "ยอดค้างของฉัน" "ประวัติการชำระ" "สิทธิ์รับเงิน"';
+const nidOk=id=>isValidID(String(id||''));
+function period(q){const now=new Date(),cy=now.getFullYear(),cm=now.getMonth()+1;
+  if(/เดือน(ที่แล้ว|ก่อน)/.test(q)){const d=new Date(cy,cm-2,1);return{ym:d.getFullYear()+'-'+p2(d.getMonth()+1)};}
+  if(/ปี(ที่แล้ว|ก่อน)/.test(q))return{year:cy-1};
+  let y=null;const b=q.match(/(25\d{2})/);if(b)y=+b[1]-543;else{const c=q.match(/\b(20\d{2})\b/);if(c)y=+c[1];}
+  const mo=monthIdx(q);if(mo)return{ym:(y||cy)+'-'+p2(mo)};
+  if(y)return{year:y};if(/ปีนี้|ทั้งปี|รายปี/.test(q))return{year:cy};return{ym:curYM()};}
+const plabel=p=>p.ym?mLbl(p.ym):'ปี พ.ศ. '+(p.year+543);
+const inP=(d,p)=>p.ym?String(d).slice(0,7)===p.ym:String(d).slice(0,4)===String(p.year);
+const lim=q=>/ทั้งหมด|ครบ/.test(q)?80:12;
+function listOut(title,arr,row,q){const L=lim(q);return `<b>${title}</b> ${arr.length} ราย`+(arr.length?'\n'+arr.slice(0,L).map((m,i)=>`${i+1}. ${row(m)}`).join('\n'):'')+(arr.length>L?`\n…อีก ${arr.length-L} ราย (เติมคำว่า "ทั้งหมด" ท้ายคำถามเพื่อดูเพิ่ม)`:'');}
+function findMembers(q){
+  const P=pool(),res=new Map(),add=(m,s)=>res.set(m.id,Math.max(res.get(m.id)||0,s));
+  (q.replace(/[^\d]/g,' ').match(/\d{9,13}/g)||[]).forEach(dg=>P.forEach(m=>{if(m.idCard===dg)add(m,10);else if(String(m.phone||'').replace(/\D/g,'')===dg)add(m,9);}));
+  P.forEach(m=>{if(m.regNo&&q.includes(m.regNo))add(m,10);});
+  const qq=q.replace(/\s+/g,'');
+  P.forEach(m=>{const pt=String(m.fullName||'').trim().split(/\s+/),f=pt[0]||'',l=pt.slice(1).join('');
+    const fh=f.length>=3&&qq.includes(f),lh=l.length>=3&&qq.includes(l);
+    if(fh&&lh)add(m,5);else if(fh)add(m,3);else if(lh)add(m,2);else if(f.length===2&&l&&qq.includes(f)&&lh)add(m,5);});
+  return[...res.entries()].map(([id,s])=>[DB.members.find(x=>x.id===id),s]).filter(x=>x[0]).sort((a,b)=>b[1]-a[1]);}
+function histText(m,n){const ps=(m.payments||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  return `<b>💳 ประวัติชำระ ${nm(m)}</b>\nรวม ${ps.length} รายการ · ${fmt(sumP(m))}\n`+(ps.slice(0,n||10).map(p=>`• ${fdate(p.date)} · ${fmt(p.amount)} · ${payDesc(p)}${p.method&&p.method!=='เงินสด'?' ('+p.method+')':''}`).join('\n')||'ยังไม่มีรายการ')+(ps.length>(n||10)?`\n…อีก ${ps.length-(n||10)} รายการ (ดูทั้งหมดที่หน้า ภาพรวม/สมาชิก)`:'');}
+function payoutText(m){const g=c=>calcPayout(m,c),n=g('normal'),s=g('serious'),c=g('covid'),x=g('suicide');
+  return `<b>🕊️ สิทธิ์รับเงินฌาปนกิจ ${nm(m)}</b>\nเป็นสมาชิก ${monthsAsMember(m)} เดือน\n• โรคทั่วไป: ${fmt(n.amount)} (${n.note})\n• โรคร้ายแรง: ${fmt(s.amount)}\n• โควิด-19: ${fmt(c.amount)}\n• ฆ่าตัวตาย: ${fmt(x.amount)}\n${m.status==='suspended'?'⚠️ ถูกตัดสิทธิ์ ต้องผ่านมติที่ประชุมก่อนจ่าย\n':''}${debtMonths(m).length?'⚠️ มียอดค้างชำระ '+debtMonths(m).length+' เดือน\n':''}(คำนวณตามระเบียบ ฉบับ 3/2569 สถานะ ณ วันนี้)`;}
+function profile(m){
+  const d=debtMonths(m),ay=unpaidAnnualYears(m),ps=(m.payments||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))),last=ps[0],age=ageOf(m),a=(m.af&&m.af.addr)||{};
+  const h=Object.entries(m.health||{}).filter(([k,v])=>v).map(([k])=>HEALTH_LABELS[k]).join(', '),exp=(m.af&&m.af.nidExpiry)||m.idExp||'';
+  let v='';try{const r=AF.verdictOf(toAF(m),afOthers(m.id));v=r.hard.length?`❌ ไม่ผ่านเกณฑ์ ${r.hard.length} ข้อ: ${r.hard.map(c=>c.t).join(', ')}`:(r.soft.length?`⚠️ ผ่าน แต่ขาด ${r.soft.length} รายการ`:'✅ ผ่านเกณฑ์ครบ');}catch(e){}
+  UI.aiLast=m.id;
+  return [`<b>👤 ${nm(m)}</b>`,
+   `รหัส ${m.regNo||'—'} · ${STH[m.status]||m.status}${age!=null?' · อายุ '+age+' ปี':''}`,
+   `บัตรประชาชน ${isMem()?m.idCard:maskId(m.idCard)}${!nidOk(m.idCard)?' ⚠️ ไม่ผ่าน checksum':''}${exp?' · หมดอายุ '+fdate(exp)+(exp<today()?' ❌ หมดอายุแล้ว':''):''}`,
+   `โทร ${m.phone||'—'}${tb(m)?' · ต.'+tb(m):''}${a.amphoe?' อ.'+a.amphoe:''}`,
+   `สมัคร ${fdate(m.joinDate)} · เริ่มคุ้มครอง ${fdate(m.startCoverage)} · เป็นสมาชิก ${monthsAsMember(m)} เดือน`,
+   `กองทุน ${(m.fundIds||[]).map(id=>fundById(id)?.name||id).join(', ')||'—'} · เดือนละ ${fmt(monthAmount(m,curYM()))}`,
+   d.length?`⚠️ <b>ค้างชำระ ${d.length} เดือน (${fmt(totalDebt(m))})</b>: ${d.slice(0,6).map(mLbl).join(', ')}${d.length>6?' …':''}`:'✅ ชำระรายเดือนครบ',
+   ay.length?`⚠️ ค้างค่าบำรุง ปี พ.ศ. ${ay.map(y=>y+543).join(', ')}`:'✅ ค่าบำรุงรายปีครบ',
+   m.joinFeePaid?'':'⚠️ ยังไม่ชำระค่าสมัครแรกเข้า',
+   last?`ชำระล่าสุด ${fdate(last.date)} · ${fmt(last.amount)} · ${payDesc(last)}`:'ยังไม่มีประวัติชำระ',
+   `ชำระรวมตลอด ${fmt(sumP(m))} (${ps.length} รายการ)`,
+   `ผู้รับผลประโยชน์ ${m.b1&&m.b1.name?m.b1.name+' ('+(m.b1.relation||'—')+')':'—'}${m.b2&&m.b2.name?' · '+m.b2.name:''}`,
+   h?`สุขภาพที่บันทึก: ${h}`:'',v?`ตรวจเกณฑ์: ${v}`:'',
+   `\nถามต่อได้: "ประวัติชำระ" · "สิทธิ์รับเงิน"`].filter(Boolean).join('\n');}
+/* ค้นระเบียบด้วยการเทียบ trigram ของตัวอักษร (ใช้ได้กับภาษาไทยที่ไม่มีวรรค) */
+function ruleSearch(q){const clean=s=>String(s).replace(/[\s\.\,\?\!"'“”()\-:]/g,''),qc=clean(q);
+  const direct=q.match(/ข้อ\s*(\d(?:\.\d)?)/);const B=AF.BACK;
+  if(direct){const f=B.filter(c=>c.n===direct[1]||c.n===direct[1]+'.');if(f.length)return f.slice(0,3);}
+  if(qc.includes('ฆ่าตัวตาย')){const f=B.filter(c=>/^4/.test(c.n));if(f.length)return f;}
+  const tri=new Set();for(let i=0;i<qc.length-2;i++)tri.add(qc.slice(i,i+3));
+  const stop=['ฌาปนก','าปนกิ','ปนกิจ','สมาชิ','มาชิก','กลุ่ม','ไหมค','ได้ไห','ได้หร'];stop.forEach(x=>tri.delete(x));
+  if(tri.size<2)return[];
+  const sc=B.map(c=>{const t=clean(c.t);let s=0;tri.forEach(g=>{if(t.includes(g))s++;});return{c,s};}).filter(x=>x.s>=3).sort((a,b)=>b.s-a.s);
+  return sc.slice(0,2).map(x=>x.c);}
+function rulesOut(rs){return '<b>📜 ตามระเบียบ ฉบับ '+AF.EDITION+'</b>\n'+rs.map(c=>`<b>ข้อ ${c.n}</b> ${c.t}`).join('\n\n');}
+const FILT=[
+ [/ค้าง.{0,6}บำรุง|บำรุง.{0,8}ค้าง|ไม่.{0,4}บำรุง/,'ค้างค่าบำรุงรายปี',m=>m.status==='alive'&&unpaidAnnualYears(m).length>0,m=>`${nm(m)} — ปี พ.ศ. ${unpaidAnnualYears(m).map(y=>y+543).join(', ')}`],
+ [/ยังไม่.{0,6}ค่าสมัคร|ค่าสมัคร.{0,6}(ค้าง|ยังไม่)/,'ยังไม่ชำระค่าสมัครแรกเข้า',m=>!m.joinFeePaid&&['alive','pending'].includes(m.status),m=>`${nm(m)} (สมัคร ${fdate(m.joinDate)})`],
+ [/บัตร.{0,6}หมดอายุ|หมดอายุ.{0,6}บัตร|ใกล้หมดอายุ/,'บัตรประชาชนหมดอายุ/ใกล้หมดอายุ (90 วัน)',m=>{const e=(m.af&&m.af.nidExpiry)||m.idExp||'';if(!e||m.status!=='alive')return false;return e<addMon(today(),3);},m=>{const e=(m.af&&m.af.nidExpiry)||m.idExp;return `${nm(m)} — ${fdate(e)} ${e<today()?'❌ หมดแล้ว':'⏳ ใกล้หมด'}`;}],
+ [/ตัดสิทธิ์/,'ถูกตัดสิทธิ์',m=>m.status==='suspended',m=>`${nm(m)} — ค้าง ${debtMonths(m).length} เดือน (${fmt(totalDebt(m))})`],
+ [/ผ่านการเสียชีวิต|เสียชีวิต/,'เสียชีวิต',m=>m.status==='deceased',m=>nm(m)],
+ [/ไม่ผ่านเกณฑ์/,'ไม่ผ่านเกณฑ์สมัคร',m=>m.status==='rejected',m=>nm(m)],
+ [/รออนุมัติ|รอ.{0,3}ผ่าน/,'รออนุมัติ',m=>m.status==='pending',m=>`${nm(m)} (สมัคร ${fdate(m.joinDate)})`],
+ [/ไม่มี.{0,3}(เบอร์|โทร)|ขาด.{0,3}(เบอร์|โทร)/,'ไม่มีเบอร์โทร',m=>m.status==='alive'&&!m.phone,m=>nm(m)],
+ [/ไม่มี.{0,3}วันเกิด|ขาด.{0,3}วันเกิด/,'ไม่มีวันเกิดในระบบ',m=>!m.birthDate,m=>`${nm(m)} (บัตร ${maskId(m.idCard)})`],
+ [/เลขบัตร.{0,6}(ผิด|ไม่ถูก|ไม่ผ่าน)|checksum/i,'เลขบัตรไม่ผ่านการตรวจ checksum / ไม่ครบ 13 หลัก',m=>!nidOk(m.idCard),m=>`${nm(m)} — ${maskId(m.idCard)} (${String(m.idCard||'').length} หลัก)`],
+ [/ซ้ำ/,'เลขบัตรซ้ำกัน',m=>DB.members.some(x=>x.id!==m.id&&x.idCard&&x.idCard===m.idCard),m=>`${nm(m)} — ${maskId(m.idCard)}`],
+ [/ผู้รับผลประโยชน์.{0,6}(ไม่มี|ขาด|ว่าง)/,'ยังไม่ระบุผู้รับผลประโยชน์',m=>m.status==='alive'&&!(m.b1&&m.b1.name),m=>nm(m)],
+ [/โรค|ติดเตียง|สุขภาพ/,'มีข้อมูลสุขภาพเข้าข่ายโรคร้ายแรง/ติดเตียง',m=>Object.values(m.health||{}).some(Boolean),m=>`${nm(m)} — ${Object.entries(m.health||{}).filter(([k,v])=>v).map(([k])=>HEALTH_LABELS[k]).join(', ')}`],
+ [/ค้าง|ติดหนี้|ยังไม่(ชำระ|จ่าย|ส่ง)/,'ค้างชำระรายเดือน',m=>isOverdue(m),m=>`${nm(m)} — ${debtMonths(m).length} เดือน (${fmt(totalDebt(m))})`]];
+function filterOut(q){
+  const P=pool().filter(m=>true),tbs=[...new Set(P.map(tb).filter(t=>t.length>=2))],tsel=tbs.find(t=>q.includes(t));
+  // อายุ
+  const am=q.match(/อายุ\s*(เกิน|มากกว่า|ตั้งแต่|ต่ำกว่า|น้อยกว่า|ไม่เกิน)?\s*(\d{1,3})/);
+  let rows=null,title='';
+  if(am){const n=+am[2],op=am[1]||'',t=op?({'เกิน':a=>a>n,'มากกว่า':a=>a>n,'ตั้งแต่':a=>a>=n,'ต่ำกว่า':a=>a<n,'น้อยกว่า':a=>a<n,'ไม่เกิน':a=>a<=n})[op]:a=>a===n;
+    rows=P.filter(m=>m.status==='alive'&&ageOf(m)!=null&&t(ageOf(m)));title=`สมาชิกอายุ${op?op+' ':' '}${n} ปี`;rows.sort((a,b)=>ageOf(b)-ageOf(a));
+    var row=m=>`${nm(m)} — ${ageOf(m)} ปี`;}
+  else if(/ใกล้.{0,4}60|ครบ.{0,3}60/.test(q)){rows=P.filter(m=>m.status==='alive'&&ageOf(m)>=58&&ageOf(m)<=60);title='อายุ 58–60 ปี (ใกล้ครบเกณฑ์ 60)';var row=m=>`${nm(m)} — ${ageOf(m)} ปี`;}
+  else if(/(วัน)?เกิด.{0,8}(เดือน|นี้)|วันเกิด/.test(q)&&!/ไม่มี|ขาด/.test(q)){const mo=monthIdx(q)||(new Date().getMonth()+1);rows=P.filter(m=>m.status==='alive'&&m.birthDate&&+m.birthDate.slice(5,7)===mo);title='เกิดเดือน'+MF[mo-1];var row=m=>`${nm(m)} — ${fdate(m.birthDate)}`;}
+  else{const f=FILT.find(x=>x[0].test(q));if(!f)return null;rows=P.filter(f[2]);title=f[1];var row=f[3];if(f[1]==='ค้างชำระรายเดือน')rows.sort((a,b)=>debtMonths(b).length-debtMonths(a).length);}
+  if(tsel){rows=rows.filter(m=>tb(m)===tsel);title+=' ตำบล'+tsel;}
+  return listOut(title,rows,row,q);}
+function dataQuality(){const P=DB.members,c=(t,f)=>`• ${t}: <b>${P.filter(f).length}</b>`;
+  return `<b>🔎 ตรวจคุณภาพข้อมูล (${P.length} รายการ)</b>\n`+[c('เลขบัตรไม่ผ่าน checksum/ไม่ครบ 13 หลัก',m=>!nidOk(m.idCard)),c('เลขบัตรซ้ำกัน',m=>DB.members.some(x=>x.id!==m.id&&x.idCard&&x.idCard===m.idCard)),c('ไม่มีวันเกิด',m=>!m.birthDate),c('ไม่มีเบอร์โทร (สมาชิกปกติ)',m=>m.status==='alive'&&!m.phone),c('ไม่มีตำบล',m=>m.status==='alive'&&!tb(m)),c('ยังไม่ระบุผู้รับผลประโยชน์',m=>m.status==='alive'&&!(m.b1&&m.b1.name)),c('ยังไม่ชำระค่าสมัคร',m=>!m.joinFeePaid&&m.status==='alive'),c('บัตรหมดอายุ',m=>{const e=(m.af&&m.af.nidExpiry)||m.idExp||'';return m.status==='alive'&&e&&e<today();})].join('\n')+'\n\nถามต่อได้ เช่น "เลขบัตรไม่ผ่าน checksum" · "ไม่มีวันเกิด" · "เลขบัตรซ้ำ"';}
+function stats(q){const P=pool(),by=f=>{const o={};P.forEach(m=>{const k=f(m);o[k]=(o[k]||0)+1;});return o;};
+  if(/แยก.{0,6}ตำบล|แต่ละตำบล|ตำบลไหน/.test(q)){const o=by(m=>m.status==='alive'?(tb(m)||'ไม่ระบุตำบล'):null);delete o['null'];return '<b>🗺️ สมาชิกปกติแยกตามตำบล</b>\n'+Object.entries(o).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`• ${k}: ${v} คน`).join('\n');}
+  if(/แยก.{0,6}อายุ|ช่วงอายุ|อายุเฉลี่ย/.test(q)){const A=P.filter(m=>m.status==='alive'&&ageOf(m)!=null).map(ageOf),band=[[15,30],[31,45],[46,60],[61,200]];return '<b>🎂 สมาชิกปกติแยกช่วงอายุ</b>\n'+band.map(([a,b])=>`• ${a}–${b>150?'ขึ้นไป':b} ปี: ${A.filter(x=>x>=a&&x<=b).length} คน`).join('\n')+`\nอายุเฉลี่ย ${A.length?Math.round(A.reduce((s,x)=>s+x,0)/A.length):0} ปี`;}
+  if(/สมัคร(ปี|เมื่อ)|สมาชิกใหม่|แยก.{0,6}ปี/.test(q)){const y=q.match(/(25\d{2})/),o=by(m=>String(m.joinDate).slice(0,4));if(y){const n=o[String(+y[1]-543)]||0;return `สมัครในปี พ.ศ. ${y[1]}: <b>${n}</b> คน`;}return '<b>📅 จำนวนผู้สมัครแยกปี (พ.ศ.)</b>\n'+Object.entries(o).sort().map(([k,v])=>`• ${+k+543}: ${v} คน`).join('\n');}
+  if(/กี่คน|จำนวนสมาชิก|มีสมาชิก|สมาชิกทั้งหมด/.test(q)){const o=by(m=>m.status),tbs=[...new Set(P.map(tb).filter(t=>t.length>=2))],ts=tbs.find(t=>q.includes(t));
+    if(ts)return `สมาชิกปกติ ตำบล${ts}: <b>${P.filter(m=>m.status==='alive'&&tb(m)===ts).length}</b> คน`;
+    return `<b>👥 สมาชิกทั้งหมด ${P.length} รายการ</b>\n`+Object.entries(o).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`• ${STH[k]||k}: ${v}`).join('\n');}
+  return null;}
+function money(q){
+  const per=period(q);
+  if(/รายรับ|รายได้|เก็บเงินได้|ยอดเก็บ|เก็บได้/.test(q)){
+    const ps=[];DB.members.forEach(m=>(m.payments||[]).forEach(p=>{if(inP(p.date,per))ps.push(p);}));const t=ps.reduce((s,p)=>s+(+p.amount||0),0);
+    const ty=k=>ps.filter(p=>p.type===k);let out=`<b>💰 รายรับ ${plabel(per)}</b> ${fmt(t)} (${ps.length} รายการ)\n• รายเดือน ${fmt(ty('monthly').reduce((s,p)=>s+(+p.amount||0),0))}\n• ค่าบำรุงรายปี ${fmt(ty('annual').reduce((s,p)=>s+(+p.amount||0),0))}\n• ค่าสมัคร ${fmt(ty('join').reduce((s,p)=>s+(+p.amount||0),0))}`;
+    if(per.year){out+='\n\n'+Array.from({length:12},(_,i)=>{const ym=per.year+'-'+p2(i+1);return `• ${mLbl(ym)}: ${fmt(incomeMonth(ym))}`;}).join('\n');}
+    else{const pv=addMon(per.ym+'-01',-1).slice(0,7),a=incomeMonth(pv);out+=`\nเทียบ ${mLbl(pv)}: ${fmt(a)}${a?' ('+(t>=a?'+':'')+Math.round((t-a)/a*100)+'%)':''}`;}
+    return out;}
+  if(/รายจ่าย|ค่าใช้จ่าย/.test(q)){const E=(DB.expenses||[]).filter(e=>inP(e.date,per)),t=E.reduce((s,e)=>s+(+e.amount||0),0);return `<b>🧾 รายจ่าย ${plabel(per)}</b> ${fmt(t)} (${E.length} รายการ)\n`+E.slice(0,10).map(e=>`• ${fdate(e.date)} ${e.detail} ${fmt(e.amount)}`).join('\n');}
+  if(/จ่าย(เงิน)?ฌาปนกิจ|เงินจ่าย|ประวัติจ่าย|จ่ายไปแล้ว|จ่ายให้ทายาท/.test(q)&&!/ตาราง/.test(q)){const Y=(DB.payouts||[]).filter(e=>inP(e.date,per)||!/เดือน|ปี/.test(q)),t=Y.reduce((s,e)=>s+(+e.amount||0),0);return `<b>🕊️ เงินจ่ายฌาปนกิจ ${/เดือน|ปี/.test(q)?plabel(per):'ทั้งหมด'}</b> ${Y.length} ราย รวม ${fmt(t)}\n`+Y.slice(0,10).map(e=>`• ${fdate(e.date)} ${e.memberName||''} ${fmt(e.amount)}`).join('\n');}
+  if(/คงเหลือ|ยอดเหลือ|กำไร|สุทธิ/.test(q)){const inc=DB.members.reduce((s,m)=>s+sumP(m,p=>inP(p.date,per)),0),ex=(DB.expenses||[]).filter(e=>inP(e.date,per)).reduce((s,e)=>s+(+e.amount||0),0),py=(DB.payouts||[]).filter(e=>inP(e.date,per)).reduce((s,e)=>s+(+e.amount||0),0);return `<b>⚖️ ${plabel(per)}</b>\nรายรับ ${fmt(inc)}\nรายจ่าย ${fmt(ex)}\nเงินจ่ายฌาปนกิจ ${fmt(py)}\n<b>คงเหลือ ${fmt(inc-ex-py)}</b>`;}
+  if(/ยอดค้างรวม|ค้างรวม|หนี้รวม/.test(q)){const o=overdueM();return `ยอดค้างรายเดือนรวม <b>${fmt(o.reduce((s,m)=>s+totalDebt(m),0))}</b> จาก ${o.length} ราย · ค้างบำรุง ${DB.members.filter(m=>m.status==='alive'&&unpaidAnnualYears(m).length).length} ราย`;}
+  return null;}
+function rounds(q){const R=DB.rounds||[];if(!R.length)return '🪙 ยังไม่มีงวดเก็บเงินรายศพ';
+  const open=R.filter(r=>r.status==='open');
+  if(/ใคร|ยังไม่|ค้าง/.test(q)&&open.length){const r=open[open.length-1],u=r.entries.filter(e=>!e.paid);return `<b>🪙 ${r.no} ${r.title}</b> — ยังไม่ชำระ ${u.length}/${r.entries.length} ราย (กำหนด ${fdate(r.from)}–${fdate(r.to)})\n`+u.slice(0,lim(q)).map((e,i)=>{const m=DB.members.find(x=>x.id===e.memberId);return `${i+1}. ${m?nm(m):'—'} ${fmt(e.amount)}`;}).join('\n')+(u.length>lim(q)?`\n…อีก ${u.length-lim(q)}`:'');}
+  return '<b>🪙 งวดเก็บเงินรายศพ</b>\n'+R.slice(-8).reverse().map(r=>{const p=r.entries.filter(e=>e.paid);return `• ${r.no} ${r.title} — หัวละ ${fmt(r.perHead)} · ชำระ ${p.length}/${r.entries.length} (${fmt(p.reduce((s,e)=>s+e.amount,0))}) · ${r.status==='open'?'กำลังเก็บ':'ปิดงวด'}`;}).join('\n');}
+function overview(){const P=DB.members,a=P.filter(m=>m.status==='alive'),inc=incomeCur(),o=overdueM();
+  return `<b>📊 ภาพรวม ณ ${fdate(today())}</b>\n• สมาชิกปกติ ${a.length} · ตัดสิทธิ์ ${P.filter(m=>m.status==='suspended').length} · เสียชีวิต ${P.filter(m=>m.status==='deceased').length} · รออนุมัติ ${P.filter(m=>m.status==='pending').length}\n• รายรับเดือนนี้ ${fmt(inc)} · คงเหลือ ${fmt(balCur())}\n• อัตราจัดเก็บ ${collectRate()}% · ค้างรายเดือน ${o.length} ราย (${fmt(o.reduce((s,m)=>s+totalDebt(m),0))})\n• ค้างบำรุง ${a.filter(m=>unpaidAnnualYears(m).length).length} ราย\n• กองทุนที่เปิดใช้ ${activeFunds().length} · งวดรายศพที่เปิดอยู่ ${(DB.rounds||[]).filter(r=>r.status==='open').length}\n• ใบสมัครในคิว ${(DB.queue||[]).length}`;}
+function memberChat(q){
+  const m=pool()[0];if(!m)return 'ไม่พบข้อมูลของคุณ';UI.aiLast=m.id;
+  if(/ประวัติ|ชำระ.{0,6}(ล่าสุด|ไป|แล้ว)|จ่ายไป/.test(q)&&!/ค้าง/.test(q))return histText(m,12)+'\n\n(ดูครบทุกรายการ พร้อมตารางรายเดือนและใบเสร็จได้ที่หน้า ภาพรวม)';
+  if(/สิทธิ์|จะได้|ได้รับเงิน|ทายาท.{0,4}ได้/.test(q))return payoutText(m);
+  if(/ค้าง|ยอด|เท่าไหร่|ต้องจ่าย|เดือนนี้|ฉัน|ของฉัน|ผม|หนู|สถานะ|บัตร|ผู้รับผลประโยชน์|กองทุน|อัตรา/.test(q)&&!/ระเบียบ|กฎ|เกณฑ์/.test(q))return profile(m);
+  const rs=ruleSearch(q);if(rs.length)return rulesOut(rs);
+  if(/ตาราง/.test(q))return payoutTable();
+  return 'ลองถามเรื่องของคุณ เช่น:\n• "ยอดค้างของฉัน"\n• "ประวัติการชำระ"\n• "สิทธิ์รับเงินของฉัน"\n• "ต้องส่งเงินวันไหน" · "บัตรหมดอายุเป็นอย่างไร"';}
+function payoutTable(){return '<b>💰 ตารางเงินจ่าย</b>\nปกติ: ครบ 6 ด.=50,000 · 12 ด.=100,000 · 5 ปี=110,000\nโรคร้ายแรง: ครบ 30 ด.=100,000\nโควิด-19: ครบ 6 ด.=40,000\nฆ่าตัวตาย: <6 ด.=5,000 · <2 ปี=10,000 · <4 ปี=20,000 · <5 ปี=40,000 · <8 ปี=60,000 · ครบ 8 ปี=110,000\n(ดูฉบับเต็มที่เมนู ระเบียบ/ตารางจ่าย)';}
+function chat(q,old){
+  q=String(q||'').trim();const s=q.toLowerCase();
+  if(!q)return 'พิมพ์คำถามได้เลยครับ';
+  if(/^(สวัสดี|hello|hi|ช่วยอะไร|ทำอะไรได้|help)/i.test(s))return aiWelcome();
+  if(isMem())return memberChat(q);
+  const found=findMembers(q);
+  if(found.length&&found[0][1]>=3){
+    const top=found.filter(x=>x[1]===found[0][1]);
+    if(top.length>1)return `พบ ${top.length} รายที่ตรงกับ "${q}":\n`+top.slice(0,8).map(([m],i)=>`${i+1}. ${nm(m)} (${m.regNo||'—'}) ต.${tb(m)||'—'}`).join('\n')+'\nระบุชื่อ-นามสกุลหรือรหัสให้ชัดขึ้นอีกนิดครับ';
+    const m=top[0][0];
+    if(/ประวัติ|ชำระ.{0,6}(ล่าสุด|ไป|แล้ว)|จ่ายไป/.test(q)&&!/ค้าง/.test(q)){UI.aiLast=m.id;return histText(m,/ทั้งหมด/.test(q)?60:12);}
+    if(/สิทธิ์|จะได้|ได้รับเงิน|ทายาท/.test(q)){UI.aiLast=m.id;return payoutText(m);}
+    return profile(m);}
+  if(/เขา|คนนี้|รายนี้|ท่านนี้|คนเดิม|คนเมื่อกี้/.test(q)&&UI.aiLast){const m=DB.members.find(x=>x.id===UI.aiLast);if(m){if(/ประวัติ|ชำระ/.test(q)&&!/ค้าง/.test(q))return histText(m,12);if(/สิทธิ์|ได้รับเงิน/.test(q))return payoutText(m);return profile(m);}}
+  if(/ได้ไหม|ได้หรือไม่|ได้มั้ย|ระเบียบ|เงื่อนไข|กรณี|ข้อ\s*\d|ไม่จ่าย|ต้องทำอย่างไร|ยังไง/.test(q)){const rs0=ruleSearch(q);if(rs0.length)return rulesOut(rs0);}
+  if(/ตรวจ.{0,4}ข้อมูล|ข้อมูล.{0,4}(ผิด|ไม่ครบ|ผิดปกติ)|ผิดปกติ|คุณภาพข้อมูล/.test(q))return dataQuality();
+  if(/งวด|รายศพ/.test(q))return rounds(q);
+  if(/ตาราง.{0,4}(เงินจ่าย|จ่าย)|payout/.test(q))return payoutTable();
+  const mo=money(q);if(mo)return mo;
+  if(/สรุป|ภาพรวม|ภาพรวมระบบ/.test(q))return overview();
+  const st=stats(q);if(st)return st;
+  const fo=filterOut(q);if(fo)return fo;
+  if(/กองทุน|fund|อัตรา|rate|แนะนำ|advice/.test(s))return old(q);
+  const rs=ruleSearch(q);if(rs.length)return rulesOut(rs);
+  return '🤔 ยังไม่เข้าใจคำถามนี้ ลองถามแบบนี้ได้:\n• ชื่อสมาชิก / เลขบัตร / รหัส / เบอร์โทร\n• "ใครค้างชำระ ตำบลX" · "ค้างบำรุง" · "บัตรหมดอายุ"\n• "รายรับ ตุลาคม 2569" · "รายจ่ายปีนี้" · "คงเหลือ"\n• "สมาชิกแยกตามตำบล" · "อายุเกิน 55" · "ตรวจข้อมูลผิดปกติ"\n• "อายุเท่าไหร่สมัครได้" · "ฆ่าตัวตายจ่ายเท่าไหร่" (ค้นจากระเบียบ)';}
+return{chat};})();
+(function(){const old=AI.chat.bind(AI);AI.chat=function(q){try{return AIK.chat(q,old);}catch(e){console.error(e);return old(q);}};})();
+function aiWelcome(){return ME&&ME.role==='Member'?'สวัสดีครับ 👋 ผมช่วยดูข้อมูลของคุณได้ เช่น\n• "ยอดค้างของฉัน"\n• "ประวัติการชำระ"\n• "สิทธิ์รับเงินของฉัน"\n• ถามเรื่องระเบียบ เช่น "ต้องส่งเงินวันไหน"':'สวัสดีครับ 👋 ผมอ่านข้อมูลทั้งระบบได้ (สมาชิก การชำระ กองทุน รายรับ-จ่าย งวดรายศพ ระเบียบ) ลองพิมพ์:\n• ชื่อสมาชิก / เลขบัตร / รหัส\n• "ใครค้างชำระ" · "บัตรหมดอายุ" · "รายรับเดือนนี้"\n• "สมาชิกแยกตามตำบล" · "ตรวจข้อมูลผิดปกติ"';}
+function aiHint(){return ME&&ME.role==='Member'?'ถามเรื่องยอดค้าง ประวัติชำระ สิทธิ์รับเงิน และระเบียบ':'ถามได้ทั้งระบบ: สมาชิกรายคน ค้างชำระ รายรับ-จ่าย ตำบล อายุ ระเบียบ · ประมวลผลในเครื่อง ไม่ส่งข้อมูลออกนอก';}
+function aiChips(){const B=(q,l)=>`<button onclick="askAI('${q}')">${l}</button>`;
+  if(ME&&ME.role==='Member')return `<div class="quick-q">${B('ยอดค้างของฉัน','⚠️ ยอดค้าง')}${B('ประวัติการชำระ','📅 ประวัติชำระ')}${B('สิทธิ์รับเงินของฉัน','🕊️ สิทธิ์รับเงิน')}${B('ต้องส่งเงินวันไหน','📜 ระเบียบ')}</div>`;
+  return `<div class="quick-q">${B('สรุปภาพรวม','📊 ภาพรวม')}${B('รายรับเดือนนี้','💰 รายรับ')}${B('ใครค้างชำระบ้าง','⚠️ ค้าง')}${B('ใครค้างบำรุง','📅 ค้างบำรุง')}${B('บัตรหมดอายุ','🪪 บัตรหมดอายุ')}${B('สมาชิกแยกตามตำบล','🗺️ ตำบล')}${B('ตรวจข้อมูลผิดปกติ','🔎 ตรวจข้อมูล')}${B('ตารางเงินจ่าย','💵 เงินจ่าย')}</div>${ME&&ME.role==='Admin'?'<div style="margin:8px 0"><button class="btn small ghost" onclick="aiExport()">⬇️ ส่งออกข้อมูลสรุปให้ AI ภายนอก (.txt)</button></div>':''}`;}
+function aiExport(){if(!ME||ME.role!=='Admin')return;
+  const P=DB.members,L=['# ข้อมูลกลุ่มฌาปนกิจ 4 ตำบล (ส่งออกเมื่อ '+beDT(new Date().toISOString())+')','ให้ตอบเป็นภาษาไทย ใช้ปี พ.ศ. ทั้งหมด เลขบัตรถูกปิดบังเหลือ 4 ตัวท้าย','','## สรุป',`สมาชิกทั้งหมด ${P.length} · ปกติ ${P.filter(m=>m.status==='alive').length} · ตัดสิทธิ์ ${P.filter(m=>m.status==='suspended').length} · เสียชีวิต ${P.filter(m=>m.status==='deceased').length}`,`รายรับเดือนนี้ ${incomeCur()} บาท · คงเหลือ ${balCur()} บาท · อัตราจัดเก็บ ${collectRate()}%`,'','## ระเบียบ',...AF.BACK.map(c=>c.n+' '+c.t),'','## สมาชิก (รหัส | ชื่อ | บัตร | อายุ | สถานะ | ตำบล | สมัคร | ค้างเดือน | ค้างบาท | ค้างบำรุงปี | ชำระรวม | ชำระล่าสุด)'];
+  P.forEach(m=>{const ps=(m.payments||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)));L.push([m.regNo||'-',prefixName(m),'xxxxxxxxx'+String(m.idCard||'').slice(-4),calcAge(m.birthDate)??'-',m.status,(m.af&&m.af.addr&&m.af.addr.tambon)||'-',fdate(m.joinDate),debtMonths(m).length,totalDebt(m),unpaidAnnualYears(m).map(y=>y+543).join('/')||'-',(m.payments||[]).reduce((s,p)=>s+(+p.amount||0),0),ps[0]?fdate(ps[0].date):'-'].join(' | '));});
+  L.push('','## รายจ่าย',...(DB.expenses||[]).map(e=>`${fdate(e.date)} | ${e.detail} | ${e.amount}`),'','## เงินจ่ายฌาปนกิจ',...(DB.payouts||[]).map(e=>`${fdate(e.date)} | ${e.memberName||''} | ${e.amount}`));
+  afDl('ข้อมูลสรุปให้AI-'+todayBE()+'.txt',L.join('\n'),'text/plain;charset=utf-8');toast('ส่งออกแล้ว (เลขบัตรปิดบังบางส่วน) — เก็บเป็นความลับ ห้ามโพสต์สาธารณะ');}
+
+if(ME)renderPage();
+</script>
+<style id="v49css">
+.bedate{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.bedate select.input{width:auto;flex:1 1 72px;min-width:64px;padding:9px 6px}
+.bedate select.input:nth-child(2){flex:2 1 110px}
+.mhg{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px}
+.mhc{display:flex;flex-direction:column;gap:2px;padding:8px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-size:.78rem}
+.mhc b{font-size:.8rem}
+.mhc.ok{border-color:var(--success);background:color-mix(in srgb,var(--success) 12%,var(--card))}
+.mhc.bad{border-color:var(--danger);background:color-mix(in srgb,var(--danger) 12%,var(--card))}
+.mhc.wait{border-color:var(--warning);background:color-mix(in srgb,var(--warning) 12%,var(--card))}
+.mhc.na{opacity:.55}
+</style>
+
 
 </body>
 </html>
