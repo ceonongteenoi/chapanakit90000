@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ฌาปนกิจสงเคราะห์ 4 ตำบล · v52 ระบบสมบูรณ์</title>
+<title>ฌาปนกิจสงเคราะห์ 4 ตำบล · v57 รวมสมบูรณ์</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#080C22;--bg2:#0C1130;--sf:#121838;--sf2:#18204A;--sf3:#1E2757;--ln:#2B3475;--ln2:#3A44A0;--tx:#ECEFFF;--mu:#9BA4DC;--fa:#6F79B8;--gold:#FFB020;--gold2:#FFD98A;--saf:#FF8A3D;--vio:#7C5CFF;--ok:#2FD8A4;--warn:#FFB020;--bad:#FF4D6A;--info:#39A9FF;--mag:#FF3D9A;--c1:#FFB020;--c2:#39A9FF;--c3:#2FD8A4;--c4:#FF3D9A;--c5:#7C5CFF;--c6:#FF8A3D;--c7:#B6F24A;--c8:#FF4D6A;--track:#0E1430;--scrim:rgba(4,7,20,.74);--sh:0 18px 50px rgba(0,0,0,.5);--ink:#1A1206;--paper:#F6EFE2}
@@ -232,8 +233,61 @@ table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:13.1px}
 .pd th,.pd td{border:1px solid #999;padding:5px 7px}.pd th{background:#eee}.pd .hd{display:flex;justify-content:space-between;border-bottom:2px solid #333;padding-bottom:8px;margin-bottom:12px}
 .pd .sg{display:flex;justify-content:space-between;margin-top:32px;font-size:12.4px;gap:18px}.pd .sg div{flex:1;text-align:center}.pd .sg img{height:50px;display:block;margin:0 auto 4px}
 .pd .bx{border:2px solid #333;padding:12px;border-radius:8px}.pd .ph2{width:150px;border:1px solid #666;border-radius:6px}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.ap{width:794px;min-height:1123px;background:#FFFDF7;color:#141414;font-family:var(--fdoc);padding:46px 54px 40px;position:relative;transform-origin:top left;box-shadow:0 14px 34px -18px rgba(18,26,64,.45),0 0 0 1px rgba(18,26,64,.1);font-size:calc(14px*var(--dfs));line-height:calc(1.85*var(--dls))}
+.ap.o{background:#fff;color:#000;font-weight:600;font-size:calc(14.5px*var(--dfs));line-height:1.5;padding:28px 50px 24px;box-sizing:border-box}
+.ap.o u{text-decoration:underline;text-underline-offset:3px}
+.ap.o .aside{position:absolute;top:22px;right:46px;font-size:.9em}
+.ap.o .logo{display:block;width:84px;height:84px;margin:0 auto 6px;mix-blend-mode:multiply}
+.ap.o .t1{text-align:center;font-weight:700;font-size:1.22em;margin:4px 0 8px}
+.ap.o .t2{text-align:center;font-weight:700;margin-bottom:5px}
+.ap.o .arow{display:flex;align-items:flex-end;gap:7px;margin-bottom:calc(7px*var(--dls));white-space:nowrap}
+.ap.o .arow.cen{justify-content:center;margin:8px 0 12px}
+.ap.o .aff{flex:1 1 0;min-width:0;border-bottom:1.5px dotted #000;text-align:center;color:var(--docink,#000);white-space:normal;overflow-wrap:anywhere;line-height:1.3;padding:0 3px;min-height:1.3em;position:relative}
+.ap.o .sgn img{position:absolute;left:50%;bottom:1px;transform:translateX(-50%);max-height:38px;max-width:100%}
+.ap.o .sgrow{margin:8px 0 0}
+.ap.o .para{margin:6px 0;text-align:justify}
+.ap.o .para.ind{text-indent:2.2em}
+.ap.o table.tier{width:100%;border-collapse:collapse;margin:12px 0 8px}
+.ap.o table.tier td{border:1.5px solid #000;padding:3px 8px;background:none;font-weight:700}
+.ap.o table.tier td:first-child{width:76px;text-align:center;background:none}
+.ap.o table.tier td:last-child{text-align:left;width:auto;white-space:normal}
+.ap.o .aend{margin:6px 0 4px}
+.ap.o .chair{text-align:center;margin-top:4px;line-height:1.35;font-size:1em}
+.ap.o .chair img{display:block;width:88px;margin:0 auto -2px;mix-blend-mode:multiply}
+.ap.o .chair b{display:block;font-weight:700}
+.ap.o.back{font-size:calc(12.5px*var(--dfs));line-height:1.45;padding-top:34px}
+.ap.o .bl{margin-bottom:calc(2px*var(--dls))}
+:root{--fdoc:"Sarabun","Noto Sans Thai",Tahoma,sans-serif}
+.pgw{overflow:hidden;margin:0 auto 12px;border:1px solid var(--ln,#ccc);background:#fff}
+@media print{body>*:not(#printArea){display:none!important}#printArea{display:block!important}#printArea .ap{width:auto;min-height:auto;transform:none!important;margin:0;page-break-after:always;background:#fff}}
+:root{--fdoc:"Sarabun","IBM Plex Sans Thai","Noto Sans Thai",Tahoma,sans-serif}
+.ppbar{display:flex;gap:8px;flex-wrap:wrap;padding:9px 16px;border-bottom:1px solid var(--ln);background:linear-gradient(90deg,rgba(124,92,255,.14),rgba(255,176,32,.08))}
+.ppv{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.ppv .xs{flex:1;min-width:200px}
+.ppck{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:6px;margin:0 0 12px}
+.ppck div{display:flex;gap:8px;align-items:flex-start;padding:7px 10px;border-radius:10px;background:var(--sf2);border:1px solid var(--ln);font-size:12.5px;line-height:1.4}
+.ppck i{font-style:normal;font-weight:700;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;flex:none;font-size:11px;color:#fff;background:var(--ok)}
+.ppck .no i{background:var(--bad)}.ppck .sf i{background:var(--warn);color:#1A1206}
+.ppdesk{padding:18px 10px;border-radius:14px;background:radial-gradient(circle at 20% 0,rgba(124,92,255,.16),transparent 55%),var(--track);border:1px solid var(--ln);max-height:62vh;overflow:auto}
+.ppdesk .pgw{border:0;border-radius:3px;box-shadow:0 18px 40px -14px rgba(0,0,0,.6)}
+.rulet{width:100%;border-collapse:collapse;font-size:13px}.rulet td{padding:7px 10px;border-bottom:1px solid var(--ln)}.rulet td:first-child{white-space:nowrap;color:var(--gold2);font-weight:600}
+
+
+/* ===== v56 A4 + ลูกเล่น ===== */
+@page{size:A4;margin:0}
+@media print{#printArea .ap{width:794px!important;height:1121px!important;min-height:0!important;transform:none!important;margin:0!important;box-shadow:none!important;break-after:page;page-break-after:always;overflow:hidden}}
+.bg{background-size:160% 160%;animation:aur 22s ease-in-out infinite alternate}@keyframes aur{to{background-position:100% 60%}}
+.card{transition:transform .25s,box-shadow .25s,border-color .25s}.card:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:0 22px 44px -20px rgba(255,176,32,.45)}
+.card::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(260px circle at var(--mx,-99px) var(--my,-99px),rgba(255,176,32,.13),transparent 60%)}
+.ni{transition:transform .2s,background .2s}.ni:hover{transform:translateX(5px)}
+.btn{position:relative;overflow:hidden}.rip{position:absolute;border-radius:50%;background:rgba(255,255,255,.4);transform:scale(0);animation:rp .6s ease-out;pointer-events:none}@keyframes rp{to{transform:scale(4);opacity:0}}
+#cf{position:fixed;inset:0;pointer-events:none;z-index:99999}
+.aic{display:flex;flex-direction:column;gap:9px;max-height:52vh;overflow:auto;padding:4px}.aim{max-width:86%;padding:9px 13px;border-radius:14px;line-height:1.5;white-space:pre-line}
+.aim.u{align-self:flex-end;background:linear-gradient(135deg,var(--gold),var(--saf));color:#1A1206}.aim.b{background:var(--sf2);border:1px solid var(--ln)}
+.mcard{max-width:400px;margin:0 auto;border-radius:20px;overflow:hidden;color:#fff;background:linear-gradient(140deg,#2A1B7A,#7C5CFF 55%,#FF8A3D);box-shadow:var(--sh)}
+.mcard>div{padding:14px 18px}.mcard .qr{background:#fff;padding:6px;border-radius:10px;line-height:0}
 </style>
-</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script></head>
 <body>
 <div class="bg"></div><div class="orb a"></div><div class="orb b"></div><div class="orb c"></div>
 
@@ -241,7 +295,7 @@ table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:13.1px}
   <div class="lart">
     <div class="embers" id="embers"></div>
     <svg class="flame" viewBox="0 0 64 64" fill="none"><defs><linearGradient id="fg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FF6A00"/><stop offset=".55" stop-color="#FFB020"/><stop offset="1" stop-color="#FFE9A8"/></linearGradient></defs><path d="M32 4c9 12 3 17 8 22 4 4 8 2 8-4 6 8 8 15 8 21 0 12-11 19-24 19S8 55 8 43c0-13 12-20 16-30 2-5 5-7 8-9z" fill="url(#fg)"/><path d="M32 34c4 5 6 8 6 12a6 6 0 11-12 0c0-4 2-7 6-12z" fill="#FFF3D0" opacity=".9"/></svg>
-    <h1>ฌาปนกิจสงเคราะห์<br><span>4 ตำบล · v52</span></h1>
+    <h1>ฌาปนกิจสงเคราะห์<br><span>4 ตำบล · v57 รวมสมบูรณ์</span></h1>
     <div class="row wrap"><span class="b90">เงินช่วยเหลือ 90,000 บาท / ราย</span><span class="pill p-mag">สแกนบัตรประชาชนรับสมัคร</span></div>
     <div class="lstats" id="lstats"></div>
     <ul class="lpts">
@@ -260,7 +314,7 @@ table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:13.1px}
     <form id="staffForm" data-form="staffLogin">
       <div class="field"><label>ชื่อผู้ใช้</label><input class="input" name="u" autocomplete="username" placeholder="เช่น admin99" required></div>
       <div class="field"><label>รหัสผ่าน</label><input class="input" type="password" name="p" autocomplete="current-password" placeholder="••••••••" required></div>
-      <div id="lmsg"></div><button class="btn primary block" style="margin-top:15px" type="submit">เข้าสู่ระบบ</button>
+      <label class="chk" style="margin-top:12px"><input type="checkbox" id="rmChk"> จำชื่อผู้ใช้และคงการเข้าสู่ระบบในเครื่องนี้ 30 วัน</label><div id="lmsg"></div><button class="btn primary block" style="margin-top:15px" type="submit">เข้าสู่ระบบ</button>
     </form>
     <form id="memberForm" data-form="memberLogin" hidden>
       <div class="field"><label>เลขบัตรประชาชน 13 หลัก <b>*</b></label><input class="input mono" name="idc" inputmode="numeric" maxlength="13" placeholder="3700501101568" data-oninput="idLive" required></div>
@@ -391,7 +445,7 @@ function seed(){
   const FF=['บัวเรียน','สมศรี','คำหล้า','จันทร์เพ็ญ','หนูพิน','มาลี','ประภา','วิไล','อรุณี','ทองสุข','สุนีย์','ละออง','พิสมัย','จันทร์ทา','บุญเรือน','สายฝน','นงคราญ','สำอาง','ประหยัด','ลำไย'];
   const LN=['ศรีสุภา','วงค์ษา','พิมพ์พา','บุญมา','แสงดาว','อินทร์แก้ว','ดอนไพร','สุวรรณ','พุ่มทอง','จันทร์เพ็ง','นามวงศ์','โคตรศรี','ดวงดี','รักไทย','ใจซื่อ','มั่นหมาย','ทรัพย์เพิ่ม','บุญช่วย','หนองแสง','ป่าแฝก'];
   const REL=['บุตร','คู่สมรส','บิดา','มารดา','พี่น้อง'],dAgo=n=>{const d=new Date(NOW);d.setDate(d.getDate()-n);return iso(d)};
-  const s={version:52,createdAt:isoNow(),settings:{org:'กลุ่มฌาปนกิจสงเคราะห์ 4 ตำบล',sub:'บ้านเหล่า · หนองบัว · ป่าแฝก · ดอนตาล',payout:90000,entry:500,due:100,levy:50,wait:24,grace:60,ageMin:18,ageMax:65,idle:25,closed:'',causes:clone(CAUSES),theme:'night',sound:false,intake:{ocr:true,sig:true,docs:false,keep:false,keepDays:30}},
+  const s={version:52,createdAt:isoNow(),settings:{org:'กลุ่มฌาปนกิจสงเคราะห์ 4 ตำบล',sub:'บ้านเหล่า · หนองบัว · ป่าแฝก · ดอนตาล',payout:90000,entry:200,due:50,levy:50,wait:6,grace:10,ageMin:15,ageMax:60,r48:1,idle:25,closed:'',causes:clone(CAUSES),theme:'night',sound:false,intake:{ocr:true,sig:true,docs:false,keep:false,keepDays:30}},
    funds:[{id:'F1',name:'กองทุนกลาง ฌาปนกิจ 4 ตำบล',tambon:'รวม 4 ตำบล',opening:980000,active:true,note:'กองทุนหลัก จ่ายเงินช่วยเหลือ 90,000 บาท/ราย'},
     {id:'F2',name:'กองทุนเสริม บ้านเหล่า',tambon:'บ้านเหล่า',opening:145000,active:true,note:'สวัสดิการเพิ่มเติมระดับตำบล'},
     {id:'F3',name:'กองทุนเสริม หนองบัว',tambon:'หนองบัว',opening:118000,active:true,note:'สวัสดิการเพิ่มเติมระดับตำบล'},
@@ -1320,7 +1374,7 @@ const NAV=[{g:'งานประจำวัน'},{p:'dashboard',i:'dash',t:'�
 function renderNav(){
   $('#side').innerHTML=NAV.map(n=>{if(n.g)return '<div class="ng">'+n.g+'</div>';if(n.perm&&!can(n.perm))return '';const b=n.badge?n.badge():0;
     return '<div class="ni'+(ui.page===n.p?' on':'')+'" data-act="nav" data-page="'+n.p+'">'+ic(n.i)+'<span>'+n.t+'</span>'+(b?'<span class="cnt'+(n.hot?' hot':'')+'">'+b+'</span>':'')+'</div>'}).join('')+
-   '<div class="sfoot"><b style="color:var(--gold2)">'+esc(S.settings.org)+'</b><div>'+esc(S.settings.sub)+'</div><div style="margin-top:6px">v52 · ข้อมูลเก็บในเครื่องท่าน<br>สำรองล่าสุด: '+(S.lastBackup?thT(S.lastBackup):'ยังไม่ได้สำรอง')+'</div></div>'}
+   '<div class="sfoot"><b style="color:var(--gold2)">'+esc(S.settings.org)+'</b><div>'+esc(S.settings.sub)+'</div><div style="margin-top:6px">v53 · ข้อมูลเก็บในเครื่องท่าน<br>สำรองล่าสุด: '+(S.lastBackup?thT(S.lastBackup):'ยังไม่ได้สำรอง')+'</div></div>'}
 function renderTop(){if(!sess)return;
   const nt=S.notes.filter(n=>sess.mode==='member'?n.to==='m:'+sess.memberId:n.to===sess.role||n.to==='all'),un=nt.filter(n=>!n.read).length;
   $('#ta').innerHTML='<span class="sync" id="sync">'+ic('cloud')+'พร้อมใช้งาน</span>'+
@@ -1993,6 +2047,505 @@ document.addEventListener('drop',e=>{const z=e.target.closest('[data-drop]');if(
     if(k.indexOf(drag.el)<k.indexOf(z))l.insertBefore(drag.el,z.nextSibling);else l.insertBefore(drag.el,z);renum();if(W)W.data.beneficiaries=readBenes();toast('จัดลำดับผู้รับผลประโยชน์ใหม่แล้ว','info')}
   drag=null});
 window.addEventListener('beforeunload',stopCam);
+
+/* ===== v57 รวมสมบูรณ์: ใบสมัครกระดาษ + เกณฑ์รับสมัคร ตามไฟล์ v48 ===== */
+const AF=(()=>{const S={settings:{doc:{side:'both',guides:false,mono:false,ink:'#1B2470',dfs:1,dls:1,draft:false,zoom:1},auto:{checksum:true,dedupe:true}}};
+const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ic=(n,st)=>`<svg class="i"${st?` style="${st}"`:""}><use href="#i-${n}"/></svg>`;
+const uid=()=>crypto.randomUUID?crypto.randomUUID():"i"+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const B=n=>"฿"+Math.round(n).toLocaleString("th-TH");
+const N=n=>Math.round(n).toLocaleString("th-TH");
+const MTH=["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+const MTS=["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+const pad=n=>String(n).padStart(2,"0");
+const iso=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const today=()=>iso(new Date());
+const D=s=>{const[a,b,c]=String(s).split("-").map(Number);return new Date(a,b-1,c);};
+const beY=s=>D(s).getFullYear()+543;
+const fd=s=>{if(!s)return"—";const d=D(s);return d.getDate()+" "+MTS[d.getMonth()]+" "+(d.getFullYear()+543);};
+const fdl=s=>{if(!s)return"—";const d=D(s);return d.getDate()+" "+MTH[d.getMonth()]+" พ.ศ. "+(d.getFullYear()+543);};
+const fsx=s=>{if(!s)return"—";const d=D(s);return d.getDate()+" "+MTS[d.getMonth()]+" "+String(d.getFullYear()+543).slice(2);};
+const mk=d=>d.getFullYear()+"-"+pad(d.getMonth()+1);
+const addM=(s,n)=>{const d=D(s),day=d.getDate();d.setMonth(d.getMonth()+n);if(d.getDate()<day)d.setDate(0);return iso(d);};
+const fullMonths=(a,b)=>{const A=D(a),C=D(b);let m=(C.getFullYear()-A.getFullYear())*12+(C.getMonth()-A.getMonth());if(C.getDate()<A.getDate())m--;return Math.max(0,m);};
+const ageAt=(b,at)=>{if(!b)return"";const x=D(b),n=at?D(at):new Date();let a=n.getFullYear()-x.getFullYear();if(n.getMonth()<x.getMonth()||(n.getMonth()===x.getMonth()&&n.getDate()<x.getDate()))a--;return a;};
+const mask=n=>n?n[0]+"-XXXX-XXXXX-"+n[11]+"-"+n[12]:"—";
+const rel=t=>{const s=(Date.now()-t)/1000;if(s<60)return"เมื่อสักครู่";if(s<3600)return Math.floor(s/60)+" นาทีที่แล้ว";if(s<86400)return Math.floor(s/3600)+" ชม.ที่แล้ว";if(s<604800)return Math.floor(s/86400)+" วันที่แล้ว";return fd(iso(new Date(t)));};
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const isMobile=()=>window.matchMedia("(max-width:1099px)").matches;
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+async function copyText(t){try{await navigator.clipboard.writeText(t);return true;}catch(e){const a=document.createElement("textarea");a.value=t;a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();let ok=false;try{ok=document.execCommand("copy");}catch(x){}a.remove();return ok;}}
+function dl(n,c,m){const b=new Blob([c],{type:m}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2500);}
+const csv=r=>"\ufeff"+r.map(x=>x.map(c=>`"${String(c??"").replace(/"/g,'""')}"`).join(",")).join("\r\n");
+function nidCheck(d12){let s=0;for(let i=0;i<12;i++)s+=(+d12[i]||0)*(13-i);return String((11-(s%11))%10);}
+function nidValid(n){return /^\d{13}$/.test(n||"")&&nidCheck(n.slice(0,12))===n[12];}
+function nidGen(R){let d=String(1+Math.floor(R()*5));for(let i=0;i<11;i++)d+=Math.floor(R()*10);return d+nidCheck(d);}
+function vibrate(ms){try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
+const FEE=200,ANNUAL=50,EDITION="3/2569",CHAIR="นายสมศักดิ์ ดอนปานไพร";
+const WIN_FROM="2026-08-01",WIN_TO="2027-01-31";
+const DISEASES=[["cancer","โรคมะเร็ง"],["heart","โรคหัวใจ"],["kidney","โรคไต"],["aids","โรคเอดส์"],["liver","โรคตับแข็ง"],["diabetes","โรคเบาหวาน (ถูกตัดอวัยวะ)"]];
+const EXTRA=[["bedridden","ป่วยติดเตียง"],["selfcare","ช่วยเหลือตัวเองไม่ได้"]];
+const QUAL="คุณสมบัติผู้สมัคร ต้องมีสุขภาพแข็งแรงไม่เป็นโรคร้ายแรง โรคมะเร็ง โรคหัวใจ โรคไต โรคเอดส์ โรคตับแข็ง โรคเบาหวาน (ถูกตัดอวัยวะ)";
+const WARN1="ตรวจพบสมาชิกฯ จงใจปกปิดปัญหาสุขภาพ กลุ่มฌาปนกิจฯ ไม่จ่ายเงินฌาปนกิจศพให้ทายาทผู้รับผลประโยชน์ในทุกกรณี";
+const WARN2="สมาชิกฯ สมัครซ้ำซ้อนกลุ่มฌาปนกิจฯ ไม่คุ้มครองและไม่คืนเงินให้ในทุกกรณี";
+const ACK="ก่อนลงลายมือชื่อ ข้าพเจ้าได้อ่านใบสมัครทั้งด้านหน้าและด้านหลังเป็นที่เข้าใจโดยละเอียดตลอดทุกข้อความแล้ว";
+const TIERS=[{m:6,cause:"เสียชีวิตด้วยโรคโควิด 19",amt:40000},{m:6,cause:"เสียชีวิตด้วยโรคทั่วไป",amt:50000},
+ {m:12,cause:"เสียชีวิตด้วยโรคทั่วไป",amt:100000},
+ {m:30,cause:"เสียชีวิตด้วยโรคมะเร็ง โรคหัวใจ โรคไต โรคเอดส์ โรคตับแข็ง โรคเบาหวาน โรคโควิด 19",amt:100000},
+ {m:60,cause:"เสียชีวิตตามระเบียบข้อบังคับตามเงื่อนไขการเสียชีวิต",amt:110000}];
+const SUICIDE=[{m:0,label:"เป็นสมาชิกไม่ถึง 6 เดือน",amt:5000,levy:false,clause:"4.1"},
+ {m:6,label:"เป็นสมาชิกครบ 6 เดือน",amt:10000,levy:false,clause:"4.2"},
+ {m:24,label:"เป็นสมาชิกครบ 2 ปี",amt:20000,levy:false,clause:"4.3"},
+ {m:36,label:"เป็นสมาชิกครบ 3 ปี",amt:30000,levy:false,clause:"4.4"},
+ {m:48,label:"เป็นสมาชิกครบ 4 ปี",amt:40000,levy:false,clause:"4.5"},
+ {m:60,label:"เป็นสมาชิกครบ 5 ปี",amt:60000,levy:false,clause:"4.6"},
+ {m:72,label:"เป็นสมาชิกครบ 6 ปี",amt:100000,levy:true,clause:"4.7"},
+ {m:96,label:"เป็นสมาชิกครบ 8 ปี",amt:110000,levy:true,clause:"4.8"}];
+const EXCLUDE=[{k:"5.1",t:"ผู้สมัครซ้ำซ้อน",meeting:false},{k:"5.2",t:"ถูกฆาตกรรมเพื่อหวังเงินฌาปนกิจ",meeting:false},
+ {k:"5.3",t:"ผู้รับผลประโยชน์เป็นฆาตกร จ้างวานฆ่า หรือยุยงส่งเสริมให้ผู้อื่นฆ่า",meeting:false},
+ {k:"5.4",t:"ให้ข้อมูลเท็จ จงใจปกปิดปัญหาสุขภาพ / โรคร้ายแรง",meeting:false},
+ {k:"5.5",t:"เสียชีวิตจากการจราจล ประท้วง หรือสงคราม",meeting:true},
+ {k:"5.6",t:"เสียชีวิตจากภัยพิบัติ (รัฐบาลประกาศหรือไม่ประกาศก็ตาม)",meeting:true},
+ {k:"5.8",t:"โรคระบาดที่รัฐบาลประกาศ เช่น โควิด 19",meeting:true}];
+const BACK=[{n:"1.",h:true,t:"หลักเกณฑ์ในการรับสมัครสมาชิก"},
+ {n:"1.1",t:"ค่าสมัครแรกเข้าคนละ 200 บาท กลุ่มฌาปนกิจฯ รับสมัครสมาชิกที่สุขภาพแข็งแรงไม่เป็นโรคร้ายแรง โรคมะเร็ง โรคหัวใจ โรคไต โรคเอดส์ โรคตับแข็ง โรคเบาหวาน (ตัดอวัยวะ) รับสมัครสมาชิกฯ ใหม่ที่อายุ 15-60 ปี (อายุ 60 ปี ทายาทผู้รับผลประโยชน์ต้องสมัครคู่มาด้วยอายุไม่เกิน 45 ปี)"},
+ {n:"1.2",t:"เอกสารประกอบใบสมัคร สำเนาบัตรประชาชน สำเนาทะเบียนบ้าน ผู้สมัครและผู้รับผลประโยชน์ คนละ 1 ชุด พร้อมเซ็นสำเนาถูกต้องทุกใบ"},
+ {n:"1.3",t:"กลุ่มฌาปนกิจฯ ไม่รับสมัครสมาชิกฯ บัตรประชาชนหมดอายุ"},
+ {n:"1.4",t:"กลุ่มฌาปนกิจฯ ไม่รับสมัครสมาชิกฯ มีปัญหาสุขภาพ ช่วยเหลือตัวเองไม่ได้ ป่วยติดเตียง และเป็นโรคร้ายแรงดังกล่าวข้างต้น"},
+ {n:"1.5",t:"กลุ่มฌาปนกิจฯ ไม่รับสมัครสมาชิกฯ ซ้ำซ้อน หากพบเจอไม่คุ้มครองทุกกรณี"},
+ {n:"1.6",t:"กลุ่มฌาปนกิจฯ จะเริ่มคุ้มครองผู้สมัครเป็นสมาชิกกลุ่มฌาปนกิจฯ ที่ผ่านหลักเกณฑ์ในวันที่ 1 เวลา 00.01 น. ของทุกเดือนถัดไป หลังจากที่วันที่สมัครเป็นต้นไป (หากผู้สมัครรายใดไม่ผ่านหลักเกณฑ์ ให้มาติดต่อรับเงินค่าสมัครคืนได้ตามวันเวลาราชการ)"},
+ {n:"2.",h:true,t:"การชำระเงินฌาปนกิจฯ เป็นรายศพตามสภาพจริง (เก็บเดือนละ 1 ครั้ง) กำหนดการส่งเงินทุกวันที่ 1 ถึง 10 ของทุกเดือน (หลังวันที่ 10 สมาชิกฯ ท่านใดยังไม่ชำระเงิน กลุ่มฌาปนกิจฯ จะพิจารณาตัดสิทธิ์การเป็นสมาชิกต่อไป)"},
+ {n:"3.",h:true,t:"การชำระเงินบำรุงรายปี สมาชิกฯ ต้องชำระเงินบำรุงรายปีคนละ 50 บาท ให้กับทางกลุ่มฌาปนกิจฯ ทุกวันที่ 1 ถึง 10 ในเดือนมกราคมของทุกปี สมาชิกฯ ท่านใดไม่ชำระเงินบำรุงรายปีตามที่กลุ่มฌาปนกิจฯ กำหนดไว้ เสียชีวิตกลุ่มฌาปนกิจฯ ไม่จ่ายเงินฌาปนกิจฯ ให้ทายาท"},
+ {n:"4.",h:true,t:"ระเบียบว่าด้วยการจ่ายเงินฌาปนกิจฯ กรณี “ฆ่าตัวตาย” โดยเจตนา"},
+ ...SUICIDE.map(s=>({n:s.clause,sub:true,t:`${s.label} จ่ายเงินทำบุญจำนวน ${N(s.amt)} บาท (${s.levy?"เก็บเงินสมาชิก":"ไม่เก็บเงินสมาชิก"})`})),
+ {n:"5.",h:true,t:"กลุ่มฌาปนกิจฯ ไม่จ่ายเงินฌาปนกิจฯ ศพ ในกรณีดังนี้"},
+ {n:"5.1",sub:true,t:"ไม่จ่ายเงินฌาปนกิจฯ ให้ผู้สมัครซ้ำซ้อน"},
+ {n:"5.2",sub:true,t:"ไม่จ่ายเงินฌาปนกิจฯ ให้กับสมาชิกฯ ที่ถูกฆาตกรรมเพื่อหวังเงินฌาปนกิจฯ"},
+ {n:"5.3",sub:true,t:"ไม่จ่ายเงินฌาปนกิจฯ ให้ผู้รับผลประโยชน์เป็นผู้ฆ่า หรือจ้างวานฆ่า หรือมีส่วนในการยุยงส่งเสริมให้ผู้อื่นฆ่า เพื่อหวังเงินฌาปนกิจฯ"},
+ {n:"5.4",sub:true,t:"ไม่จ่ายเงินฌาปนกิจฯ กรณีตรวจพบให้ข้อมูลเป็นเท็จ ตั้งใจปกปิดปัญหาสุขภาพเป็นโรคร้ายแรง (ตามข้อ 1. หลักเกณฑ์ในการรับสมัคร) ข้างต้น"},
+ {n:"5.5",sub:true,t:"ไม่จ่ายเงินฌาปนกิจฯ กรณีเสียชีวิตจากการจราจล ประท้วง หรือสงคราม (ที่ประชุมจะมีการพิจารณาจ่ายเงินฌาปนกิจฯ เป็นรายบุคคลไป)"},
+ {n:"5.6",sub:true,t:"ไม่จ่ายเงินฌาปนกิจฯ จากภัยพิบัติซึ่งรัฐบาลประกาศ หรือไม่ประกาศก็ตาม (ที่ประชุมจะมีการพิจารณาจ่ายเงินฌาปนกิจฯ เป็นรายบุคคลไป)"},
+ {n:"5.7",sub:true,t:"ไม่จ่ายเงินคืนกรณีที่สมาชิกฯ ขอลาออกยกเลิกการเป็นสมาชิกกลุ่มฌาปนกิจฯ หรือถูกยกเลิกกรณีทำผิดเงื่อนไขของกลุ่มฌาปนกิจฯ"},
+ {n:"5.8",sub:true,t:"ไม่จ่ายเงินกรณีเกิดโรคระบาดขึ้นกับประชาชนเป็นจำนวนมากที่รัฐบาลประกาศภาวะโรคระบาด หรือไม่ก็ตาม เช่น โรคโควิด 19 เป็นต้น (ที่ประชุมจะมีการพิจารณาจ่ายเงินฌาปนกิจฯ เป็นรายบุคคลไป)"},
+ {n:"6.",h:true,t:"การขอรับเงินฌาปนกิจศพ"},
+ {n:"6.1",sub:true,t:"เอกสารผู้เสียชีวิต 1.สำเนาใบมรณะบัตร (ท.ร.4 ตอน 1) 2.สำเนาบัตรประชาชน 3.สำเนาทะเบียนบ้าน (ปั๊มตาย) 4.เอกสารการตายอื่น ๆ"},
+ {n:"6.2",sub:true,t:"เอกสารผู้รับผลประโยชน์ 1.สำเนาบัตรประชาชน 2.สำเนาทะเบียนบ้าน (ผู้รับผลประโยชน์เซ็นชื่อรับรองสำเนาเอกสารทุกใบ)"}];
+const ST={pending:{t:"รออนุมัติ",c:"b-gold",v:"var(--gold)"},active:{t:"สมาชิกสมบูรณ์",c:"b-ok",v:"var(--ok)"},
+ cut:{t:"ตัดสิทธิ์",c:"b-bad",v:"var(--bad)"},dead:{t:"เสียชีวิต",c:"b-info",v:"var(--info)"},
+ arch:{t:"เก็บถาวร",c:"b-mute",v:"var(--muted)"},rejected:{t:"ไม่ผ่านเกณฑ์",c:"b-bad",v:"var(--bad)"}};
+const METH={cash:{t:"เงินสด",i:"cash"},transfer:{t:"โอน",i:"swap"},promptpay:{t:"พร้อมเพย์",i:"qr"}};
+const DOCS=[["idCard","สำเนาบัตรประชาชน · ผู้สมัคร"],["houseReg","สำเนาทะเบียนบ้าน · ผู้สมัคร"],["benId","สำเนาบัตรประชาชน · ผู้รับผลประโยชน์"],["benHouse","สำเนาทะเบียนบ้าน · ผู้รับผลประโยชน์"]];
+const KEY="cha4t_v53",USER="admin99";
+const thisBE=()=>new Date().getFullYear()+543;
+const coverStart=j=>{const d=D(j);return iso(new Date(d.getFullYear(),d.getMonth()+1,1));};
+const dueWindow=f=>{const d=D(f),s=new Date(d.getFullYear(),d.getMonth()+1,1);return{from:iso(s),to:iso(new Date(s.getFullYear(),s.getMonth(),10))};};
+const annualPaid=(m,y)=>!!(m.annual&&m.annual[y]&&m.annual[y].paid);
+function blank(){return{id:null,code:"",prefix:"นาย",name:"",nid:"",nidExpiry:"",bd:"",bm:"",by:"",age:"",spouse:"",
+ addr:{no:"",moo:"",soi:"",road:"",tambon:"",amphoe:"",province:"",tel:""},
+ couple:[{name:"",age:""},{name:"",age:""}],bens:[{name:"",addr:"",rel:"",tel:""},{name:"",addr:"",rel:"",tel:""}],
+ health:{cancer:false,heart:false,kidney:false,aids:false,liver:false,diabetes:false,bedridden:false,selfcare:false},
+ dup:false,concealed:false,docs:{idCard:false,houseReg:false,benId:false,benHouse:false},att:{},
+ fee:{paid:false,date:"",method:"cash"},annual:{},joinDate:today(),coverageStart:"",route:"",agent:"",
+ status:"pending",sig:{applicant:"",agent:"",witness:"",committee:""},ack:false,note:"",edition:EDITION,src:"manual"};}
+function toDraft(m){const d=blank();Object.assign(d,JSON.parse(JSON.stringify(m)));d.att=m.att||{};const b=D(m.birth);
+ d.bd=b.getDate();d.bm=b.getMonth()+1;d.by=b.getFullYear()+543;d.age=ageAt(m.birth,m.joinDate);return d;}
+function toMember(d){const birth=(+d.by-543)+"-"+pad(+d.bm)+"-"+pad(+d.bd);
+ return{id:d.id||uid(),code:d.code,prefix:d.prefix,name:d.name,nid:d.nid,nidExpiry:d.nidExpiry,birth,spouse:d.spouse,
+  addr:{...d.addr},couple:d.couple.map(c=>({...c})),bens:d.bens.map(b=>({...b})),health:{...d.health},
+  dup:d.dup,concealed:d.concealed,docs:{...d.docs},att:{...(d.att||{})},fee:{...d.fee},annual:JSON.parse(JSON.stringify(d.annual||{})),
+  joinDate:d.joinDate,coverageStart:coverStart(d.joinDate),route:d.route,agent:d.agent,status:d.status,
+  sig:{...d.sig},ack:d.ack,note:d.note,edition:EDITION,src:d.src||"manual",createdAt:d.createdAt||today()};}
+const FIRST=["สมพงษ์","บัวสอน","พิมพ์ใจ","ทองอินทร์","สำเนา","วิรัตน์","จันทร์เพ็ญ","อำนวย","ดาริกา","สมเกียรติ","ทองใบ","บุญมี","ผิวพรรณ","เฉลียว","มนัสนันท์","สุรพล","เอียด","เกรียงไกร","นวลจันทร์","พิทักษ์","อรพรรณ","สมชาย","รำไพ","ธนากร","สายฝน","อดิศร","ละม้าย","บัญชา"];
+const LAST=["ใจมั่น","ศรีดา","ดอนจันทร์","บ้านเหล่า","หนองบัว","ทุ่งสุข","ศรีสุวรรณ","ใจซื่อ","บุญเรือง","แสงทอง","มั่นคง","พูลผล","สุขเกษม","ศรีบุญมา","วงศ์สุวรรณ","ขันแข็ง","ใจดี","ศิริวัฒน์","นาคสุข","ฉลาดคิด","แก้วมณี","พึ่งตน","อ่อนหวาน","กล้าหาญ","งามตา","รักษ์ดี"];
+const TAMBON=["ดอนจันทร์","บ้านเหล่า","หนองบัวทอง","ทุ่งสุข"],AMPHOE=["เมือง","วังสามหมอ","ทุ่งฝน","หนองวัวซอ"],PROV=["อุดรธานี","หนองบัวลำภู","ขอนแก่น","เลย"],RELS=["คู่สมรส","บุตร","พี่น้อง","หลาน","บิดา","มารดา"];
+function person(R,opts){
+  const r=R||rng(Date.now()%99991),pk=a=>a[Math.floor(r()*a.length)],ri=(a,b)=>a+Math.floor(r()*(b-a+1));
+  const d=blank();d.prefix=pk(["นาย","นาง","นางสาว"]);d.name=pk(FIRST)+" "+pk(LAST);d.nid=nidGen(r);
+  const by=(opts&&opts.by)||ri(2500,2545);d.by=by;d.bm=ri(1,12);d.bd=ri(1,28);
+  d.joinDate=(opts&&opts.join)||today();d.age=ageAt((by-543)+"-"+pad(d.bm)+"-"+pad(d.bd),d.joinDate);
+  d.nidExpiry=iso(new Date(2030+ri(0,6),ri(0,11),ri(1,28)));
+  d.spouse=(d.prefix==="นาย"?"นาง":"นาย")+pk(FIRST)+" "+d.name.split(" ")[1];
+  const tb=pk(TAMBON);
+  d.addr={no:ri(1,199)+(r()<.5?"/"+ri(1,9):""),moo:String(ri(1,12)),soi:pk(["-","ซอยวัด","ซอยเทศบาล 3"]),road:pk(["-","สายบ้านเหล่า","ทางหลวง 203"]),
+   tambon:tb,amphoe:pk(AMPHOE),province:pk(PROV),tel:"08"+ri(10000000,99999999)};
+  if(d.age>=60)d.couple[0]={name:pk(["นางสาว","นาย"])+pk(FIRST)+" "+d.name.split(" ")[1],age:String(ri(28,44))};
+  d.bens[0]={name:pk(["นาง","นาย","นางสาว"])+pk(FIRST)+" "+d.name.split(" ")[1],addr:d.addr.no+" หมู่ "+d.addr.moo+" ต."+tb,rel:pk(RELS),tel:"08"+ri(10000000,99999999)};
+  if(r()<.35)d.bens[1]={name:pk(FIRST)+" "+d.name.split(" ")[1],addr:"ต."+tb,rel:pk(RELS),tel:"08"+ri(10000000,99999999)};
+  d.docs={idCard:true,houseReg:true,benId:true,benHouse:true};d.ack=true;
+  d.fee={paid:true,date:d.joinDate,method:pk(["cash","cash","transfer","promptpay"])};d.src=(opts&&opts.src)||"reader";
+  return d;
+}
+const readerText=d=>[`${d.nid}|${d.prefix}|${d.name.split(" ")[0]}|${d.name.split(" ")[1]}|${d.bd}/${d.bm}/${d.by}`,
+ `ที่อยู่ ${d.addr.no} หมู่ ${d.addr.moo} ต.${d.addr.tambon} อ.${d.addr.amphoe} จ.${d.addr.province}`,
+ `โทร ${d.addr.tel} วันหมดอายุ ${d.nidExpiry}`].join("\n");
+const csvRow=d=>[d.nid,d.prefix+d.name,`${d.bd}/${d.bm}/${d.by}`,d.addr.tambon,d.addr.tel,d.bens[0].name,d.bens[0].rel,d.bens[0].tel].join(",");
+function monthNum(s){const n=+s;if(n>=1&&n<=12)return n;
+  const i=MTH.findIndex(m=>m===s||m.startsWith(String(s).replace(/\./g,"")));
+  const j=MTS.findIndex(m=>m.replace(/\./g,"")===String(s).replace(/\./g,""));return i>=0?i+1:(j>=0?j+1:0);}
+function normDate(s){const p=String(s).split(/[\/\-.]/).map(Number);if(p.length!==3)return"";
+  let a,b,c;if(p[0]>1000){c=p[0];b=p[1];a=p[2];}else{a=p[0];b=p[1];c=p[2];}if(c<100)c+=2500;if(c>2400)c-=543;return iso(new Date(c,b-1,a));}
+function applyAddr(d,s){
+  const no=s.match(/(?:เลขที่)?\s*(\d+\/?\d*)\s*(?=หมู่|ม\.|ต\.|ตำบล|$)/);if(no)d.addr.no=no[1];
+  const moo=s.match(/(?:หมู่|ม\.)\s*(\d+)/);if(moo)d.addr.moo=moo[1];
+  const tb=s.match(/(?:ต\.|ตำบล|แขวง)\s*([ก-๙A-Za-z]+)/);if(tb)d.addr.tambon=tb[1];
+  const am=s.match(/(?:อ\.|อำเภอ|เขต)\s*([ก-๙A-Za-z]+)/);if(am)d.addr.amphoe=am[1];
+  const pv=s.match(/(?:จ\.|จังหวัด)\s*([ก-๙A-Za-z]+)/);if(pv)d.addr.province=pv[1];
+  const soi=s.match(/(?:ซอย|ตรอก)\s*([ก-๙A-Za-z0-9 ]+)/);if(soi)d.addr.soi=soi[1].trim();}
+function parseReader(txt){
+  const out=blank(),found=[],t=(txt||"").trim();if(!t)return{d:out,found,ok:false};
+  let json=null;try{json=JSON.parse(t);}catch(e){}
+  if(json&&typeof json==="object"){
+    const g=(...k)=>{for(const x of k)if(json[x]!=null)return String(json[x]);return"";};
+    out.nid=g("nid","pid","id","citizenId").replace(/\D/g,"");out.prefix=g("prefix","title")||"นาย";
+    out.name=(g("name","fullname")||(g("first","firstname")+" "+g("last","lastname"))).trim();
+    const bs=g("birth","birthdate","dob");if(bs){const p=bs.split(/[\/\-.]/).map(Number);if(p.length===3){out.bd=p[0];out.bm=p[1];out.by=p[2]>2400?p[2]:p[2]+543;}}
+    const ex=g("expiry","expire","exp");if(ex)out.nidExpiry=normDate(ex);
+    const ad=g("address");if(ad)applyAddr(out,ad);
+    out.addr.tel=g("tel","phone").replace(/\D/g,"")||out.addr.tel;
+    ["nid","name","nidExpiry"].forEach(k=>{if(out[k])found.push(k)});if(out.bd)found.push("birth");if(out.addr.tambon)found.push("addr");
+  }else{
+    const nid=(t.match(/\b\d{13}\b/)||t.match(/\d[\d\- ]{11,17}\d/)||[""])[0].replace(/\D/g,"");
+    if(nid.length===13){out.nid=nid;found.push("nid");}
+    const parts=t.split("|").map(s=>s.trim());
+    if(parts.length>=4&&/^\d{13}$/.test(parts[0])){
+      out.prefix=parts[1]||"นาย";out.name=(parts[2]+" "+(parts[3]||"")).trim();found.push("name");
+      const p=(parts[4]||"").split(/[\/\-.]/).map(Number);
+      if(p.length===3){out.bd=p[0];out.bm=p[1];out.by=p[2]>2400?p[2]:p[2]+543;found.push("birth");}
+    }else{
+      const nm2=t.match(/(นาย|นาง|นางสาว)\s*([ก-๙A-Za-z]+)\s+([ก-๙A-Za-z]+)/);
+      if(nm2){out.prefix=nm2[1];out.name=nm2[2]+" "+nm2[3];found.push("name");}
+      const bm=t.match(/(?:เกิด|วันเกิด|birth)[:\s]*([0-9]{1,2})[\/\-. ]+([0-9]{1,2}|[ก-๙.]+)[\/\-. ]+([0-9]{4})/i);
+      if(bm){out.bd=+bm[1];out.bm=monthNum(bm[2]);out.by=+bm[3]>2400?+bm[3]:+bm[3]+543;if(out.bm)found.push("birth");}}
+    const ex=t.match(/(?:หมดอายุ|expiry|exp)[:\s]*([0-9]{1,4}[\/\-.][0-9]{1,2}[\/\-.][0-9]{1,4})/i);
+    if(ex){out.nidExpiry=normDate(ex[1]);found.push("nidExpiry");}
+    const ad=t.match(/(?:ที่อยู่|address)[:\s]*([^\n]+)/i);if(ad){applyAddr(out,ad[1]);if(out.addr.tambon)found.push("addr");}
+    const tel=t.match(/(?:โทร|tel|phone)[:\s]*(0\d{8,9})/i);if(tel){out.addr.tel=tel[1];found.push("tel");}
+  }
+  if(out.bd&&out.bm&&out.by){out.joinDate=today();out.age=ageAt((+out.by-543)+"-"+pad(+out.bm)+"-"+pad(+out.bd),out.joinDate);}
+  out.src="reader";out.ack=true;out.docs={idCard:true,houseReg:true,benId:false,benHouse:false};
+  if(!out.bens[0].addr)out.bens[0].addr=[out.addr.no,out.addr.moo?"หมู่ "+out.addr.moo:"",out.addr.tambon?"ต."+out.addr.tambon:""].filter(Boolean).join(" ");
+  return{d:out,found,ok:!!out.nid&&!!out.name};
+}
+function parseCSV(text){
+  const lines=String(text).split(/\r?\n/).map(l=>l.trim()).filter(Boolean);if(!lines.length)return[];
+  const split=l=>{const o=[];let c="",q=false;for(let i=0;i<l.length;i++){const ch=l[i];
+    if(ch==='"'){if(q&&l[i+1]==='"'){c+='"';i++;}else q=!q;}
+    else if((ch===","||ch==="\t"||ch===";")&&!q){o.push(c.trim());c="";}else c+=ch;}o.push(c.trim());return o;};
+  const head=split(lines[0]).map(h=>h.toLowerCase());
+  const map={nid:["nid","เลขบัตร","เลขประจำตัวประชาชน","pid","id"],name:["name","ชื่อ","ชื่อ-สกุล","ชื่อสกุล"],prefix:["prefix","คำนำหน้า"],
+   birth:["birth","วันเกิด","dob"],tambon:["tambon","ตำบล"],amphoe:["amphoe","อำเภอ"],province:["province","จังหวัด"],
+   tel:["tel","phone","โทร","เบอร์"],no:["no","เลขที่","บ้านเลขที่"],moo:["moo","หมู่"],expiry:["expiry","หมดอายุ","วันหมดอายุ"],
+   ben:["ben","ผู้รับผลประโยชน์","ผู้รับเงิน"],rel:["rel","ความสัมพันธ์"],bentel:["bentel","โทรผู้รับ"]};
+  const idx={};let start=0;
+  if(head.some(h=>Object.values(map).flat().includes(h))){Object.keys(map).forEach(k=>{idx[k]=head.findIndex(h=>map[k].includes(h));});start=1;}
+  else{idx.nid=0;idx.name=1;idx.birth=2;idx.tambon=3;idx.tel=4;idx.ben=5;idx.rel=6;idx.bentel=7;}
+  const rows=[];
+  for(let i=start;i<lines.length;i++){
+    const c=split(lines[i]),g=k=>idx[k]>=0?(c[idx[k]]||""):"",d=blank();
+    d.nid=g("nid").replace(/\D/g,"");
+    let name=g("name");const pm=name.match(/^(นาย|นาง|นางสาว)\s*/);
+    d.prefix=pm?pm[1]:(g("prefix")||"นาย");d.name=name.replace(/^(นาย|นาง|นางสาว)\s*/,"").trim();
+    const bs=g("birth");if(bs){const p=bs.split(/[\/\-.]/).map(x=>x.trim());
+      if(p.length===3){d.bd=+p[0];d.bm=monthNum(p[1]);d.by=+p[2]>2400?+p[2]:(+p[2]<100?+p[2]+2500:+p[2]);}}
+    d.addr.no=g("no");d.addr.moo=g("moo");d.addr.tambon=g("tambon").replace(/^(ต\.|ตำบล)/,"");
+    d.addr.amphoe=g("amphoe").replace(/^(อ\.|อำเภอ)/,"");d.addr.province=g("province").replace(/^(จ\.|จังหวัด)/,"");
+    d.addr.tel=g("tel").replace(/\D/g,"");d.nidExpiry=g("expiry")?normDate(g("expiry")):iso(new Date(2032,0,1));
+    d.bens[0]={name:g("ben"),addr:[d.addr.no,d.addr.moo?"หมู่ "+d.addr.moo:"",d.addr.tambon?"ต."+d.addr.tambon:""].filter(Boolean).join(" "),rel:g("rel"),tel:g("bentel").replace(/\D/g,"")};
+    d.joinDate=today();if(d.bd&&d.bm&&d.by)d.age=ageAt((+d.by-543)+"-"+pad(+d.bm)+"-"+pad(+d.bd),d.joinDate);
+    d.docs={idCard:true,houseReg:true,benId:!!g("ben"),benHouse:!!g("ben")};d.ack=true;d.fee={paid:true,date:today(),method:"cash"};d.src="csv";
+    rows.push(d);}
+  return rows;
+}
+function benefit(m,cause,sub,death){
+  const cs=m.coverageStart||coverStart(m.joinDate),months=fullMonths(cs,death);
+  const clauses=[],notes=[];let amount=0,levy=false,tier="—",meeting=false,blocked=false;const y=beY(death);
+  if(m.dup){tier="ไม่จ่าย — สมัครซ้ำซ้อน";clauses.push("1.5","5.1");notes.push("ตรวจพบการสมัครซ้ำซ้อน ไม่คุ้มครองและไม่คืนเงินทุกกรณี");blocked=true;}
+  else if(m.concealed){tier="ไม่จ่าย — ปกปิดข้อมูลสุขภาพ";clauses.push("5.4");notes.push("ตรวจพบให้ข้อมูลเท็จ/จงใจปกปิดปัญหาสุขภาพ ไม่จ่ายทุกกรณี");blocked=true;}
+  else if(cause==="excluded"){const ex=EXCLUDE.find(x=>x.k===sub)||EXCLUDE[0];tier="เข้าข่ายยกเว้นการจ่าย";clauses.push(ex.k);meeting=ex.meeting;blocked=!ex.meeting;
+    notes.push(ex.t+(ex.meeting?" — ที่ประชุมจะพิจารณาจ่ายเป็นรายบุคคลไป":" — ไม่จ่ายทุกกรณี"));}
+  else if(!annualPaid(m,y)){tier="ไม่จ่าย — ค้างเงินบำรุงรายปี "+y;clauses.push("3");blocked=true;
+    notes.push("ไม่ได้ชำระเงินบำรุงรายปี 50 บาท ภายใน 1–10 มกราคม "+y+" ตามข้อ 3 กลุ่มฯ ไม่จ่ายเงินฌาปนกิจให้ทายาท");}
+  else if(cause==="suicide"){let hit=SUICIDE[0];SUICIDE.forEach(s=>{if(months>=s.m)hit=s;});
+    amount=hit.amt;levy=hit.levy;tier=hit.label;clauses.push(hit.clause);
+    notes.push(hit.levy?"กรณีนี้เก็บเงินสมาชิกจากสมาชิกที่ยังมีชีวิต":"กรณีนี้ไม่เก็บเงินสมาชิก (จ่ายเป็นเงินทำบุญ)");}
+  else{
+    if(months>=60){amount=110000;tier="ครบ 5 ปี — ตามระเบียบข้อบังคับ";clauses.push("ตาราง (5 ปี)");}
+    else if(cause==="general"){
+      if(months>=12){amount=100000;tier="ครบ 12 เดือน — โรคทั่วไป";clauses.push("ตาราง (12 เดือน)");}
+      else if(months>=6){amount=50000;tier="ครบ 6 เดือน — โรคทั่วไป";clauses.push("ตาราง (6 เดือน)");}
+      else{tier="ไม่ถึง 6 เดือน";meeting=true;clauses.push("1.6");notes.push("ยังไม่ครบเงื่อนไข 6 เดือนตามตาราง — เสนอที่ประชุมพิจารณาเป็นรายกรณี");}}
+    else if(cause==="critical"){
+      if(months>=30){amount=100000;tier="ครบ 30 เดือน — โรคร้ายแรง 6 โรค";clauses.push("ตาราง (30 เดือน)");}
+      else{tier="ไม่ถึง 30 เดือน — โรคร้ายแรง";meeting=true;clauses.push("ตาราง (30 เดือน)","5.4");notes.push("โรคร้ายแรงต้องเป็นสมาชิกครบ 30 เดือนจึงจ่าย 100,000 บาท — กรณีต่ำกว่ากำหนดเสนอที่ประชุมพิจารณา");}
+      const ds=DISEASES.filter(([k])=>m.health&&m.health[k]).map(x=>x[1]);
+      if(ds.length)notes.push("พบโรคในใบคัดกรอง: "+ds.join(", ")+" — หากตรวจพบว่าปกปิดตั้งแต่สมัคร เข้าข่ายข้อ 5.4 ไม่จ่ายทุกกรณี");}
+    else if(cause==="covid"){
+      if(months>=30){amount=100000;tier="ครบ 30 เดือน — โควิด 19";clauses.push("ตาราง (30 เดือน)");}
+      else if(months>=6){amount=40000;tier="ครบ 6 เดือน — โควิด 19";clauses.push("ตาราง (6 เดือน)");}
+      else{tier="ไม่ถึง 6 เดือน — โควิด 19";meeting=true;}
+      clauses.push("5.8");meeting=true;
+      notes.push("ข้อ 5.8 กรณีโรคระบาดที่รัฐบาลประกาศ (เช่น โควิด 19) ที่ประชุมจะพิจารณาจ่ายเป็นรายบุคคลไป ผลคำนวณนี้เป็นสิทธิเบื้องต้นตามตาราง");}
+    if(amount>0)levy=true;}
+  if(m.status==="cut"){clauses.push("2");notes.push("สมาชิกถูกตัดสิทธิ์ (ค้างชำระเกินวันที่ 10 ตามข้อ 2) — ต้องให้ที่ประชุมมีมติก่อนจ่าย");meeting=true;}
+  if(!m.fee.paid){clauses.push("1.1");notes.push("ยังไม่ได้ชำระค่าสมัครแรกเข้า 200 บาท — สถานะสมาชิกยังไม่สมบูรณ์");meeting=true;}
+  return{months,years:Math.floor(months/12),amount,levy,tier,clauses:[...new Set(clauses)],notes,meeting,blocked,cs};
+}
+function checks(d,others){
+  const a=+d.age||0,join=d.joinDate||today(),dz=DISEASES.some(([k])=>d.health[k]);
+  const dupSelf=!!d.dup||(others||[]).some(m=>m.nid===d.nid&&m.id!==d.id);
+  const c0=d.couple[0]||{},b0=d.bens[0]||{};
+  const dok=DOCS.every(([k])=>d.docs[k]);
+  const sumOk=!S.settings.auto.checksum||nidValid(d.nid);
+  return[
+   {id:"nid",t:"เลขบัตรประชาชน 13 หลัก",ok:/^\d{13}$/.test(d.nid||""),hard:true,cl:"—",note:d.nid?mask(d.nid):"ยังไม่กรอก"},
+   {id:"sum",t:"หลักตรวจสอบเลขบัตร (Checksum)",ok:sumOk,hard:S.settings.auto.checksum,cl:"1.3",note:sumOk?"ถูกต้องตามอัลกอริทึมกระทรวงมหาดไทย":"หลักที่ 13 ไม่สัมพันธ์กับ 12 หลักแรก"},
+   {id:"age",t:"อายุ 15–60 ปี",ok:a>=15&&a<=60,hard:true,cl:"1.1",note:a?a+" ปี":"ยังไม่ระบุวันเกิด"},
+   {id:"c60",t:"อายุ 60 ต้องสมัครคู่ (≤ 45 ปี)",ok:a<60||(!!c0.name&&+c0.age>0&&+c0.age<=45),hard:true,cl:"1.1",note:a>=60?(c0.name?("ผู้สมัครคู่ "+(c0.age||"?")+" ปี"):"ยังไม่ได้ระบุผู้สมัครคู่"):"ไม่เข้าเงื่อนไขข้อนี้"},
+   {id:"health",t:"ไม่เป็นโรคร้ายแรง 6 โรค",ok:!dz,hard:true,cl:"1.1",note:dz?DISEASES.filter(([k])=>d.health[k]).map(x=>x[1]).join(", "):"ผ่านการคัดกรอง"},
+   {id:"self",t:"ช่วยเหลือตัวเองได้ / ไม่ติดเตียง",ok:!d.health.bedridden&&!d.health.selfcare,hard:true,cl:"1.4",note:(d.health.bedridden||d.health.selfcare)?"เข้าข่ายไม่รับสมัคร":"ปกติ"},
+   {id:"exp",t:"บัตรประชาชนไม่หมดอายุ",ok:!!d.nidExpiry&&d.nidExpiry>=join,hard:true,cl:"1.3",note:d.nidExpiry?"หมดอายุ "+fd(d.nidExpiry):"ยังไม่ระบุวันหมดอายุบัตร"},
+   {id:"dup",t:"ไม่สมัครซ้ำซ้อน",ok:!dupSelf,hard:S.settings.auto.dedupe,cl:"1.5",note:dupSelf?"พบเลขบัตรนี้ในทะเบียนแล้ว":"ไม่พบซ้ำในทะเบียน"},
+   {id:"docs",t:"เอกสารแนบครบ 4 รายการ",ok:dok,hard:false,cl:"1.2",note:DOCS.filter(([k])=>d.docs[k]).length+"/4 รายการ"},
+   {id:"ben",t:"ระบุผู้รับผลประโยชน์ลำดับ 1",ok:!!(b0.name&&b0.rel&&b0.tel),hard:false,cl:"หน้าใบสมัคร",note:b0.name?(b0.rel||"ยังไม่ระบุความสัมพันธ์"):"ยังไม่ระบุ"},
+   {id:"fee",t:"ชำระค่าสมัครแรกเข้า 200 บาท",ok:!!d.fee.paid,hard:false,cl:"1.1",note:d.fee.paid?"ชำระแล้ว "+fd(d.fee.date):"รอชำระ"},
+   {id:"sig",t:"ลงลายมือชื่อผู้สมัครและตัวแทน",ok:!!(d.sig.applicant&&d.sig.agent),hard:false,cl:"คำรับรอง",note:[d.sig.applicant,d.sig.agent].filter(Boolean).length+"/2 ช่อง"},
+   {id:"ack",t:"ยอมรับข้อความทั้งสองด้าน",ok:!!d.ack,hard:false,cl:"คำรับรอง",note:d.ack?"ยอมรับแล้ว":"ยังไม่ได้ทำเครื่องหมาย"},
+   {id:"win",t:"สมัครภายในระยะฉบับ 3/2569",ok:join>=WIN_FROM&&join<=WIN_TO,hard:false,cl:"ฉบับพิเศษ",note:join>=WIN_FROM&&join<=WIN_TO?"1 ส.ค. 2569 – 31 ม.ค. 2570":"นอกระยะเวลาของฉบับนี้"}];
+}
+function verdictOf(d,others){
+  const cs=checks(d,others),hard=cs.filter(c=>c.hard&&!c.ok),soft=cs.filter(c=>!c.hard&&!c.ok);
+  const v=hard.length?"fail":(soft.length?"warn":"pass");
+  return{cs,hard,soft,v,coverage:coverStart(d.joinDate||today())};
+}
+function fv(v,w){return`<span class="fv" style="min-width:${w||60}px">${v?esc(v):"&nbsp;"}</span>`;}
+function sealSVG(color,dt){return`<svg class="seal" viewBox="0 0 140 140"><g fill="none" stroke="${color}" stroke-width="2.4"><circle cx="70" cy="70" r="64"/><circle cx="70" cy="70" r="55" stroke-width="1.2"/></g>
+ <path id="sa" d="M70 70 m -44 0 a 44 44 0 1 1 88 0" fill="none"/>
+ <text fill="${color}" font-family="Sarabun" font-size="11.5" font-weight="700"><textPath href="#sa" startOffset="50%" text-anchor="middle">กลุ่มฌาปนกิจ 90,000 บาท 4 ตำบล</textPath></text>
+ <text x="70" y="66" text-anchor="middle" fill="${color}" font-family="Sarabun" font-size="15" font-weight="700">รับใบสมัคร</text>
+ <text x="70" y="84" text-anchor="middle" fill="${color}" font-family="Sarabun" font-size="10.5">ฉบับ ${EDITION}</text>
+ <text x="70" y="100" text-anchor="middle" fill="${color}" font-family="Sarabun" font-size="10">${esc(dt)}</text>
+ <path d="M34 108 h72" stroke="${color}" stroke-width="1.2"/></svg>`;}
+const LOGO_IMG="data:image/jpeg;base64,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",CHAIR_SIG="data:image/jpeg;base64,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";
+function ff(v,f,w){return`<span class="aff" style="${w?`flex:none;width:${w}px`:`flex:${f||1}`}">${v?esc(String(v)):"&nbsp;"}</span>`;}
+const CHAIR_BLK=()=>`<div class="chair"><img src="${CHAIR_SIG}" alt=""><b>( ${CHAIR} )</b>ประธานกลุ่มฌาปนกิจ 90,000 บาท 4 ตำบล</div>`;
+function paperFront(d){
+  const s=S.settings.doc,jd=D(d.joinDate||today()),sg=k=>d.sig[k]?`<img src="${d.sig[k]}" alt="ลายมือชื่อ">`:"",
+    sf=k=>`<span class="aff sgn" style="flex:1.6">${sg(k)}&nbsp;</span>`,b=d.bens;
+  return`<div class="ap o${s.guides?" guides":""}" style="--docink:${s.mono?"#000":s.ink};--dfs:${s.dfs};--dls:${s.dls}">
+  ${s.draft&&!d.id?`<div class="wm"><span>ฉบับร่าง</span></div>`:""}
+  <div class="aside">- ด้านหน้า -</div><img class="logo" src="${LOGO_IMG}" alt="">
+  <div class="t1">ใบสมัครฉบับที่ ${EDITION} ( กรณีพิเศษ )</div>
+  <div class="t2">กลุ่มฌาปนกิจ 90,000 บาท 4 ตำบล &nbsp; ค่าสมัครแรกเข้า 200 บาท</div>
+  <div class="t2">รับสมัครสมาชิกอายุ 15-60 ปี (อายุ 60 ปี ทายาทผู้รับผลประโยชน์ต้องสมัครคู่มาด้วยอายุไม่เกิน 45 ปี)</div>
+  <div class="t2">และบุคคลที่ประธานพิจารณาให้รับสมัครเป็นกรณีพิเศษโดยมีเงื่อนไข</div>
+  <div class="t2">เริ่มรับสมัครวันที่ 1 เดือนสิงหาคม พ.ศ.2569 <u>ถึง</u> วันที่ 31 เดือนมกราคม พ.ศ.2570</div>
+  <div class="arow cen">วันที่ ${ff(jd.getDate(),0,80)} เดือน ${ff(MTH[jd.getMonth()],0,190)} พ.ศ. ${ff(jd.getFullYear()+543,0,110)}</div>
+  <div class="arow">ข้าพเจ้า ${ff(d.name?d.prefix+d.name:"",3)} เลขที่ประจำตัวประชาชน ${ff(d.nid,1.5)}</div>
+  <div class="arow">เกิดวันที่ ${ff(d.bd,.6)} เดือน ${ff(d.bm?MTH[d.bm-1]:"",1.2)} พ.ศ. ${ff(d.by,.7)} อายุ ${ff(d.age,.5)} ปี ชื่อคู่สมรส ${ff(d.spouse,2)}</div>
+  <div class="arow">ที่อยู่เลขที่ ${ff(d.addr.no,.8)} หมู่ ${ff(d.addr.moo,.5)} ตรอก/ซอย ${ff(d.addr.soi,1.4)} ถนน ${ff(d.addr.road,1.4)}</div>
+  <div class="arow">ตำบล/แขวง ${ff(d.addr.tambon,1.3)} อำเภอ ${ff(d.addr.amphoe,1.3)} จังหวัด ${ff(d.addr.province,1.2)} โทร. ${ff(d.addr.tel,1.2)}</div>
+  <div class="arow">สมัครคู่ 1 ${ff(d.couple[0].name+(d.couple[0].age?" (อายุ "+d.couple[0].age+" ปี)":""),1)} 2 ${ff(d.couple[1].name+(d.couple[1].age?" (อายุ "+d.couple[1].age+" ปี)":""),1)}</div>
+  <div class="para"><u>คุณสมบัติผู้สมัคร</u> ต้องมีสุขภาพแข็งแรงไม่เป็นโรคร้ายแรง โรคมะเร็ง โรคหัวใจ โรคไต โรคเอดส์ โรคตับแข็ง โรคเบาหวาน(ถูกตัดอวัยวะ)</div>
+  <div class="para ind">ตรวจพบสมาชิกฯจงใจปกปิดปัญหาสุขภาพ กลุ่มฌาปนกิจฯไม่จ่ายเงินฌาปนกิจศพให้ทายาทผู้รับผลประโยชน์ในทุกกรณี</div>
+  <div class="para"><u>สมาชิกฯ</u> สมัครซ้ำซ้อนกลุ่มฌาปนกิจฯไม่คุ้มครองและไม่คืนเงินให้ในทุกกรณี หากข้าพเจ้าเสียชีวิตขอมอบให้บุคคลต่อไปนี้เป็นผู้รับเงิน</div>
+  ${[0,1].map(i=>`<div class="arow">(${i+1}) ชื่อ ${ff(b[i].name,2)} ที่อยู่ ${ff(b[i].addr,2.4)}</div><div class="arow">เกี่ยวข้องเป็น ${ff(b[i].rel,1)} โทร ${ff(b[i].tel,1)} ${ff("",1.6)}</div>`).join("")}
+  <div class="para ind"><u>ก่อนลงลายมือชื่อ</u> ข้าพเจ้าได้อ่านใบสมัครทั้งด้านหน้าและด้านหลังเป็นที่เข้าใจโดยละเอียดตลอดทุกข้อความแล้ว${d.ack?" ✓":""}</div>
+  <div class="arow sgrow">ลงชื่อ ${sf("applicant")} ผู้สมัคร &nbsp; ลงชื่อ ${sf("agent")} ตัวแทนรับสมัคร</div>
+  <div class="arow sgrow">ลงชื่อ ${sf("witness")} ผู้รับรอง &nbsp; ลงชื่อ ${sf("committee")} กรรมการรับสมัคร</div>
+  <table class="tier">${TIERS.map(t=>`<tr><td>${t.m>=60?"5 ปี":t.m+" เดือน"}</td><td>${t.cause.replace("โควิด 19","โควิด19")} จ่ายเงินฌาปนกิจจำนวน ${N(t.amt)} บาท</td></tr>`).join("")}</table>
+  <div class="t2 aend">ระเบียบนี้เริ่มใช้กับสมาชิกฯสมัครใหม่ตั้งแต่วันที่ 1 เดือนสิงหาคม พ.ศ.2569 <u>ถึง</u> วันที่ 31 เดือนมกราคม พ.ศ.2570</div>
+  ${CHAIR_BLK()}</div>`;
+}
+function bkTxt(c){let t=esc(c.t);
+  if(c.n==="2.")t=t.replace(/^(การชำระเงินฌาปนกิจฯ เป็นรายศพตามสภาพจริง)/,"<u>$1</u>").replace(" กำหนดการ","<br>กำหนดการ");
+  else if(c.n==="3.")t=t.replace(/^(การชำระเงินบำรุงรายปี)/,"<u>$1</u>").replace(" สมาชิกฯ ท่านใดไม่ชำระ","<br>สมาชิกฯ ท่านใดไม่ชำระ");
+  else if(c.h)t="<u>"+t+"</u>";
+  else t=t.replace(" กลุ่มฌาปนกิจฯ รับสมัครสมาชิกที่","<br>กลุ่มฌาปนกิจฯ รับสมัครสมาชิกที่").replace(" รับสมัครสมาชิกฯ ใหม่","<br>รับสมัครสมาชิกฯ ใหม่").replace(" หลังจากที่วันที่สมัคร","<br>&emsp;หลังจากที่วันที่สมัคร");
+  return c.n+(c.h?"":" ")+t;}
+function paperBack(d){
+  const s=S.settings.doc;
+  return`<div class="ap o back${s.guides?" guides":""}" style="--docink:${s.mono?"#000":s.ink};--dfs:${s.dfs};--dls:${s.dls}">
+  <div class="aside">- ด้านหลัง -</div>
+  ${BACK.map(c=>`<div class="bl">${bkTxt(c)}</div>`).join("")}
+  ${CHAIR_BLK()}</div>`;
+}
+function paperHTML(d,side){return side==="both"?paperFront(d)+paperBack(d):side==="back"?paperBack(d):paperFront(d);}
+return{S,blank,parseReader,parseCSV,checks,verdictOf,paperHTML,BACK,benefit,person,readerText,csvRow,DISEASES,EXTRA,DOCS,EXCLUDE,SUICIDE,TIERS,FEE,ANNUAL,EDITION,CHAIR,coverStart,ageAt,fd,mask,nidValid,rng};})();
+const PP={side:'both',z:1,d:null,t:''};
+const ppOthers=ex=>S.members.filter(m=>m.id!==ex).map(m=>({id:m.id,nid:m.idc}));
+function appToAF(a){const x=a.data,d=AF.blank(),b=(x.dob||'').split('-').map(Number),h=x.health||{},bn=x.beneficiaries||x.benes||[],jd=(a.createdAt||'').slice(0,10)||iso(NOW),sg=k=>/^data:/.test((a.sig||{})[k]||'')?a.sig[k]:'';
+  Object.assign(d,{id:a.id,prefix:x.prefix||'นาย',name:((x.first||'')+' '+(x.last||'')).trim(),nid:x.idc||'',bd:b[2]||'',bm:b[1]||'',by:b[0]?b[0]+543:'',age:b[0]?AF.ageAt(x.dob,jd):'',joinDate:jd,ack:!!x.consent,agent:x.agent||''});
+  d.addr=Object.assign(d.addr,{no:/หมู่/.test(x.addr||'')?'':(x.addr||''),moo:x.moo||'',tambon:x.tambon||'',tel:x.phone||''});
+  d.health={cancer:!!h.cancer,heart:!!h.heart,kidney:!!h.kidney,aids:!!h.aids,liver:!!h.liver,diabetes:!!h.diabetes,bedridden:!!(h.bed||h.bedridden),selfcare:!!h.selfcare};
+  d.bens=[0,1].map(i=>({name:(bn[i]||{}).name||'',addr:'',rel:(bn[i]||{}).rel||(bn[i]||{}).relation||'',tel:(bn[i]||{}).phone||''}));
+  if(x.fee)d.fee={paid:!!x.fee.paid,date:x.fee.date||jd,method:x.fee.method||'cash'};
+  if((a.docs||[]).length>=4)d.docs={idCard:true,houseReg:true,benId:true,benHouse:true};
+  d.sig.applicant=sg('applicant');d.sig.agent=sg('officer');return d}
+const memToAF=m=>{const ap=m.appId?IDX.a.get(m.appId):null;return ap?appToAF(ap):appToAF({id:m.id,createdAt:m.appliedAt,data:Object.assign({},m,{fee:{paid:true,date:m.appliedAt}}),sig:{}})};
+function ppOpen(d,t){PP.d=d;PP.t=t;openModal('ใบสมัคร ฉบับ '+AF.EDITION+' · '+t,'<div class="ppv" id="ppV"></div><div class="chips" id="ppT"></div><div class="ppdesk" id="ppStage"></div>',
+  '<button class="btn" data-act="modalClose">ปิด</button><button class="btn primary" data-act="ppPrint">'+ic('print')+' พิมพ์ใบสมัคร</button>','wide');ppDraw()}
+function ppDraw(){const d=PP.d,v=AF.verdictOf(d,ppOthers(d.id)),pl=v.v==='pass'?['p-ok','ผ่านเกณฑ์รับสมัคร']:v.v==='warn'?['p-warn','ผ่าน (ขาดบางรายการ)']:['p-bad','ไม่ผ่านเกณฑ์'];
+  $('#ppV').innerHTML='<span class="pill '+pl[0]+'">'+pl[1]+'</span><span class="xs fa">เริ่มคุ้มครอง '+thD(v.coverage)+' · ค่าสมัคร '+AF.FEE+' บาท</span><label class="xs fa">วันหมดอายุบัตร <input type="date" class="input" style="padding:4px 8px;width:auto" value="'+(d.nidExpiry||'')+'" onchange="PP.d.nidExpiry=this.value;ppDraw()"></label>'+
+   '<div class="ppck" style="width:100%">'+v.cs.map(c=>'<div class="'+(c.ok?'':c.hard?'no':'sf')+'"><i>'+(c.ok?'✓':c.hard?'✕':'!')+'</i><span><b>'+esc(c.t)+'</b><br><span class="fa">'+esc(c.note)+'</span></span></div>').join('')+'</div>';
+  $('#ppT').innerHTML=[['front','ด้านหน้า'],['back','ด้านหลัง'],['both','ทั้งสองด้าน']].map(x=>'<button class="chip'+(PP.side===x[0]?' on':'')+'" data-act="ppSide" data-s="'+x[0]+'">'+x[1]+'</button>').join('')+'<button class="btn t" data-act="ppZoom" data-z="out">−</button><button class="btn t" data-act="ppZoom" data-z="fit">พอดี</button><button class="btn t" data-act="ppZoom" data-z="in">+</button>';
+  const st=$('#ppStage'),pg=PP.side==='both'?[AF.paperHTML(d,'front'),AF.paperHTML(d,'back')]:[AF.paperHTML(d,PP.side)];
+  st.innerHTML=pg.map(p=>'<div class="pgw">'+p+'</div>').join('');ppFit(st);const z=Math.min(1,(st.clientWidth-24)/794)*PP.z;
+  st.querySelectorAll('.pgw').forEach(w=>{const p=w.firstElementChild;p.style.transform='scale('+z+')';w.style.width=794*z+'px';w.style.height=p.scrollHeight*z+'px'})}
+A.paper=d=>{const x=d.t==='a'?IDX.a.get(d.id):IDX.m.get(d.id);if(!x)return;const dr=d.t==='a'?appToAF(x):memToAF(x);
+  audit('paper.open',d.t==='a'?x.no:x.code,'เปิดใบสมัครฉบับกระดาษ (แสดงเลขบัตรเต็ม) โดย '+sess.name);save();ppOpen(dr,d.t==='a'?x.no:x.code)};
+A.ppSide=d=>{PP.side=d.s;ppDraw()};A.ppZoom=d=>{PP.z=d.z==='fit'?1:Math.max(.5,Math.min(3,PP.z*(d.z==='in'?1.25:.8)));ppDraw()};
+A.ppPrint=()=>{const pa=$('#printArea');pa.innerHTML=AF.paperHTML(PP.d,PP.side);pa.style.cssText='display:block;position:absolute;left:-9999px;top:0;width:794px';Promise.all([...pa.querySelectorAll('img')].map(i=>i.decode?i.decode().catch(()=>0):0)).then(()=>{ppFit(pa);pa.style.cssText='';window.print()})};
+A.ppBlank=()=>ppOpen(AF.blank(),'ฟอร์มเปล่า');
+A.ppRead=()=>{const r=AF.parseReader($('#ppRd').value);if(!r.ok&&!r.d.nid){toast('อ่านข้อมูลไม่ได้ ตรวจรูปแบบ JSON/CSV/ข้อความจากเครื่องอ่าน','warn');return}ppOpen(r.d,'จากเครื่องอ่านบัตร')};
+V.paperform=function(){return head('แบบฟอร์มใบสมัคร ฉบับ '+AF.EDITION,'ใบสมัครและเกณฑ์รับสมัครตามไฟล์ v48 · พิมพ์ได้ทั้งหน้า-หลัง พร้อมตรวจคุณสมบัติอัตโนมัติ','<button class="btn primary s" data-act="ppBlank">'+ic('print')+' ฟอร์มเปล่า</button>')+
+  '<div class="g2 an"><div class="card"><h3>วางข้อมูลจากเครื่องอ่านบัตร / CSV</h3><p class="xs fa">วาง JSON, CSV หรือข้อความจากเครื่องอ่านบัตร ระบบกรอกลงใบสมัครและตรวจเกณฑ์ให้ทันที</p><textarea class="input mono" id="ppRd" rows="6" placeholder="เลขบัตร, คำนำหน้า, ชื่อ-สกุล, วันเกิด, ที่อยู่ …"></textarea><div style="margin-top:10px"><button class="btn violet" data-act="ppRead">'+ic('scan')+' อ่านแล้วเปิดใบสมัคร</button></div></div>'+
+  '<div class="card"><h3>อัตราเงินช่วยเหลือตามอายุสมาชิก</h3><table class="rulet">'+AF.TIERS.map(t=>'<tr><td>'+(t.m>=60?'5 ปี':t.m+' เดือน')+'</td><td>'+esc(t.cause)+' · <b>'+money0(t.amt)+'</b></td></tr>').join('')+'</table></div></div>'};
+NAV.splice(3,0,{p:'paperform',i:'doc',t:'แบบฟอร์มใบสมัคร',perm:'app.view'});
+{const ba=appDrawer,bm=memberDrawer,bar=(t,id)=>{const dw=$('#dw');if(dw&&dw.firstElementChild&&can('app.view'))dw.firstElementChild.insertAdjacentHTML('afterend','<div class="ppbar"><button class="btn s violet" data-act="paper" data-t="'+t+'" data-id="'+id+'">'+ic('doc')+' ดู/พิมพ์ใบสมัคร (v48)</button></div>')};
+ appDrawer=function(id,tab){ba(id,tab);bar('a',id)};memberDrawer=function(id,tab){bm(id,tab);bar('m',id)}}
+
+
+/* ===== v56: กติกา v48 ทั้งระบบ + ฟีเจอร์ที่ v48 มี ===== */
+function ppFit(root){root.querySelectorAll('.ap').forEach(p=>{p.style.cssText+=';height:auto;min-height:0;display:flex;flex-direction:column;overflow:hidden';let lo=.6,hi=1.15,b=lo;
+  for(let i=0;i<9;i++){const m=(lo+hi)/2;p.style.setProperty('--dfs',m);p.style.setProperty('--dls',1);if(p.scrollHeight<=1121){b=m;lo=m}else hi=m}
+  p.style.setProperty('--dfs',b);p.style.height='1121px';p.style.justifyContent='space-between';p.querySelectorAll('img').forEach(i=>{if(!i.complete)i.addEventListener('load',()=>ppFit(root),{once:true})})})}
+{const ld=load;load=function(){const r=ld();const st=r.S.settings;if(!st.r48)Object.assign(st,{entry:200,due:50,wait:6,grace:10,ageMin:15,ageMax:60,r48:1});return r}}
+{const ev=evaluate;evaluate=function(m,dd,ck){const r=ev(m,dd,ck);if(!m)return r;const d=memToAF(m);d.coverageStart=m.coverageStart;d.fee={paid:true,date:m.appliedAt};d.annual={};d.status=m.status==='ตัดสิทธิ์'?'cut':'active';
+  (IDX.pm.get(m.id)||[]).filter(p=>p.type==='due'&&!p.voided).forEach(p=>d.annual[+p.period+543]={paid:true});
+  const c={general:'general',accident:'general',critical:'critical',infect:'covid',suicide:'suicide'}[ck]||'general',b=AF.benefit(d,c,'',dd);
+  r.lines.push({ok:b.amount>0,label:'ตารางจ่ายตามระเบียบ: '+b.tier,value:b.amount?money0(b.amount):'—'});b.notes.forEach(n=>r.lines.push({ok:!b.blocked,label:n,value:''}));
+  return Object.assign(r,{verdict:b.blocked?(ck==='suicide'?'excluded':'rejected'):b.amount>0?'covered':b.meeting?'waiting':'rejected',amt:b.amount,refund:0,mo:b.months,note:b.notes.join(' · ')})}}
+{const sc=screen;screen=function(d,ex){const r=sc(d,ex);if(r.age>=60&&!d.couple)r.issues.push('อายุ 60 ปีต้องสมัครคู่ (ผู้สมัครคู่อายุไม่เกิน 45 ปี)');const t=iso(NOW);if(t<'2026-08-01'||t>'2027-01-31')r.warns.push('นอกระยะรับสมัครฉบับ 3/2569 (1 ส.ค. 2569 – 31 ม.ค. 2570)');r.ok=!r.issues.length;return r}}
+V.rules=function(){const E=s=>esc(String(s));return head('ระเบียบและตารางจ่าย','ฉบับ '+AF.EDITION+' · ค่าสมัคร '+AF.FEE+' บาท · เงินบำรุงรายปี '+AF.ANNUAL+' บาท (ชำระ 1–10 ม.ค.)')+
+ '<div class="g2 an"><div class="card"><h3>ตารางจ่ายตามอายุสมาชิก</h3><table class="rulet">'+AF.TIERS.map(t=>'<tr><td>'+(t.m>=60?'5 ปี':t.m+' เดือน')+'</td><td>'+E(t.cause)+' · <b>'+money0(t.amt)+'</b></td></tr>').join('')+'</table></div>'+
+ '<div class="card"><h3>กรณีฆ่าตัวตาย</h3><table class="rulet">'+AF.SUICIDE.map(s=>'<tr><td>ข้อ '+s.clause+'</td><td>'+E(s.label)+' · <b>'+money0(s.amt)+'</b>'+(s.levy?' · เก็บเงินสมาชิก':'')+'</td></tr>').join('')+'</table></div></div>'+
+ '<div class="g2 an" style="margin-top:14px"><div class="card"><h3>กรณีไม่จ่าย / ยกเว้น</h3><table class="rulet">'+AF.EXCLUDE.map(x=>'<tr><td>ข้อ '+x.k+'</td><td>'+E(x.t)+(x.meeting?' <span class="pill p-warn">ที่ประชุมพิจารณา</span>':'')+'</td></tr>').join('')+'</table></div>'+
+ '<div class="card"><h3>ข้อความด้านหลังใบสมัคร</h3><div style="max-height:46vh;overflow:auto;font-size:13px;line-height:1.6">'+AF.BACK.map(c=>'<p style="margin:0 0 6px"><b class="mono">'+E(c.n)+'</b> '+E(c.t)+'</p>').join('')+'</div></div></div>'};
+function alertList(){const L=[],t=iso(NOW);S.members.filter(m=>m.status==='ปกติ').forEach(m=>{const f=fin(m),mo=months(m.coverageStart,t);
+  if(f.owed.length)L.push({c:'warn',id:m.id,x:m.fullname+' ค้างเงินบำรุงรายปี '+f.owed.join(', ')+' (ไม่ชำระ = ไม่คุ้มครอง ข้อ 3)'});
+  [6,12,30,60].forEach(k=>{if(mo===k-1)L.push({c:'ok',id:m.id,x:m.fullname+' อีก 1 เดือนครบสิทธิ์ '+k+' เดือน'})});if(ageOf(m.dob)>=60)L.push({c:'info',id:m.id,x:m.fullname+' อายุ '+ageOf(m.dob)+' ปี — ตรวจว่ามีผู้สมัครคู่ ≤45 ปี'})});
+  S.apps.filter(a=>a.status==='pending').forEach(a=>L.push({c:'info',x:'ใบสมัคร '+a.no+' รอพิจารณา · '+who(a)}));return L}
+V.alerts=function(){const L=alertList();return head('แจ้งเตือนอัจฉริยะ',L.length+' รายการที่ควรดำเนินการ')+'<div class="card an">'+(L.slice(0,150).map(a=>'<div class="row wrap" style="padding:8px 0;border-bottom:1px solid var(--ln);gap:10px"><span class="pill p-'+a.c+'">'+({warn:'ค้างชำระ',ok:'ใกล้ครบสิทธิ์',info:'ตรวจสอบ'})[a.c]+'</span><span class="grow">'+esc(a.x)+'</span>'+(a.id?'<button class="btn t" onclick="memberDrawer(\''+a.id+'\')">เปิด</button>':'')+'</div>').join('')||'<p class="fa">ไม่มีรายการค้าง ✨</p>')+'</div>'};
+const AI={m:[{b:1,t:'สวัสดีครับ ถามเรื่องสมาชิก ยอดค้าง กองทุน ใบสมัคร เคลม หรือตารางจ่ายได้เลย พิมพ์ชื่อสมาชิกเพื่อค้นหา'}]};
+function aiAnswer(q){const am=S.members.filter(m=>m.status==='ปกติ');
+  if(/ค้าง|หนี้/.test(q)){const o=am.filter(m=>fin(m).owedAmt>0);return 'สมาชิกค้างชำระ '+o.length+' ราย รวม '+money0(o.reduce((s,m)=>s+fin(m).owedAmt,0))}
+  if(/กองทุน|ยอดเงิน|คงเหลือ/.test(q))return 'เงินกองทุนรวมคงเหลือ '+money0(balance())+' (จ่ายได้ประมาณ '+Math.floor(balance()/S.settings.payout)+' ราย)';
+  if(/ใบสมัคร/.test(q))return 'ใบสมัครรอพิจารณา '+S.apps.filter(a=>a.status==='pending').length+' ใบ จากทั้งหมด '+S.apps.length+' ใบ';
+  if(/เคลม/.test(q)){const c={};S.claims.forEach(x=>c[x.status]=(c[x.status]||0)+1);return 'เรื่องเคลม '+S.claims.length+' เรื่อง · '+(Object.entries(c).map(e=>e[0]+' '+e[1]).join(' · ')||'ยังไม่มี')}
+  if(/ตาราง|จ่าย|ระเบียบ|เงื่อนไข/.test(q))return 'ตารางจ่าย:\n'+AF.TIERS.map(t=>'• '+(t.m>=60?'5 ปี':t.m+' เดือน')+' · '+t.cause+' · '+money0(t.amt)).join('\n');
+  if(/คุณสมบัติ|เกณฑ์|อายุ|สมัคร/.test(q))return 'สมัครอายุ 15–60 ปี (60 ปีต้องสมัครคู่ ≤45 ปี) ค่าสมัคร '+AF.FEE+' บาท บำรุงรายปี '+AF.ANNUAL+' บาท ไม่เป็นโรคร้ายแรง 6 โรค และบัตรประชาชนไม่หมดอายุ';
+  if(/สมาชิก|กี่|จำนวน/.test(q)){const c={};S.members.forEach(m=>c[m.status]=(c[m.status]||0)+1);return 'สมาชิกทั้งหมด '+S.members.length+' ราย · '+Object.entries(c).map(e=>e[0]+' '+e[1]).join(' · ')}
+  const f=S.members.filter(m=>m.fullname.includes(q.trim())).slice(0,5);if(f.length)return f.map(m=>'• '+m.fullname+' ('+m.code+') สถานะ '+m.status+' · ต.'+m.tambon).join('\n');
+  return 'ยังไม่เข้าใจคำถามนี้ ลองถามเรื่อง ค้างชำระ กองทุน ใบสมัคร เคลม ตารางจ่าย หรือพิมพ์ชื่อสมาชิก'}
+V.ai=function(){return head('AI ผู้ช่วย','ถาม-ตอบจากข้อมูลในระบบนี้ ไม่ส่งออกนอกเครื่อง')+'<div class="card an"><div class="aic" id="aiC">'+AI.m.map(x=>'<div class="aim '+(x.b?'b':'u')+'">'+esc(x.t)+'</div>').join('')+'</div><div class="chips" style="margin:10px 0">'+['ใครค้างชำระ','เงินกองทุนเหลือเท่าไหร่','ตารางจ่ายเงิน','มีใบสมัครรอกี่ใบ','คุณสมบัติผู้สมัคร'].map(q=>'<button class="chip" data-act="aiAsk" data-q="'+q+'">'+q+'</button>').join('')+'</div><div class="row"><input class="input" id="aiIn" placeholder="พิมพ์คำถาม…" onkeydown="if(event.key===\'Enter\')A.aiAsk({q:this.value})"><button class="btn primary" data-act="aiAsk" data-q="">ส่ง</button></div></div>'};
+A.aiAsk=d=>{const i=$('#aiIn'),q=(d.q||(i&&i.value)||'').trim();if(!q)return;AI.m.push({t:q},{b:1,t:aiAnswer(q)});render();setTimeout(()=>{const c=$('#aiC');if(c)c.scrollTop=1e9;const n=$('#aiIn');if(n)n.focus()},30)};
+A.mcard=d=>{const m=IDX.m.get(d.id);if(!m)return;let q='';try{const x=qrcode(0,'M');x.addData(m.code+'|'+m.idc.slice(-4));x.make();q=x.createSvgTag(3,0)}catch(e){}
+  openModal('บัตรสมาชิก','<div class="mcard" id="mcd"><div style="border-bottom:1px solid rgba(255,255,255,.25)"><b>บัตรสมาชิกฌาปนกิจสงเคราะห์</b><div class="xs">กลุ่ม 90,000 บาท 4 ตำบล · ฉบับ '+AF.EDITION+'</div></div><div><div style="font-size:19px;font-weight:700">'+esc(m.fullname)+'</div><div class="mono">'+esc(m.code)+'</div><div class="xs" style="margin-top:6px">เริ่มคุ้มครอง '+thD(m.coverageStart)+' · ต.'+esc(m.tambon)+'</div></div><div style="display:flex;gap:12px;align-items:center;background:rgba(0,0,0,.25)"><span class="qr">'+q+'</span><span class="xs mono">'+mask(m.idc)+'<br>ยืนยันกับคณะกรรมการ</span></div></div>',
+  '<button class="btn" data-act="modalClose">ปิด</button><button class="btn primary" onclick="$(\'#printArea\').innerHTML=$(\'#mcd\').outerHTML;window.print()">'+ic('print')+' พิมพ์บัตร</button>','sm')};
+{const m2=memberDrawer;memberDrawer=function(id,tab){m2(id,tab);const b=$('#dw .ppbar');if(b)b.insertAdjacentHTML('beforeend','<button class="btn s" data-act="mcard" data-id="'+id+'">'+ic('card')+' บัตรสมาชิก</button>')}}
+NAV.splice(5,0,{p:'alerts',i:'bell',t:'แจ้งเตือนอัจฉริยะ',badge:()=>alertList().filter(a=>a.c==='warn').length,hot:true},{p:'ai',i:'chart',t:'AI ผู้ช่วย'},{p:'rules',i:'doc',t:'ระเบียบ/ตารางจ่าย'});
+/* ลูกเล่น: สปอตไลต์การ์ด · ริปเปิลปุ่ม · พลุฉลอง */
+document.addEventListener('pointermove',e=>{const c=e.target.closest&&e.target.closest('.card');if(c){const r=c.getBoundingClientRect();c.style.setProperty('--mx',e.clientX-r.left+'px');c.style.setProperty('--my',e.clientY-r.top+'px')}},{passive:true});
+document.addEventListener('pointerdown',e=>{const b=e.target.closest&&e.target.closest('.btn');if(!b)return;const r=b.getBoundingClientRect(),s=document.createElement('span');s.className='rip';const z=Math.max(r.width,r.height)/3;s.style.cssText='width:'+z+'px;height:'+z+'px;left:'+(e.clientX-r.left-z/2)+'px;top:'+(e.clientY-r.top-z/2)+'px';b.appendChild(s);setTimeout(()=>s.remove(),620)});
+function confetti(){const c=document.createElement('canvas');c.id='cf';c.width=innerWidth;c.height=innerHeight;document.body.appendChild(c);const x=c.getContext('2d'),col=['#FFB020','#FF8A3D','#7C5CFF','#2FD8A4','#39A9FF','#FF3D9A'],P=Array.from({length:110},()=>({x:innerWidth/2,y:innerHeight*.35,vx:(Math.random()-.5)*16,vy:-Math.random()*13-3,s:4+Math.random()*6,r:Math.random()*6,c:col[Math.random()*6|0]}));let f=0;
+  (function t(){x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.vy+=.35;p.x+=p.vx;p.y+=p.vy;p.r+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/3,p.s,p.s*.6);x.restore()});if(++f<110)requestAnimationFrame(t);else c.remove()})()}
+{const tt=toast;toast=function(m,k){tt(m,k);if(k==='ok'&&/อนุมัติ|จ่ายแล้ว|สั่งจ่าย|รับสมัคร|เป็นสมาชิก/.test(m))confetti()}}
+
+
+/* ===== v57: จำการเข้าสู่ระบบ · หลักฐานการชำระ · สิทธิ์ตัวแทนเก็บ · นำเข้าแบบ v48 ===== */
+const dlTxt=(n,t,ty)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:ty||'text/csv'}));a.download=n;a.click()};
+try{const r=JSON.parse(localStorage.getItem('ck57rm')||'null');if(r&&r.exp>Date.now()&&!sessionStorage.getItem('ck52')){r.sess.act=Date.now();sessionStorage.setItem('ck52',JSON.stringify(r.sess))}}catch(e){}
+{const lg=login;login=function(u,p){const rm=$('#rmChk')&&$('#rmChk').checked;lg(u,p);if(sess&&sess.mode==='staff'){try{if(rm)localStorage.setItem('ck57rm',JSON.stringify({u:sess.username,sess:Object.assign({},sess),exp:Date.now()+30*864e5}));else localStorage.removeItem('ck57rm')}catch(e){}}}
+ const lo=logout;logout=function(){try{localStorage.removeItem('ck57rm')}catch(e){}lo()}
+ const rd=render;render=function(){if(sess&&sess.mode==='staff'&&!S.users.find(x=>x.username===sess.username&&x.active)){sess=null;sessionStorage.removeItem('ck52');localStorage.removeItem('ck57rm')}
+  rd();if(!sess){const f=$('#staffForm');try{const r=JSON.parse(localStorage.getItem('ck57rm')||'null');if(f&&r&&r.exp>Date.now()&&!f.u.value){f.u.value=r.u;$('#rmChk').checked=true;f.p.focus()}}catch(e){}}}}
+/* บทบาท + สิทธิ์ที่ admin กำหนดได้ */
+ROLES.collector={name:'ตัวแทนเก็บเงิน',short:'ตัวแทนเก็บ',perms:['member.view','app.view','fin.view','fin.receive']};
+function applyRoles(st){Object.entries(st.customRoles||{}).forEach(([k,v])=>{ROLES[k]={name:v.name,short:v.name,perms:v.perms.slice()}});Object.entries(st.rolePerms||{}).forEach(([k,p])=>{if(ROLES[k]&&k!=='admin'&&k!=='member')ROLES[k].perms=p.slice()})}
+{const ld=load;load=function(){const r=ld();applyRoles(r.S.settings);if(!r.S.users.some(u=>u.role==='collector')){const sl=H('agent01collector').slice(0,12);r.S.users.push({id:uid('u'),username:'agent01',salt:sl,hash:H(sl+':agent123'),role:'collector',name:'ตัวแทนเก็บ (ตัวอย่าง)',tambon:'รวม 4 ตำบล',active:true,last:null,fails:0,lock:0})}return r}}
+V.perms=function(){if(!can('users.manage'))return head('สิทธิ์การใช้งาน','ต้องเป็นผู้ดูแลระบบ');const rs=Object.keys(ROLES).filter(k=>k!=='admin'&&k!=='member');
+ return head('สิทธิ์การใช้งาน','ผู้ดูแลระบบกำหนดได้ว่าแต่ละบทบาททำอะไรได้บ้าง · ตัวแทนเก็บเริ่มต้น = ดู + รับชำระเท่านั้น แก้ไข/ยกเลิกไม่ได้','<button class="btn s" data-act="roleNew">'+ic('plus')+' เพิ่มบทบาท</button><button class="btn primary s" data-act="permSave">บันทึกสิทธิ์</button>')+
+ '<div class="card an" style="overflow:auto"><table id="permT" class="rulet"><tr><td>สิทธิ์</td><td>ผู้ดูแล</td>'+rs.map(k=>'<td>'+esc(ROLES[k].short)+'</td>').join('')+'</tr>'+PERMS.map(p=>'<tr><td style="color:var(--tx)">'+esc(p[1])+'</td><td>✓</td>'+rs.map(k=>'<td><input type="checkbox" data-r="'+k+'" data-p="'+p[0]+'"'+(ROLES[k].perms.includes(p[0])?' checked':'')+'></td>').join('')+'</tr>').join('')+'</table></div>'};
+A.permSave=()=>{if(!need('users.manage'))return;const st=S.settings;st.rolePerms={};$$('#permT input[data-r]').forEach(i=>{(st.rolePerms[i.dataset.r]=st.rolePerms[i.dataset.r]||[]);if(i.checked)st.rolePerms[i.dataset.r].push(i.dataset.p)});applyRoles(st);audit('users.perms','ROLES','แก้ไขสิทธิ์บทบาท โดย '+sess.name);save();toast('บันทึกสิทธิ์แล้ว มีผลทันที','ok')};
+A.roleNew=()=>{if(!need('users.manage'))return;const n=(prompt('ชื่อบทบาทใหม่ (เช่น ตัวแทนตำบลหนองบัว)')||'').trim();if(!n)return;const st=S.settings;st.customRoles=st.customRoles||{};st.customRoles['x'+Date.now().toString(36)]={name:n,perms:['member.view','fin.view']};applyRoles(st);audit('users.role',n,'เพิ่มบทบาท');save();render()};
+/* แนบหลักฐานการชำระ */
+async function proofRead(f){if(f.type==='application/pdf'){if(f.size>9e5)throw new Error('ไฟล์ PDF ใหญ่เกิน 900 KB');return{name:f.name,type:'pdf',data:await fileURL(f)}}
+ if(!/^image\//.test(f.type))throw new Error('แนบได้เฉพาะรูปภาพหรือ PDF');const d=await fileURL(f);let s=await shrink(d,1100,.7);if(s.length>45e4)s=await shrink(d,800,.6);return{name:f.name,type:'img',data:s}}
+{const pf=payForm;payForm=function(a,b){pf(a,b);const f=$('#pForm');if(f&&!$('#pProof')){const n=f.querySelector('[name=note]'),w=n?n.closest('.field'):null;(w||f).insertAdjacentHTML(w?'afterend':'beforeend','<div class="field"><label>แนบหลักฐานการชำระ (สลิป / รูปใบเสร็จ / PDF)</label><input class="input" type="file" id="pProof" accept="image/*,application/pdf"><div class="xs fa">ย่อรูปอัตโนมัติ · เก็บไว้กับใบเสร็จ แก้ไขหรือลบภายหลังไม่ได้</div></div>')}}
+ const fp=F.pay;F.pay=async f=>{const n=S.pays.length,el=f.querySelector('#pProof');let pr=null;if(el&&el.files[0]){try{pr=await proofRead(el.files[0])}catch(e){toast(e.message,'bad');return}}
+  fp(f);const nw=S.pays.slice(n);if(pr&&nw.length){nw.forEach(p=>p.proof=pr);audit('fin.proof',nw.map(p=>p.no).join(', '),'แนบหลักฐานการชำระ '+pr.name);save();render()}}
+ const rc=receipt;receipt=function(p){return rc(p)+(p.proof&&p.proof.type==='img'?'<div class="pd" style="page-break-before:always"><h3>หลักฐานการชำระ '+p.no+'</h3><img src="'+p.proof.data+'" style="max-width:100%"></div>':'')}}
+A.proofView=d=>{const p=S.pays.find(x=>x.id===d.id);if(!p)return;const pr=p.proof;
+ openModal('หลักฐานการชำระ '+p.no,pr?(pr.type==='img'?'<img src="'+pr.data+'" style="max-width:100%;border-radius:10px">':'<iframe src="'+pr.data+'" style="width:100%;height:60vh;border:0"></iframe>'):'<p class="fa">ยังไม่มีหลักฐานแนบ'+(can('fin.receive')?' · แนบได้ครั้งเดียว แก้ไขภายหลังไม่ได้':'')+'</p>'+(can('fin.receive')?'<input class="input" type="file" id="pfLate" accept="image/*,application/pdf" data-id="'+p.id+'">':''),
+  '<button class="btn" data-act="modalClose">ปิด</button>'+(!pr&&can('fin.receive')?'<button class="btn primary" data-act="proofSave" data-id="'+p.id+'">แนบหลักฐาน</button>':''),'sm')};
+A.proofSave=async d=>{const p=S.pays.find(x=>x.id===d.id),el=$('#pfLate');if(!p||p.proof||!need('fin.receive')||!el.files[0]){toast('เลือกไฟล์ก่อน','warn');return}try{p.proof=await proofRead(el.files[0])}catch(e){toast(e.message,'bad');return}audit('fin.proof',p.no,'แนบหลักฐานภายหลัง');save();closeModal();render();toast('แนบหลักฐานแล้ว','ok')};
+{let t=0;const dec=()=>{document.querySelectorAll('td,.mono,b').forEach(e=>{if(e.children.length||e.dataset.pf)return;const m=e.textContent.trim().match(/^RC\d{4}-\d{5}$/);if(!m)return;const p=S.pays.find(x=>x.no===m[0]);if(!p)return;e.dataset.pf=1;e.insertAdjacentHTML('beforeend',' <button class="btn t" data-act="proofView" data-id="'+p.id+'" title="หลักฐานการชำระ" style="padding:1px 7px">'+(p.proof?'📎':'＋')+'</button>')})};
+ new MutationObserver(()=>{clearTimeout(t);t=setTimeout(dec,120)}).observe(document.body,{childList:true,subtree:true})}
+/* นำเข้าข้อมูล: ชุดข้อมูลแบบ v48 (JSON สำรอง / CSV / Excel) พร้อมรายงานตรวจสอบ */
+const IM={rows:[],name:''};const z2=n=>String(n).padStart(2,'0');
+function csvParse(t){const r=[];let row=[],c='',q=false;t=t.replace(/^\ufeff/,'');for(let i=0;i<t.length;i++){const ch=t[i];if(q){if(ch==='"'){if(t[i+1]==='"'){c+='"';i++}else q=false}else c+=ch}else if(ch==='"')q=true;else if(ch===','||ch==='\t'){row.push(c);c=''}else if(ch==='\n'||ch==='\r'){if(ch==='\r'&&t[i+1]==='\n')i++;row.push(c);r.push(row);row=[];c=''}else c+=ch}if(c||row.length){row.push(c);r.push(row)}return r.filter(x=>x.some(v=>String(v).trim()))}
+function pDate(v){v=String(v==null?'':v).trim();if(!v)return'';let m=v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/),y,mo,d;if(m){y=+m[1];mo=+m[2];d=+m[3]}else if(m=v.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/)){d=+m[1];mo=+m[2];y=+m[3]}else return null;if(y>2400)y-=543;const t=new Date(Date.UTC(y,mo-1,d));if(mo<1||mo>12||t.getUTCMonth()!==mo-1||d!==t.getUTCDate())return null;return y+'-'+z2(mo)+'-'+z2(d)}
+const HM=[['prefix',/คำนำหน้า|prefix/i],['last',/นามสกุล|^last/i],['first',/ชื่อจริง|^first/i],['name',/ชื่อ|fullname|name/i],['regNo',/^(ที่|เลขที่|รหัส|ลำดับ|regno)/i],['idc',/บัตร|ประชาชน|idcard|^id$/i],['phone',/โทร|phone|มือถือ/i],['rel',/ความสัมพันธ์|relation/i],['ben',/ผู้รับ|ผลประโยชน์|benef/i],['dob',/เกิด|birth/i],['join',/สมัคร|join/i],['tambon',/ตำบล|tambon/i],['moo',/หมู่|moo/i],['years',/ปีที่ชำระ|บำรุง|annual/i],['status',/สถานะ|status/i]];
+const PFX=['นางสาว','นาย','นาง','เด็กชาย','เด็กหญิง','น.ส.'];
+function splitName(s){s=String(s||'').trim();const p=PFX.find(x=>s.startsWith(x))||'';s=s.slice(p.length).trim();const i=s.search(/\s/);return{prefix:p==='น.ส.'?'นางสาว':p,first:i<0?s:s.slice(0,i),last:i<0?'':s.slice(i).trim()}}
+function rowsFromCSV(txt){const T=csvParse(txt);if(!T.length)return[];const head=T[0].some(c=>!/^\d{13}$/.test(String(c).trim())&&/[ก-๙A-Za-z]/.test(c))&&!T[0].some(c=>/^\d{13}$/.test(String(c).trim()));let col={};
+ if(head)T[0].forEach((h,i)=>{const k=(HM.find(x=>x[1].test(h))||[])[0];if(k&&!(k in col))col[k]=i});else col={regNo:0,name:1,idc:2,phone:3,ben:4,rel:5,join:6,dob:7};
+ return T.slice(head?1:0).map((r,i)=>{const g=k=>k in col?String(r[col[k]]==null?'':r[col[k]]).trim():'';const nm=g('first')?{prefix:g('prefix'),first:g('first'),last:g('last')}:splitName(g('name'));
+  return{n:i+(head?2:1),regNo:g('regNo'),prefix:nm.prefix||g('prefix'),first:nm.first,last:nm.last,idc:g('idc').replace(/\D/g,''),phone:g('phone').replace(/[^\d]/g,''),ben:g('ben'),rel:g('rel'),join:g('join'),dob:g('dob'),tambon:g('tambon'),moo:g('moo'),years:g('years').split(/[;,\s]+/).filter(Boolean).map(Number).map(y=>y>2400?y-543:y),status:g('status'),fee:true}})}
+function rowsFromJSON(d){return(d.members||[]).map((m,i)=>{const nm=splitName(m.fullName);return{n:i+1,regNo:m.regNo||'',prefix:m.prefix||nm.prefix,first:nm.first,last:nm.last,idc:String(m.idCard||'').replace(/\D/g,''),phone:String(m.phone||'').replace(/\D/g,''),ben:(m.b1||{}).name||'',rel:(m.b1||{}).relation||'',join:m.joinDate||'',dob:m.birthDate||'',tambon:m.tambon||'',moo:m.moo||'',years:(m.annualFees||[]).map(f=>+f.year),status:({alive:'ปกติ',suspended:'ตัดสิทธิ์',deceased:'เสียชีวิต'})[m.status]||m.status||'',fee:m.joinFeePaid!==false,feeDate:m.joinFeeDate||'',cov:m.startCoverage||'',health:m.health,note:m.note||'',agent:m.agent||''}})}
+function imCheck(rows){const seen={};rows.forEach(r=>{r.err=[];r.warn=[];const e=r.err,w=r.warn;
+  if(!r.first)e.push('ไม่มีชื่อ');if(!/^\d{13}$/.test(r.idc))e.push('เลขบัตรต้องมี 13 หลัก ('+(r.idc||'ว่าง')+')');else if(!idOK(r.idc))e.push('เลขบัตรไม่ผ่าน checksum');
+  if(r.idc&&seen[r.idc])e.push('เลขบัตรซ้ำกับแถว '+seen[r.idc]);else if(r.idc)seen[r.idc]=r.n;
+  r.dup=S.members.find(m=>m.idc===r.idc);if(r.dup)e.push('ซ้ำกับสมาชิกในระบบ '+r.dup.code+' (ข้ามรายการนี้)');
+  r.dobI=pDate(r.dob);if(r.dobI===null)e.push('วันเกิดอ่านไม่ได้ ('+r.dob+')');else if(!r.dobI)w.push('ไม่มีวันเกิด');
+  r.joinI=pDate(r.join);if(r.joinI===null){e.push('วันที่สมัครอ่านไม่ได้ ('+r.join+')')}else if(!r.joinI){r.joinI=iso(NOW);w.push('ไม่มีวันที่สมัคร ใช้วันนี้')}
+  if(r.dobI&&r.joinI){const a=Math.floor((new Date(r.joinI)-new Date(r.dobI))/31557600000);if(a<0)e.push('วันเกิดหลังวันสมัคร');else if(a<S.settings.ageMin||a>S.settings.ageMax)w.push('อายุตอนสมัคร '+a+' ปี นอกเกณฑ์ '+S.settings.ageMin+'–'+S.settings.ageMax)}
+  if(r.phone&&!/^0\d{8,9}$/.test(r.phone))w.push('เบอร์โทรไม่ปกติ ('+r.phone+')');if(!r.ben)w.push('ไม่มีผู้รับผลประโยชน์');
+  if(r.tambon&&!TAMBON.includes(r.tambon))w.push('ตำบล "'+r.tambon+'" ไม่รู้จัก ใช้ '+TAMBON[0]);
+  r.years=r.years.filter(y=>y>2000&&y<=Y+1);r.st=r.err.length?(r.dup?'dup':'err'):r.warn.length?'warn':'ok'});return rows}
+function imDraw(){const R=IM.rows,c=k=>R.filter(r=>r.st===k).length,o=$('#imOut');if(!o)return;
+  o.innerHTML='<div class="chips" style="margin:12px 0"><span class="pill">ทั้งหมด '+R.length+'</span><span class="pill p-ok">ผ่าน '+c('ok')+'</span><span class="pill p-warn">ผ่านแต่มีข้อสังเกต '+c('warn')+'</span><span class="pill p-bad">ผิดพลาด '+c('err')+'</span><span class="pill p-mute">ซ้ำในระบบ '+c('dup')+'</span></div>'+
+  '<div style="max-height:46vh;overflow:auto"><table class="rulet">'+R.slice(0,300).map(r=>'<tr><td>แถว '+r.n+'</td><td>'+esc((r.prefix||'')+r.first+' '+r.last)+'<br><span class="xs mono fa">'+esc(mask(r.idc||''))+'</span></td><td><span class="pill p-'+({ok:'ok',warn:'warn',err:'bad',dup:'mute'})[r.st]+'">'+({ok:'ผ่าน',warn:'ข้อสังเกต',err:'ผิดพลาด',dup:'ซ้ำ'})[r.st]+'</span></td><td class="xs">'+esc(r.err.concat(r.warn).join(' · ')||'—')+'</td></tr>').join('')+'</table></div>'+
+  '<div class="row wrap" style="margin-top:12px;gap:10px"><label class="chk on"><input type="checkbox" id="imW" checked data-onchange="chkStyle"> นำเข้ารายการที่มีข้อสังเกตด้วย</label><button class="btn primary" data-act="imGo">นำเข้า '+(c('ok')+c('warn'))+' รายการ</button><button class="btn" data-act="imErr">ดาวน์โหลดรายการที่มีปัญหา (CSV)</button></div>'}
+V.import=function(){if(!can('backup.manage'))return head('นำเข้าข้อมูล','ต้องมีสิทธิ์ สำรอง/นำเข้า/รีเซ็ตข้อมูล');
+ return head('นำเข้าข้อมูล (ชุดเดียวกับ v48)','รองรับไฟล์สำรอง JSON ของ v48 · CSV · Excel (.xlsx) · ตรวจทุกแถวก่อนนำเข้า ไม่ทับข้อมูลเดิม','<button class="btn s" data-act="imTpl">'+ic('down')+' แม่แบบ CSV</button>')+
+ '<div class="card an"><h3>1) เลือกไฟล์หรือวางข้อมูล</h3><input class="input" type="file" id="imF" accept=".json,.csv,.txt,.xlsx,.xls"><p class="xs fa" style="margin:8px 0">คอลัมน์แบบ v48: ที่ · ชื่อ-สกุล · เลขบัตร · โทร · ผู้รับผลประโยชน์ · ความสัมพันธ์ · วันที่สมัคร · วันเกิด (เพิ่มได้: ตำบล หมู่ ปีที่ชำระบำรุง สถานะ) วันที่รับทั้ง ค.ศ. และ พ.ศ.</p><textarea class="input mono" id="imT" rows="4" placeholder="หรือวางข้อมูล CSV ที่นี่"></textarea><div style="margin-top:10px"><button class="btn violet" data-act="imRun">ตรวจสอบข้อมูล</button></div><div id="imOut"></div></div>'};
+A.imTpl=()=>dlTxt('แม่แบบนำเข้า-v48.csv','\ufeff'+'ที่,ชื่อ-สกุล,เลขบัตร,โทร,ผู้รับผลประโยชน์,ความสัมพันธ์,วันที่สมัคร,วันเกิด,ตำบล,หมู่,ปีที่ชำระบำรุง\r\n1,นายสมชาย ใจดี,3100200000014,0812345678,นางสมศรี ใจดี,ภรรยา,2569-08-15,2520-03-02,บ้านเหล่า,4,2569\r\n');
+A.imRun=async()=>{if(!need('backup.manage'))return;const o=$('#imOut');let txt=$('#imT').value,f=$('#imF').files[0];try{
+  if(f){const buf=await f.arrayBuffer();if(/\.xlsx?$/i.test(f.name)){if(typeof XLSX==='undefined')throw new Error('โหลดตัวอ่าน Excel ไม่ได้ (ต้องมีอินเทอร์เน็ต) ให้บันทึกเป็น CSV แทน');const wb=XLSX.read(buf,{cellDates:true}),ws=wb.Sheets[wb.SheetNames[0]];txt=XLSX.utils.sheet_to_csv(ws,{dateNF:'yyyy-mm-dd'})}
+   else{try{txt=new TextDecoder('utf-8',{fatal:true}).decode(buf)}catch(e){txt=new TextDecoder('windows-874').decode(buf)}}}
+  txt=(txt||'').trim();if(!txt)throw new Error('ยังไม่ได้เลือกไฟล์หรือวางข้อมูล');
+  if(txt[0]==='{'){let d;try{d=JSON.parse(txt)}catch(e){throw new Error('ไฟล์ JSON ผิดรูปแบบ: '+e.message)}if(!Array.isArray(d.members))throw new Error('ไม่ใช่ไฟล์สำรองของ v48 (ไม่พบรายการ members)');IM.rows=rowsFromJSON(d)}else IM.rows=rowsFromCSV(txt);
+  if(!IM.rows.length)throw new Error('ไม่พบข้อมูลสมาชิกในไฟล์');imCheck(IM.rows);imDraw()}catch(e){o.innerHTML='<div class="bn bad" style="margin-top:12px">'+esc(e.message)+'</div>'}};
+A.imErr=()=>{const R=IM.rows.filter(r=>r.st==='err'||r.st==='dup'||r.st==='warn');dlTxt('รายการที่มีปัญหา.csv','\ufeff'+'แถว,ชื่อ,เลขบัตร,สถานะ,หมายเหตุ\r\n'+R.map(r=>[r.n,r.prefix+r.first+' '+r.last,r.idc,r.st,r.err.concat(r.warn).join(' | ')].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n'))};
+A.imGo=()=>{if(!need('backup.manage'))return;const w=$('#imW').checked,L=IM.rows.filter(r=>r.st==='ok'||(w&&r.st==='warn'));if(!L.length){toast('ไม่มีรายการให้นำเข้า','warn');return}undoPush('นำเข้าสมาชิก');const st=S.settings,now=isoNow();let n=0;
+ L.forEach(r=>{S.counters.member++;const cov=r.cov||(()=>{const d=new Date(r.joinI);return new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+1,1)).toISOString().slice(0,10)})();
+  const m={id:'M'+pad(S.counters.member),code:'4ต-'+pad(S.counters.member),idc:r.idc,prefix:r.prefix||'นาย',first:r.first,last:r.last,fullname:(r.prefix||'นาย')+r.first+' '+r.last,dob:r.dobI||'',phone:r.phone,tambon:TAMBON.includes(r.tambon)?r.tambon:TAMBON[0],moo:Number(r.moo)||1,agent:r.agent||'',appliedAt:r.joinI,coverageStart:cov,
+   status:['ปกติ','ตัดสิทธิ์','เสียชีวิต','เก็บถาวร'].includes(r.status)?r.status:'ปกติ',funds:['F1'],health:Object.assign({},r.health||{}),consent:true,couple:false,notes:(r.note||'')+(r.regNo?' [เลขที่เดิม '+r.regNo+']':''),createdAt:now,archivedAt:null,deathDate:null,appId:null,beneficiaries:r.ben?[{name:r.ben,rel:r.rel,relation:r.rel,phone:''}]:[]};
+  S.members.push(m);const mk=(type,amt,date,period)=>{S.counters.receipt++;S.pays.push({id:uid('p'),no:'RC'+(Y+543)+'-'+pad(S.counters.receipt,5),memberId:m.id,fundId:'F1',type,amount:amt,date,period,method:'เงินสด',collector:'นำเข้าข้อมูล',note:'นำเข้าจากไฟล์ '+(r.regNo?'ที่ '+r.regNo:''),voided:false,by:sess.username,at:now})};
+  if(r.fee)mk('entry',st.entry,r.feeDate||r.joinI,'');r.years.forEach(y=>mk('due',st.due,y+'-01-05',String(y)));n++});
+ reindex();audit('backup.import','import','นำเข้าสมาชิก '+n+' ราย จากไฟล์ (ข้าม/ผิดพลาด '+(IM.rows.length-n)+')');save();toast('นำเข้า '+n+' ราย','ok',true);IM.rows=[];render()};
+NAV.splice(NAV.findIndex(x=>x.p==='rules'),0,{p:'perms',i:'shield',t:'สิทธิ์การใช้งาน',perm:'users.manage'},{p:'import',i:'down',t:'นำเข้าข้อมูล',perm:'backup.manage'});
+
+
+/* ===== v57: ตัวแยกข้อมูลบัตรประชาชนที่แม่นยำขึ้น (JSON เครื่องอ่าน · วันเกิด พ.ศ. · ชื่อบรรทัดเดียว) ===== */
+{const pc=parseCard,TM=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+ const dateTok=t=>{t=String(t).trim();let m=t.match(/^(\d{4})(\d{2})(\d{2})$/);if(m)return pDate(m[1]+'-'+m[2]+'-'+m[3]);if(/^\d{4}-\d{1,2}-\d{1,2}/.test(t)||/^\d{1,2}[\/.-]\d{1,2}[\/.-]\d{4}/.test(t))return pDate(t);
+  m=t.match(/^(\d{1,2})\s*(?:เดือน)?\s*([ก-๙]+)\s*(?:พ\.ศ\.)?\s*(\d{4})$/);if(m){const i=TM.findIndex(x=>x===m[2]||x.slice(0,3)===m[2].slice(0,3));if(i>=0)return pDate(m[3]+'-'+(i+1)+'-'+m[1])}return null};
+ parseCard=function(raw,mode){const t=String(raw||'').trim();let out;
+  if(t[0]==='{'){let j=null;try{j=JSON.parse(t)}catch(e){}
+   if(j){const g=(...k)=>{for(const x of k){const v=j[x];if(v!=null&&String(v).trim())return String(v).trim()}return''};
+    const nm=g('name','fullName','nameTH');const base=pc([g('cid','idCard','idcard','pid','id','citizenId'),g('titleTH','title','prefix'),g('firstNameTH','firstName','fname')||nm,g('lastNameTH','lastName','lname','surname'),g('address','addr','addressTH'),g('phone','tel','mobile')].join('#'),mode);
+    out=base;out.prefix=g('titleTH','title','prefix')||out.prefix;out.first=(g('firstNameTH','firstName','fname')||out.first).replace(/[^ก-๙]/g,'');out.last=(g('lastNameTH','lastName','lname','surname')||out.last).replace(/[^ก-๙]/g,'');
+    const d=dateTok(g('birthDate','dob','birth','birthday','dateOfBirth'));if(d)out.dob=d;const ad=g('address','addr','addressTH');if(ad)out.addr=ad;const ph=g('phone','tel','mobile').replace(/\D/g,'');if(/^0\d{9}$/.test(ph))out.phone=ph;
+    out.conf.first=out.first?95:0;out.conf.last=out.last?95:0;out.conf.dob=out.dob?95:0;out.conf.addr=out.addr?90:0;if(out.idc)out.conf.idc=99;
+    const tm=(out.addr||'').match(/ต(?:ำบล)?\.?\s*([ก-๙]+)/);if(tm&&TAMBON.includes(tm[1]))out.tambon=tm[1];const mm=(out.addr||'').match(/หมู่\s*(\d+)/);if(mm)out.moo=+mm[1];return out}}
+  out=pc(raw,mode);const parts=t.split(/[#|\n\t]+|\s{2,}/).map(x=>x.trim()).filter(Boolean);
+  const idd=out.idc;for(const p of parts){if(p===idd)continue;const d=dateTok(p);if(d){out.dob=d;out.conf.dob=mode==='ocr'?72:93;break}}
+  if(!out.first||!out.last){const m=t.match(/(นาย|นางสาว|นาง|เด็กชาย|เด็กหญิง)\s*([ก-๙]{2,})[\s#|]+([ก-๙]{2,})/);if(m){out.prefix=out.prefix||m[1];out.first=out.first||m[2];out.last=out.last||m[3];out.conf.first=out.conf.first||(mode==='ocr'?78:95);out.conf.last=out.conf.last||(mode==='ocr'?76:95)}}
+  out.addr=String(out.addr||'').replace(/["'}\]\s]+$/,'');return out}}
+
 /* ===== init ===== */
 (function(){
   const r=load();S=r.S;reindex();document.documentElement.dataset.theme=S.settings.theme||'night';sound=!!S.settings.sound;
