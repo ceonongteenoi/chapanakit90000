@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ฌาปนกิจสงเคราะห์ 4 ตำบล · v57 รวมสมบูรณ์</title>
+<title>ฌาปนกิจสงเคราะห์ 4 ตำบล · v58 รวมสมบูรณ์</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -286,6 +286,16 @@ table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:13.1px}
 .aim.u{align-self:flex-end;background:linear-gradient(135deg,var(--gold),var(--saf));color:#1A1206}.aim.b{background:var(--sf2);border:1px solid var(--ln)}
 .mcard{max-width:400px;margin:0 auto;border-radius:20px;overflow:hidden;color:#fff;background:linear-gradient(140deg,#2A1B7A,#7C5CFF 55%,#FF8A3D);box-shadow:var(--sh)}
 .mcard>div{padding:14px 18px}.mcard .qr{background:#fff;padding:6px;border-radius:10px;line-height:0}
+
+/* ===== v58: ลื่นไหล ===== */
+.bg{animation:none!important}.card::after{display:none!important}
+.card{content-visibility:auto;contain-intrinsic-size:auto 240px}
+canvas.sig{touch-action:none;cursor:crosshair;background:linear-gradient(#fff,#fafbff);border-radius:12px;width:100%;height:auto}
+#sbChip{position:fixed;right:14px;bottom:14px;z-index:70;padding:6px 12px;border-radius:999px;border:1px solid var(--ln);background:var(--sf);color:var(--mu);font-size:12px;cursor:pointer;box-shadow:var(--sh)}
+#sbChip.err{color:var(--bad);border-color:var(--bad)}#sbChip.ok{color:var(--ok)}
+.sqlbox{background:var(--sf2);border:1px solid var(--ln);border-radius:10px;padding:10px;max-height:190px;overflow:auto;white-space:pre-wrap;font-size:11.5px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{#sbChip{display:none!important}}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script></head>
 <body>
@@ -295,7 +305,7 @@ table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:13.1px}
   <div class="lart">
     <div class="embers" id="embers"></div>
     <svg class="flame" viewBox="0 0 64 64" fill="none"><defs><linearGradient id="fg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FF6A00"/><stop offset=".55" stop-color="#FFB020"/><stop offset="1" stop-color="#FFE9A8"/></linearGradient></defs><path d="M32 4c9 12 3 17 8 22 4 4 8 2 8-4 6 8 8 15 8 21 0 12-11 19-24 19S8 55 8 43c0-13 12-20 16-30 2-5 5-7 8-9z" fill="url(#fg)"/><path d="M32 34c4 5 6 8 6 12a6 6 0 11-12 0c0-4 2-7 6-12z" fill="#FFF3D0" opacity=".9"/></svg>
-    <h1>ฌาปนกิจสงเคราะห์<br><span>4 ตำบล · v57 รวมสมบูรณ์</span></h1>
+    <h1>ฌาปนกิจสงเคราะห์<br><span>4 ตำบล · v58 รวมสมบูรณ์</span></h1>
     <div class="row wrap"><span class="b90">เงินช่วยเหลือ 90,000 บาท / ราย</span><span class="pill p-mag">สแกนบัตรประชาชนรับสมัคร</span></div>
     <div class="lstats" id="lstats"></div>
     <ul class="lpts">
@@ -1399,7 +1409,7 @@ function loginStats(){const el=$('#lstats');if(!el)return;
 const A={};
 A.nav=d=>{if(sess&&sess.mode==='member'&&d.page!=='portal'){toast('พอร์ทัลสมาชิกใช้ได้เฉพาะเมนูของท่าน','info');return}
   const it=NAV.find(n=>n.p===d.page);if(it&&it.perm&&!can(it.perm)){toast('สิทธิ์ไม่เพียงพอสำหรับหน้านี้','bad');return}
-  ui.page=d.page;ui.dw=null;closeDrawer();$('#side').classList.remove('open');$('#scrim').classList.remove('on');render();window.scrollTo({top:0,behavior:'smooth'})};
+  ui.page=d.page;ui.dw=null;closeDrawer();$('#side').classList.remove('open');$('#scrim').classList.remove('on');render();window.scrollTo(0,0)};
 A.goto=d=>{if(d.p==='portal'&&sess.mode!=='member'){toast('เข้าสู่ระบบด้วยเลขบัตรสมาชิกเพื่อดูพอร์ทัล','info');return}
   if(d.p==='settings')ui.s.tab=d.tab||'rules';if(d.p==='finance')ui.f.tab=d.tab||'ledger';if(d.p==='applications')ui.ap.tab=d.tab||'queue';
   A.nav({page:d.p});if(d.do==='intake')setTimeout(()=>A.intake(),260);if(d.do==='selfTest')setTimeout(()=>A.selfTest(),260);
@@ -2048,7 +2058,7 @@ document.addEventListener('drop',e=>{const z=e.target.closest('[data-drop]');if(
   drag=null});
 window.addEventListener('beforeunload',stopCam);
 
-/* ===== v57 รวมสมบูรณ์: ใบสมัครกระดาษ + เกณฑ์รับสมัคร ตามไฟล์ v48 ===== */
+/* ===== v58 รวมสมบูรณ์: ใบสมัครกระดาษ + เกณฑ์รับสมัคร ตามไฟล์ v48 ===== */
 const AF=(()=>{const S={settings:{doc:{side:'both',guides:false,mono:false,ink:'#1B2470',dfs:1,dls:1,draft:false,zoom:1},auto:{checksum:true,dedupe:true}}};
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -2545,6 +2555,122 @@ NAV.splice(NAV.findIndex(x=>x.p==='rules'),0,{p:'perms',i:'shield',t:'สิท�
   const idd=out.idc;for(const p of parts){if(p===idd)continue;const d=dateTok(p);if(d){out.dob=d;out.conf.dob=mode==='ocr'?72:93;break}}
   if(!out.first||!out.last){const m=t.match(/(นาย|นางสาว|นาง|เด็กชาย|เด็กหญิง)\s*([ก-๙]{2,})[\s#|]+([ก-๙]{2,})/);if(m){out.prefix=out.prefix||m[1];out.first=out.first||m[2];out.last=out.last||m[3];out.conf.first=out.conf.first||(mode==='ocr'?78:95);out.conf.last=out.conf.last||(mode==='ocr'?76:95)}}
   out.addr=String(out.addr||'').replace(/["'}\]\s]+$/,'');return out}}
+
+
+/* ===== v58 ลื่นไหล: คำนวณซ้ำน้อยลง · วาดรูปบัตรตอนว่าง ===== */
+const FC=new Map();
+{const f0=fin;fin=function(m){let r=FC.get(m.id);if(!r){r=f0(m);FC.set(m.id,r)}return r}
+ const r0=reindex;reindex=function(){FC.clear();return r0.apply(this,arguments)}
+ const rd=render;render=function(){FC.clear();return rd()}}
+setTimeout(()=>{const q=S.apps.filter(a=>a.card&&a.card.generated);let i=0;const nx=()=>{if(i>=q.length)return;const a=q[i++],k=[a.data.idc,a.data.first,a.data.last,a.data.dob].join('|');if(!CARDC.has(k))CARDC.set(k,drawCard(a.data));(window.requestIdleCallback||setTimeout)(nx,{timeout:600})};nx()},2500);
+/* ลายเซ็นลื่น: เส้นโค้งต่อเนื่อง · หนาบางตามความเร็ว · จอคมชัด 2 เท่า · ไม่เลื่อนหน้าจอระหว่างเซ็น */
+function padInit(c,st,done){const R=2,LW=600,LH=240;c.width=LW*R;c.height=LH*R;c.style.touchAction='none';const x=c.getContext('2d');x.setTransform(R,0,0,R,0,0);x.lineCap='round';x.lineJoin='round';x.strokeStyle=x.fillStyle='#1B2340';
+ const M=(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2});
+ const seg=(s,i)=>{const p=s[i-1],q=s[i],m0=i>=2?M(s[i-2],p):p,m1=M(p,q);x.lineWidth=p.w||3;x.beginPath();x.moveTo(m0.x,m0.y);x.quadraticCurveTo(p.x,p.y,m1.x,m1.y);x.stroke()};
+ const tail=s=>{const n=s.length;if(n<2)return;const p=s[n-1],m=M(s[n-2],p);x.lineWidth=p.w||3;x.beginPath();x.moveTo(m.x,m.y);x.lineTo(p.x,p.y);x.stroke()};
+ const dot=s=>{x.beginPath();x.arc(s[0].x,s[0].y,1.9,0,7);x.fill()};
+ const repaint=()=>{x.clearRect(0,0,LW,LH);st.forEach(s=>{if(s.length===1)dot(s);else{for(let i=1;i<s.length;i++)seg(s,i);tail(s)}})};repaint();
+ let cur=null,rc=null;const pos=e=>({x:(e.clientX-rc.left)*LW/rc.width,y:(e.clientY-rc.top)*LH/rc.height,t:e.timeStamp});
+ const add=e=>{const p=pos(e),l=cur[cur.length-1],d=Math.hypot(p.x-l.x,p.y-l.y);if(d<1.1)return;const v=d/Math.max(1,p.t-l.t)*16;p.w=l.w*.7+Math.max(1.7,Math.min(4.4,4.8-v*.55))*.3;cur.push(p);seg(cur,cur.length-1)};
+ c.onpointerdown=e=>{e.preventDefault();rc=c.getBoundingClientRect();c.setPointerCapture(e.pointerId);const p=pos(e);p.w=3;cur=[p];st.push(cur);dot(cur)};
+ c.onpointermove=e=>{if(!cur)return;e.preventDefault();const l=e.getCoalescedEvents?e.getCoalescedEvents():[];(l.length?l:[e]).forEach(add)};
+ const end=()=>{if(!cur)return;if(cur.length>1)tail(cur);cur=null;done()};c.onpointerup=end;c.onpointercancel=end;c.onlostpointercapture=end;c.onpointerleave=null;c._rp=repaint;return repaint}
+bindSig=function(){const c=$('#sigPad');if(!c)return;padInit(c,W.strokes,()=>{W.sig=W.strokes.length?c.toDataURL('image/png'):null})};
+new MutationObserver(()=>{const o=document.getElementById('offSig');if(o&&!o.dataset.sm){o.dataset.sm=1;const st=[];padInit(o,st,()=>{window.__osig=st.length?o.toDataURL('image/png'):null});window.__oclear=()=>{st.length=0;o._rp();window.__osig=null}}}).observe(document.body,{childList:true,subtree:true});
+/* ===== v58 ยอดเก็บรายเดือนต่อกองทุน · 1 คนหลายกองทุน · ยอดรวมต่อเดือน ===== */
+const monthlyOf=m=>m.funds.reduce((t,i)=>{const f=IDX.f.get(i);return t+(f&&f.active?Number(f.monthly)||0:0)},0);
+PT.month='เงินเก็บรายเดือน';
+{const ff=fundForm;fundForm=function(id){ff(id);const f=id?IDX.f.get(id):null,w=$('#fForm .fg');if(w)w.insertAdjacentHTML('beforeend','<div class="field" style="margin:0"><label>ยอดเก็บรายเดือน (บาท/คน/เดือน)</label><input class="input mono" name="monthly" type="number" min="0" step="1" value="'+((f&&f.monthly)||0)+'"></div>')};
+ const fn=F.fund;F.fund=function(f){const v=Math.max(0,Number(f.monthly&&f.monthly.value)||0),id=f.dataset.id,n=S.funds.length;fn(f);const t=id?IDX.f.get(id):(S.funds.length>n?S.funds[S.funds.length-1]:null);if(t){t.monthly=v;save()}};
+ const fv=fundsView;fundsView=function(){const act=S.members.filter(m=>m.status==='ปกติ'),tot=act.reduce((t,m)=>t+monthlyOf(m),0);return '<div class="card an" style="margin-bottom:14px"><div class="row wrap" style="gap:12px"><b>ยอดเก็บรวมต่อเดือน '+money0(tot)+'</b><span class="xs fa grow">'+(S.funds.filter(f=>f.monthly>0).map(f=>esc(f.name.replace('กองทุน','').trim())+' '+money0(f.monthly)+'/คน').join(' · ')||'ยังไม่ได้ตั้งยอดรายเดือน กด แก้ไข ที่กองทุนเพื่อกำหนด')+'</span><button class="btn s" onclick="A.nav({page:\'monthly\'})">รายละเอียดรายคน</button></div></div>'+fv()}
+ const pf=payForm;payForm=function(a,b){pf(a,b);const f=$('#pForm');if(!f)return;const t=f.type;if(t&&!t.querySelector('[value=month]'))t.insertAdjacentHTML('beforeend','<option value="month">'+PT.month+'</option>');
+  if(!$('#pMonthW'))(f.querySelector('.fg')||f).insertAdjacentHTML('afterbegin','<div class="field" id="pMonthW" style="margin:0;display:none"><label>เดือนที่เก็บ</label><input class="input" type="month" name="pMonth" value="'+iso(NOW).slice(0,7)+'"></div>')};
+ const pc=payCalc;payCalc=function(){pc();const f=$('#pForm');if(!f)return;const isM=f.type.value==='month',w=$('#pMonthW');if(w)w.style.display=isM?'':'none';
+  if(!isM){f.amount.readOnly=false;delete f.dataset.lk;return}
+  if(f.dataset.bulk){$('#payCalcBox').innerHTML='<div class="bn warn">รับเงินรายเดือนแบบชุดยังไม่รองรับ เลือกรับทีละราย</div>';return}
+  const m=IDX.m.get(f.memberId.value);if(!m)return;f.amount.readOnly=true;f.amount.value=monthlyOf(m);const fs=m.funds.map(i=>IDX.f.get(i)).filter(x=>x&&x.active&&x.monthly>0);
+  $('#payCalcBox').innerHTML=fs.length?'<div class="bn ok">'+ic('wallet')+'<div>รวมต่อเดือน <b style="font-size:19px">'+money0(monthlyOf(m))+'</b> จาก '+fs.length+' กองทุน (ออกใบเสร็จแยกตามกองทุน)</div></div>'+fs.map(x=>'<div class="row sm" style="padding:4px 0"><span class="grow">'+esc(x.name)+'</span><b class="mono">'+money0(x.monthly)+'</b></div>').join(''):'<div class="bn warn">สมาชิกนี้ไม่มีกองทุนที่ตั้งยอดรายเดือน</div>'};
+ const fp2=F.pay;F.pay=async f=>{if(f.type.value!=='month'||f.dataset.bulk)return fp2(f);if(!need('fin.receive'))return;const m=IDX.m.get(f.memberId.value),fs=m.funds.map(i=>IDX.f.get(i)).filter(x=>x&&x.active&&x.monthly>0);if(!fs.length){toast('สมาชิกนี้ไม่มีกองทุนที่ตั้งยอดรายเดือน','bad');return}
+  const mo=f.pMonth.value||iso(NOW).slice(0,7),el=f.querySelector('#pProof');let pr=null;if(el&&el.files[0]){try{pr=await proofRead(el.files[0])}catch(e){toast(e.message,'bad');return}}
+  undoPush('รับเงินรายเดือน');const now=isoNow(),out=fs.map(fd=>{S.counters.receipt++;const p={id:uid('p'),no:'RC'+(Y+543)+'-'+pad(S.counters.receipt,5),memberId:m.id,fundId:fd.id,type:'month',amount:fd.monthly,date:f.date.value,period:mo,method:f.payMethod.value,collector:f.collector.value,note:'เก็บรายเดือน '+mo+' · '+fd.name+(f.note.value?' · '+f.note.value:''),voided:false,by:sess.username,at:now};if(pr)p.proof=pr;S.pays.push(p);return p}),tot=out.reduce((t,p)=>t+p.amount,0);
+  reindex();audit('fin.receive',m.code,'รับเงินรายเดือน '+mo+' รวม '+money0(tot)+' ('+out.length+' กองทุน)');save();closeModal();render();toast('ออกใบเสร็จ '+out.length+' ใบ รวม '+money0(tot),'ok',true)}}
+ui.mo={q:'',t:'',m:iso(NOW).slice(0,7),page:1};
+const moRows=()=>{const U=ui.mo,q=U.q.trim().toLowerCase();return S.members.filter(m=>m.status==='ปกติ'&&(!U.t||m.tambon===U.t)&&(!q||(m.fullname+m.code+m.idc).toLowerCase().includes(q))).map(m=>{const T=monthlyOf(m),paid=(IDX.pm.get(m.id)||[]).filter(p=>p.type==='month'&&p.period===U.m&&!p.voided).reduce((t,p)=>t+p.amount,0);return{m,T,paid}}).sort((a,b)=>b.T-a.T||a.m.code.localeCompare(b.m.code))};
+function moTable(){const U=ui.mo,R=moRows(),N=50,pg=Math.max(1,Math.ceil(R.length/N));U.page=Math.min(U.page,pg);const sl=R.slice((U.page-1)*N,U.page*N);
+ return '<div class="xs fa" style="margin:8px 0">'+R.length+' ราย · คาดเก็บ '+money0(R.reduce((t,r)=>t+r.T,0))+' · เก็บแล้ว '+money0(R.reduce((t,r)=>t+Math.min(r.paid,r.T),0))+'</div><div style="overflow:auto"><table class="rulet"><tr><td>สมาชิก</td><td>ตำบล</td><td>กองทุน</td><td>รวม/เดือน</td><td>เดือนนี้</td><td></td></tr>'+sl.map(r=>{const m=r.m,st=r.T===0?'<span class="pill p-mute">ไม่ตั้งยอด</span>':r.paid>=r.T?'<span class="pill p-ok">ชำระแล้ว</span>':r.paid>0?'<span class="pill p-warn">ชำระบางส่วน</span>':'<span class="pill p-bad">ยังไม่ชำระ</span>';
+  return '<tr><td style="color:var(--tx)">'+esc(m.fullname)+'<br><span class="mono xs fa">'+esc(m.code)+'</span></td><td>'+esc(m.tambon)+'</td><td class="xs">'+m.funds.length+' กองทุน<br><span class="fa">'+m.funds.map(i=>{const f=IDX.f.get(i);return f?esc(f.name.replace('กองทุน','').trim())+' '+money0(f.monthly||0):''}).join(' · ')+'</span></td><td class="mono"><b>'+money0(r.T)+'</b></td><td>'+st+'</td><td>'+(can('fin.receive')&&r.T?'<button class="btn t" onclick="payForm(\''+m.id+'\');setTimeout(()=>{const f=$(\'#pForm\');f.type.value=\'month\';payCalc()},30)">รับเงิน</button>':'')+(can('member.edit')?'<button class="btn t" onclick="memberForm(\''+m.id+'\')">กองทุน</button>':'')+'</td></tr>'}).join('')+'</table></div>'+
+ '<div class="row" style="margin-top:10px;gap:8px"><button class="btn s" data-act="moPg" data-d="-1"'+(U.page<=1?' disabled':'')+'>ก่อนหน้า</button><span class="xs fa">หน้า '+U.page+' / '+pg+'</span><button class="btn s" data-act="moPg" data-d="1"'+(U.page>=pg?' disabled':'')+'>ถัดไป</button></div>'}
+V.monthly=function(){const U=ui.mo,act=S.members.filter(m=>m.status==='ปกติ'),tot=act.reduce((t,m)=>t+monthlyOf(m),0),fr=S.funds.map(f=>{const n=act.filter(m=>m.funds.includes(f.id)).length;return{f,n,sum:n*(Number(f.monthly)||0)}}),ed=can('settings.manage');
+ return head('ยอดเก็บรายเดือน','ตั้งยอดต่อกองทุน · สมาชิก 1 คนเข้าได้หลายกองทุน · ระบบรวมยอดรายเดือนให้อัตโนมัติ','<button class="btn s" data-act="moCsv">'+ic('down')+' ส่งออก CSV</button>')+
+ '<div class="g2 an"><div class="card"><h3>ยอดรวมที่ต้องเก็บ</h3><div style="font-size:30px;font-weight:700;color:var(--gold2)">'+money0(tot)+' <span class="xs fa">/เดือน</span></div><div class="xs fa">≈ '+money0(tot*12)+' ต่อปี · สมาชิกใช้งาน '+act.length+' ราย · เฉลี่ยคนละ '+money0(act.length?tot/act.length:0)+'</div></div>'+
+ '<div class="card" style="overflow:auto"><h3>ยอดต่อกองทุน (บาท/คน/เดือน)</h3><table class="rulet">'+fr.map(r=>'<tr><td style="color:var(--tx)">'+esc(r.f.name)+(r.f.active?'':' <span class="pill p-mute">ปิด</span>')+'</td><td>'+(ed?'<input class="input mono" type="number" min="0" style="width:90px;padding:4px 8px" value="'+(r.f.monthly||0)+'" onchange="A.fMonthly({id:\''+r.f.id+'\',v:this.value})">':money0(r.f.monthly||0))+'</td><td class="xs fa">'+r.n+' คน</td><td class="mono">'+money0(r.sum)+'</td></tr>').join('')+'</table></div></div>'+
+ '<div class="card an" style="margin-top:14px"><h3>รายคน</h3><div class="row wrap" style="gap:8px"><input class="input" id="moQ" placeholder="ค้นหาชื่อ / รหัส / เลขบัตร" value="'+esc(U.q)+'" style="max-width:260px" oninput="clearTimeout(window.__mq);window.__mq=setTimeout(()=>A.moF({q:this.value}),250)"><select class="input" style="max-width:160px" onchange="A.moF({t:this.value})"><option value="">ทุกตำบล</option>'+TAMBON.map(t=>'<option'+(U.t===t?' selected':'')+'>'+t+'</option>').join('')+'</select><input class="input" type="month" value="'+U.m+'" style="max-width:170px" onchange="A.moF({m:this.value})"></div><div id="moTable">'+moTable()+'</div></div>'};
+A.moF=d=>{Object.assign(ui.mo,d,{page:1});$('#moTable').innerHTML=moTable()};A.moPg=d=>{ui.mo.page+=Number(d.d);$('#moTable').innerHTML=moTable()};
+A.fMonthly=d=>{if(!need('settings.manage'))return;const f=IDX.f.get(d.id);undoPush('ยอดรายเดือน');f.monthly=Math.max(0,Number(d.v)||0);audit('fund.edit',f.name,'ตั้งยอดเก็บรายเดือน '+f.monthly+' บาท/คน');save();render()};
+A.moCsv=()=>dlTxt('ยอดเก็บรายเดือน.csv','\ufeff'+'รหัส,ชื่อ,ตำบล,จำนวนกองทุน,กองทุน,รวมต่อเดือน,เดือน,ชำระแล้ว\r\n'+moRows().map(r=>[r.m.code,r.m.fullname,r.m.tambon,r.m.funds.length,r.m.funds.map(i=>(IDX.f.get(i)||{}).name).join(' / '),r.T,ui.mo.m,r.paid].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n'));
+{let t=0;new MutationObserver(()=>{clearTimeout(t);t=setTimeout(()=>{const dw=$('#dw');if(!dw)return;const id=ui.dw&&(ui.dw.id||ui.dw.mid),m=id&&IDX.m.get(id);if(!m)return;[...dw.querySelectorAll('.sect')].forEach(s=>{const h=s.querySelector('h4');if(!h||!/กองทุนที่เข้าร่วม/.test(h.textContent)||s.dataset.mo)return;s.dataset.mo=1;
+  s.insertAdjacentHTML('beforeend','<div class="bn ok" style="margin-top:8px">'+ic('wallet')+'<div>สมาชิกอยู่ใน <b>'+m.funds.length+'</b> กองทุน · รวมเก็บ <b>'+money0(monthlyOf(m))+'</b>/เดือน<br><span class="xs fa">'+m.funds.map(i=>{const f=IDX.f.get(i);return f?esc(f.name.replace('กองทุน','').trim())+' '+money0(f.monthly||0):''}).join(' · ')+'</span></div></div>')})},150)}).observe(document.body,{childList:true,subtree:true})}
+/* ===== v58 เชื่อม Supabase: ซิงค์ 3 ทางทีละหมวดข้อมูล · รูป/ไฟล์แนบแยกเก็บ · ใช้งานออฟไลน์ได้ ===== */
+const SB={cfg:{},m:{rev:{},h:{},base:{},bl:{}},busy:false,conf:0,last:'',msg:'',again:false};
+try{SB.cfg=JSON.parse(localStorage.getItem('ck57sb')||'{}');Object.assign(SB.m,JSON.parse(localStorage.getItem('ck57sbm')||'{}'))}catch(e){}
+const sbSave=()=>{try{localStorage.setItem('ck57sb',JSON.stringify(SB.cfg));localStorage.setItem('ck57sbm',JSON.stringify(SB.m))}catch(e){}};
+const BLK=new Map();let BLN=new Set();
+const h53=s=>{let a=0xdeadbeef,b=0x41c6ce57;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);a=Math.imul(a^c,2654435761);b=Math.imul(b^c,1597334677)}a=Math.imul(a^(a>>>16),2246822507)^Math.imul(b^(b>>>13),3266489909);b=Math.imul(b^(b>>>16),2246822507)^Math.imul(a^(a>>>13),3266489909);return(4294967296*(2097151&b)+(a>>>0)).toString(36)};
+const tok=v=>{const n=v.length>>1,t='b:'+h53(v.length+v.slice(0,96)+v.slice(n,n+96)+v.slice(-96));BLK.set(t,v);BLN.add(t);return'@@'+t};
+function cn(v){if(v&&typeof v==='object'){if(Array.isArray(v))return'['+v.map(cn).join(',')+']';return'{'+Object.keys(v).filter(k=>v[k]!==undefined).sort().map(k=>JSON.stringify(k)+':'+cn(v[k])).join(',')+'}'}if(typeof v==='string'&&v.length>2e4&&v.startsWith('data:'))return'"'+tok(v)+'"';return v===undefined?'null':JSON.stringify(v)}
+function sbChip(s,t){let e=$('#sbChip');if(!SB.cfg.sess){if(e)e.remove();return}if(!e){e=document.createElement('div');e.id='sbChip';e.onclick=()=>A.nav({page:'cloud'});document.body.appendChild(e)}e.className=s==='ok'?'ok':s==='err'?'err':'';e.textContent=s==='sync'?'⟳ กำลังซิงค์…':s==='ok'?'☁ ซิงค์แล้ว '+(t||''):'⚠ '+(t||'ออฟไลน์ (เก็บในเครื่องไว้ก่อน)')}
+async function sbAuth(){const c=SB.cfg;if(c.sess&&c.sess.exp>Date.now()+60000)return;if(!c.sess||!c.sess.rt)throw new Error('ยังไม่ได้เข้าสู่ระบบ Supabase');const r=await fetch(c.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:c.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:c.sess.rt})});if(!r.ok){c.sess=null;sbSave();throw new Error('เซสชัน Supabase หมดอายุ กรุณาเข้าสู่ระบบใหม่')}const j=await r.json();c.sess={at:j.access_token,rt:j.refresh_token,exp:Date.now()+j.expires_in*1000};sbSave()}
+async function sbf(path,o={}){const c=SB.cfg;await sbAuth();const r=await fetch(c.url+path,{method:o.m||'GET',headers:Object.assign({apikey:c.key,Authorization:'Bearer '+c.sess.at,'Content-Type':'application/json'},o.h||{}),body:o.b});if(!r.ok){throw new Error(r.status+' '+(await r.text()).slice(0,200))}return r.status===204?null:r.json().catch(()=>null)}
+async function blobIn(d){let t=JSON.stringify(d);const ks=[...new Set(t.match(/@@b:[0-9a-z]+/g)||[])].map(x=>x.slice(2)),miss=ks.filter(x=>!BLK.has(x));for(let i=0;i<miss.length;i+=4){const rs=await sbf('/rest/v1/kv?key=in.('+miss.slice(i,i+4).join(',')+')&select=key,data');(rs||[]).forEach(r=>BLK.set(r.key,r.data.d))}t=t.replace(/@@(b:[0-9a-z]+)/g,(m,x)=>BLK.has(x)?JSON.stringify(BLK.get(x)).slice(1,-1):m);return JSON.parse(t)}
+const idf=x=>x&&typeof x==='object'?(x.id??x.no??x.h??x.seq??x.at??null):null,tsf=x=>String(x.updatedAt||x.at||x.createdAt||'');
+function recH(v){const o={};if(Array.isArray(v))v.forEach(x=>{const i=idf(x);if(i!=null)o[i]=h53(cn(x))});else if(v&&typeof v==='object')Object.keys(v).forEach(p=>o[p]=h53(cn(v[p])));return o}
+function merge3(k,L,R){const B=SB.m.base[k]||{},hh=x=>h53(cn(x));
+ if(Array.isArray(L)&&Array.isArray(R)){if(![...L,...R].every(x=>idf(x)!=null))return R;const lm=new Set(L.map(idf)),rm=new Map(R.map(x=>[idf(x),x])),out=[];
+  L.forEach(l=>{const id=idf(l),r=rm.get(id),b=B[id],lh=hh(l);if(r===undefined){if(b!==undefined&&b===lh)return;out.push(l);return}const rh=hh(r);if(lh===rh||b===rh)out.push(l);else if(b===lh)out.push(r);else{SB.conf++;out.push(tsf(r)>tsf(l)?r:l)}});
+  R.forEach(r=>{const id=idf(r);if(lm.has(id))return;const b=B[id];if(b!==undefined&&b===hh(r))return;out.push(r)});return out}
+ if(L&&R&&typeof L==='object'&&typeof R==='object'){const o={};new Set([...Object.keys(L),...Object.keys(R)]).forEach(p=>{const l=L[p],r=R[p];if(k==='counters'&&typeof l==='number'&&typeof r==='number'){o[p]=Math.max(l,r);return}const lh=l===undefined?null:hh(l),rh=r===undefined?null:hh(r),b=B[p]??null;let v;if(lh===rh||b===rh)v=l;else if(b===lh)v=r;else{SB.conf++;v=r}if(v!==undefined)o[p]=v});return o}
+ return R}
+async function sbPush(k,rev,exists,body,mh){const toks=[...BLN].filter(t=>!SB.m.bl[t]);for(const t of toks){await sbf('/rest/v1/kv?on_conflict=key',{m:'POST',h:{Prefer:'resolution=ignore-duplicates,return=minimal'},b:JSON.stringify({key:t,data:{d:BLK.get(t)},rev:1})});SB.m.bl[t]=1}
+ const by=(sess&&sess.username)||'',ua=new Date().toISOString();let res;
+ if(exists)res=await sbf('/rest/v1/kv?key=eq.'+encodeURIComponent(k)+'&rev=eq.'+rev,{m:'PATCH',h:{Prefer:'return=representation'},b:'{"data":'+body+',"rev":'+(rev+1)+',"updated_by":'+JSON.stringify(by)+',"updated_at":"'+ua+'"}'});
+ else res=await sbf('/rest/v1/kv?on_conflict=key',{m:'POST',h:{Prefer:'resolution=ignore-duplicates,return=representation'},b:'{"key":'+JSON.stringify(k)+',"data":'+body+',"rev":1,"updated_by":'+JSON.stringify(by)+'}'});
+ if(!res||!res.length){SB.again=true;return false}SB.m.rev[k]=res[0].rev;SB.m.h[k]=mh;SB.m.base[k]=recH(S[k]);return true}
+async function sbSync(mode){if(SB.busy||!SB.cfg.sess||typeof S==='undefined'||!sess)return;SB.busy=true;SB.again=false;sbChip('sync');let ch=0;
+ try{const rows=await sbf('/rest/v1/kv?select=key,rev&key=not.like.b:*'),rr={};(rows||[]).forEach(r=>rr[r.key]=r.rev);
+  for(const k of Object.keys(S)){const v=S[k];if(!v||typeof v!=='object')continue;BLN=new Set();const lh=h53(cn(v)),exists=k in rr,remoteNew=exists&&rr[k]!==SB.m.rev[k],dirty=SB.m.h[k]!==lh;
+   if(exists&&!remoteNew&&!dirty)continue;let rev=rr[k]||0,rh=null;
+   if(remoteNew){const row=((await sbf('/rest/v1/kv?key=eq.'+encodeURIComponent(k)+'&select=data,rev'))||[])[0];if(!row)continue;rev=row.rev;const rd=await blobIn(row.data);rh=h53(cn(rd));
+    if(mode==='cloud')S[k]=rd;else if(mode!=='local')S[k]=merge3(k,S[k],rd);ch++}
+   BLN=new Set();const body=cn(S[k]),mh=h53(body);const need=!exists||(rh===null?dirty:mh!==rh);
+   if(need){if(!(await sbPush(k,rev,exists,body,mh)))continue}else{SB.m.rev[k]=rev;SB.m.h[k]=mh;SB.m.base[k]=recH(S[k])}}
+  SB.last=new Date().toTimeString().slice(0,5);sbSave();if(ch){reindex();SB.save0();const a=document.activeElement;if(!(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))render();else setTimeout(()=>render(),6000);toast('อัปเดตข้อมูลจากเครื่องอื่นแล้ว','ok')}
+  sbChip('ok',SB.last);SB.msg=''}catch(e){SB.msg=e.message;sbChip('err',/Failed to fetch|NetworkError/.test(e.message)?'ออฟไลน์ (เก็บในเครื่องไว้ก่อน)':'ซิงค์ไม่สำเร็จ')}
+ SB.busy=false;if(SB.again)setTimeout(()=>sbSync(),400)}
+{const s0=save;SB.save0=s0;save=function(){FC.clear();s0();if(SB.cfg.sess){clearTimeout(SB.t);SB.t=setTimeout(()=>sbSync(),1800)}}}
+setInterval(()=>{if(!document.hidden&&SB.cfg.sess)sbSync()},15000);addEventListener('online',()=>sbSync());document.addEventListener('visibilitychange',()=>{if(!document.hidden)sbSync()});setTimeout(()=>{if(SB.cfg.sess)sbChip('sync');sbSync()},1800);
+const SB_SQL=`create table if not exists public.kv (
+  key text primary key,
+  data jsonb not null,
+  rev integer not null default 1,
+  updated_by text,
+  updated_at timestamptz not null default now()
+);
+alter table public.kv enable row level security;
+create policy "staff read write" on public.kv
+  for all to authenticated using (true) with check (true);`;
+V.cloud=function(){if(!can('backup.manage'))return head('เชื่อมต่อ Supabase','ต้องมีสิทธิ์ สำรอง/นำเข้า/รีเซ็ตข้อมูล');const c=SB.cfg,on=!!c.sess;
+ return head('เชื่อมต่อ Supabase','ซิงค์ข้อมูลหลายเครื่อง ไม่ทับงานของกันและกัน · ใช้ออฟไลน์ได้ แล้วซิงค์เมื่อมีเน็ต')+
+ '<div class="g2 an"><div class="card"><h3>1) สร้างตารางใน Supabase</h3><p class="xs fa">เปิด SQL Editor แล้ววางคำสั่งนี้ครั้งเดียว</p><div class="sqlbox mono" id="sbSql">'+esc(SB_SQL)+'</div><div style="margin:10px 0"><button class="btn s" data-act="sbCopy">คัดลอก SQL</button></div><p class="xs fa">ที่ Authentication ให้<b> ปิด Allow new users to sign up</b> แล้วสร้างผู้ใช้ 1 บัญชี (อีเมล+รหัสผ่าน) ให้ระบบนี้ ข้อมูลมีเลขบัตรประชาชน ห้ามเปิดตารางเป็นสาธารณะ</p></div>'+
+ '<div class="card"><h3>2) เชื่อมต่อ '+(on?'<span class="pill p-ok">เชื่อมแล้ว</span>':'')+'</h3><div class="field"><label>Project URL</label><input class="input mono" id="sbU" placeholder="https://xxxx.supabase.co" value="'+esc(c.url||'')+'"></div><div class="field"><label>anon public key</label><input class="input mono" id="sbK" value="'+esc(c.key||'')+'"></div><div class="fg c2"><div class="field"><label>อีเมลผู้ใช้</label><input class="input" id="sbE" value="'+esc(c.email||'')+'" autocomplete="username"></div><div class="field"><label>รหัสผ่าน (ไม่เก็บในเครื่อง)</label><input class="input" id="sbP" type="password" autocomplete="current-password"></div></div>'+
+ '<div class="field"><label>ถ้าบนคลาวด์มีข้อมูลอยู่แล้ว</label><select class="input" id="sbM"><option value="merge">รวมข้อมูล (ไม่ลบของใคร)</option><option value="cloud">ใช้ข้อมูลของคลาวด์ แทนเครื่องนี้</option><option value="local">ใช้ข้อมูลเครื่องนี้ ทับคลาวด์</option></select></div>'+
+ '<div class="row wrap" style="gap:8px"><button class="btn primary" data-act="sbConn">'+(on?'เชื่อมต่อใหม่':'เชื่อมต่อและซิงค์')+'</button>'+(on?'<button class="btn" data-act="sbNow">ซิงค์ตอนนี้</button><button class="btn danger" data-act="sbOff">ตัดการเชื่อมต่อ</button>':'')+'</div>'+
+ '<p class="xs fa" style="margin-top:10px">สถานะ: '+(on?(SB.msg?'⚠ '+esc(SB.msg):'ซิงค์ล่าสุด '+(SB.last||'—')):'ยังไม่เชื่อมต่อ')+(SB.conf?' · แก้ความขัดแย้งอัตโนมัติ '+SB.conf+' ครั้ง (ใช้รายการที่ใหม่กว่า)':'')+'</p></div></div>'};
+A.sbCopy=()=>{navigator.clipboard.writeText(SB_SQL).then(()=>toast('คัดลอกแล้ว','ok'),()=>toast('คัดลอกไม่ได้ ให้ลากเลือกข้อความเอง','warn'))};
+A.sbConn=async()=>{if(!need('backup.manage'))return;const url=$('#sbU').value.trim().replace(/\/+$/,''),key=$('#sbK').value.trim(),email=$('#sbE').value.trim(),pw=$('#sbP').value;if(!/^https:\/\/.+\.supabase\.(co|in)$/.test(url)&&!/^https?:\/\/(localhost|127\.0\.0\.1)/.test(url)){toast('Project URL ไม่ถูกต้อง','bad');return}if(!key||!email||!pw){toast('กรอก key อีเมล และรหัสผ่านให้ครบ','bad');return}
+ try{const r=await fetch(url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:key,'Content-Type':'application/json'},body:JSON.stringify({email,password:pw})});if(!r.ok)throw new Error('เข้าสู่ระบบ Supabase ไม่ได้ ตรวจอีเมล/รหัสผ่าน ('+r.status+')');const j=await r.json();
+  SB.cfg={url,key,email,sess:{at:j.access_token,rt:j.refresh_token,exp:Date.now()+j.expires_in*1000}};SB.m={rev:{},h:{},base:{},bl:{}};SB.conf=0;sbSave();audit('cloud.connect',url,'เชื่อมต่อ Supabase');SB.save0();toast('เชื่อมต่อแล้ว กำลังซิงค์…','ok');await sbSync($('#sbM').value);render()}catch(e){toast(e.message.slice(0,120),'bad')}};
+A.sbNow=()=>sbSync();A.sbOff=()=>{if(!need('backup.manage'))return;SB.cfg={};SB.m={rev:{},h:{},base:{},bl:{}};sbSave();sbChip('off');audit('cloud.off','','ตัดการเชื่อมต่อ Supabase');SB.save0();toast('ตัดการเชื่อมต่อแล้ว ข้อมูลในเครื่องยังอยู่','ok');render()};
+NAV.splice(NAV.findIndex(x=>x.p==='rules'),0,{p:'monthly',i:'wallet',t:'ยอดเก็บรายเดือน',perm:'fin.view'},{p:'cloud',i:'cloud',t:'เชื่อม Supabase',perm:'backup.manage'});
 
 /* ===== init ===== */
 (function(){
