@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ฌาปนกิจสงเคราะห์ 4 ตำบล · v60 รวมสมบูรณ์</title>
+<title>ฌาปนกิจสงเคราะห์ 4 ตำบล · v61 รวมสมบูรณ์</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -309,8 +309,11 @@ canvas.sig{touch-action:none;cursor:crosshair;background:linear-gradient(#fff,#f
 .ap.o .bl{margin:0}.ap.o .bl.ind{padding-left:2.2em}
 .ap.o .fx{display:inline-block;white-space:nowrap}
 .ap.o table.tier{table-layout:fixed}.ap.o table.tier td:first-child{width:80px;white-space:nowrap}.ap.o table.tier td:last-child{overflow:hidden}
+
+#dw img[src^="data:image/svg"]{max-height:130px;object-fit:contain;background:#fff}
+.gl .ck{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--ln)}.gl .ck i{font-style:normal;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;color:#fff;background:var(--ok);flex:none}.gl .ck.no i{background:var(--bad)}.gl .ck.w i{background:var(--warn);color:#1A1206}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script></head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script><script src="/config.js"></script></head>
 <body>
 <div class="bg"></div><div class="orb a"></div><div class="orb b"></div><div class="orb c"></div>
 
@@ -318,7 +321,7 @@ canvas.sig{touch-action:none;cursor:crosshair;background:linear-gradient(#fff,#f
   <div class="lart">
     <div class="embers" id="embers"></div>
     <svg class="flame" viewBox="0 0 64 64" fill="none"><defs><linearGradient id="fg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FF6A00"/><stop offset=".55" stop-color="#FFB020"/><stop offset="1" stop-color="#FFE9A8"/></linearGradient></defs><path d="M32 4c9 12 3 17 8 22 4 4 8 2 8-4 6 8 8 15 8 21 0 12-11 19-24 19S8 55 8 43c0-13 12-20 16-30 2-5 5-7 8-9z" fill="url(#fg)"/><path d="M32 34c4 5 6 8 6 12a6 6 0 11-12 0c0-4 2-7 6-12z" fill="#FFF3D0" opacity=".9"/></svg>
-    <h1>ฌาปนกิจสงเคราะห์<br><span>4 ตำบล · v60 รวมสมบูรณ์</span></h1>
+    <h1>ฌาปนกิจสงเคราะห์<br><span>4 ตำบล · v61 รวมสมบูรณ์</span></h1>
     <div class="row wrap"><span class="b90">เงินช่วยเหลือ 90,000 บาท / ราย</span><span class="pill p-mag">สแกนบัตรประชาชนรับสมัคร</span></div>
     <div class="lstats" id="lstats"></div>
     <ul class="lpts">
@@ -2071,7 +2074,7 @@ document.addEventListener('drop',e=>{const z=e.target.closest('[data-drop]');if(
   drag=null});
 window.addEventListener('beforeunload',stopCam);
 
-/* ===== v60 รวมสมบูรณ์: ใบสมัครกระดาษ + เกณฑ์รับสมัคร ตามไฟล์ v48 ===== */
+/* ===== v61 รวมสมบูรณ์: ใบสมัครกระดาษ + เกณฑ์รับสมัคร ตามไฟล์ v48 ===== */
 const AF=(()=>{const S={settings:{doc:{side:'both',guides:false,mono:false,ink:'#1B2470',dfs:1,dls:1,draft:false,zoom:1},auto:{checksum:true,dedupe:true}}};
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -2634,7 +2637,7 @@ function cn(v){if(v&&typeof v==='object'){if(Array.isArray(v))return'['+v.map(cn
 function sbChip(s,t){let e=$('#sbChip');if(!SB.cfg.sess){if(e)e.remove();return}if(!e){e=document.createElement('div');e.id='sbChip';e.onclick=()=>A.nav({page:'cloud'});document.body.appendChild(e)}e.className=s==='ok'?'ok':s==='err'?'err':'';e.textContent=s==='sync'?'⟳ กำลังซิงค์…':s==='ok'?'☁ ซิงค์แล้ว '+(t||''):'⚠ '+(t||'ออฟไลน์ (เก็บในเครื่องไว้ก่อน)')}
 async function sbAuth(){const c=SB.cfg;if(c.sess&&c.sess.exp>Date.now()+60000)return;if(!c.sess||!c.sess.rt)throw new Error('ยังไม่ได้เข้าสู่ระบบ Supabase');const r=await fetch(c.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:c.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:c.sess.rt})});if(!r.ok){c.sess=null;sbSave();throw new Error('เซสชัน Supabase หมดอายุ กรุณาเข้าสู่ระบบใหม่')}const j=await r.json();c.sess={at:j.access_token,rt:j.refresh_token,exp:Date.now()+j.expires_in*1000};sbSave()}
 async function sbf(path,o={}){const c=SB.cfg;await sbAuth();const r=await fetch(c.url+path,{method:o.m||'GET',headers:Object.assign({apikey:c.key,Authorization:'Bearer '+c.sess.at,'Content-Type':'application/json'},o.h||{}),body:o.b});if(!r.ok){throw new Error(r.status+' '+(await r.text()).slice(0,200))}return r.status===204?null:r.json().catch(()=>null)}
-async function blobIn(d){let t=JSON.stringify(d);const ks=[...new Set(t.match(/@@b:[0-9a-z]+/g)||[])].map(x=>x.slice(2)),miss=ks.filter(x=>!BLK.has(x));for(let i=0;i<miss.length;i+=4){const rs=await sbf('/rest/v1/kv?key=in.('+miss.slice(i,i+4).join(',')+')&select=key,data');(rs||[]).forEach(r=>BLK.set(r.key,r.data.d))}t=t.replace(/@@(b:[0-9a-z]+)/g,(m,x)=>BLK.has(x)?JSON.stringify(BLK.get(x)).slice(1,-1):m);return JSON.parse(t)}
+async function blobIn(d){let t=JSON.stringify(d);const ks=[...new Set(t.match(/@@b:[0-9a-z]+/g)||[])].map(x=>x.slice(2)),miss=ks.filter(x=>!BLK.has(x));for(const t of miss){try{BLK.set(t,await sbDownload(t))}catch(e){const rs=await sbf('/rest/v1/kv?key=eq.'+encodeURIComponent(t)+'&select=key,data');(rs||[]).forEach(r=>BLK.set(r.key,r.data.d))}}t=t.replace(/@@(b:[0-9a-z]+)/g,(m,x)=>BLK.has(x)?JSON.stringify(BLK.get(x)).slice(1,-1):m);return JSON.parse(t)}
 const idf=x=>x&&typeof x==='object'?(x.id??x.no??x.h??x.seq??x.at??null):null,tsf=x=>String(x.updatedAt||x.at||x.createdAt||'');
 function recH(v){const o={};if(Array.isArray(v))v.forEach(x=>{const i=idf(x);if(i!=null)o[i]=h53(cn(x))});else if(v&&typeof v==='object')Object.keys(v).forEach(p=>o[p]=h53(cn(v[p])));return o}
 function merge3(k,L,R){const B=SB.m.base[k]||{},hh=x=>h53(cn(x));
@@ -2643,7 +2646,7 @@ function merge3(k,L,R){const B=SB.m.base[k]||{},hh=x=>h53(cn(x));
   R.forEach(r=>{const id=idf(r);if(lm.has(id))return;const b=B[id];if(b!==undefined&&b===hh(r))return;out.push(r)});return out}
  if(L&&R&&typeof L==='object'&&typeof R==='object'){const o={};new Set([...Object.keys(L),...Object.keys(R)]).forEach(p=>{const l=L[p],r=R[p];if(k==='counters'&&typeof l==='number'&&typeof r==='number'){o[p]=Math.max(l,r);return}const lh=l===undefined?null:hh(l),rh=r===undefined?null:hh(r),b=B[p]??null;let v;if(lh===rh||b===rh)v=l;else if(b===lh)v=r;else{SB.conf++;v=r}if(v!==undefined)o[p]=v});return o}
  return R}
-async function sbPush(k,rev,exists,body,mh){const toks=[...BLN].filter(t=>!SB.m.bl[t]);for(const t of toks){await sbf('/rest/v1/kv?on_conflict=key',{m:'POST',h:{Prefer:'resolution=ignore-duplicates,return=minimal'},b:JSON.stringify({key:t,data:{d:BLK.get(t)},rev:1})});SB.m.bl[t]=1}
+async function sbPush(k,rev,exists,body,mh){const toks=[...BLN].filter(t=>!SB.m.bl[t]);for(const t of toks){await sbUpload(t);SB.m.bl[t]=1}
  const by=(sess&&sess.username)||'',ua=new Date().toISOString();let res;
  if(exists)res=await sbf('/rest/v1/kv?key=eq.'+encodeURIComponent(k)+'&rev=eq.'+rev,{m:'PATCH',h:{Prefer:'return=representation'},b:'{"data":'+body+',"rev":'+(rev+1)+',"updated_by":'+JSON.stringify(by)+',"updated_at":"'+ua+'"}'});
  else res=await sbf('/rest/v1/kv?on_conflict=key',{m:'POST',h:{Prefer:'resolution=ignore-duplicates,return=representation'},b:'{"key":'+JSON.stringify(k)+',"data":'+body+',"rev":1,"updated_by":'+JSON.stringify(by)+'}'});
@@ -2658,10 +2661,11 @@ async function sbSync(mode){if(SB.busy||!SB.cfg.sess||typeof S==='undefined'||!s
    if(need){if(!(await sbPush(k,rev,exists,body,mh)))continue}else{SB.m.rev[k]=rev;SB.m.h[k]=mh;SB.m.base[k]=recH(S[k])}}
   SB.last=new Date().toTimeString().slice(0,5);sbSave();if(ch){reindex();SB.save0();const a=document.activeElement;if(!(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))render();else setTimeout(()=>render(),6000);toast('อัปเดตข้อมูลจากเครื่องอื่นแล้ว','ok')}
   sbChip('ok',SB.last);SB.msg=''}catch(e){SB.msg=e.message;sbChip('err',/Failed to fetch|NetworkError/.test(e.message)?'ออฟไลน์ (เก็บในเครื่องไว้ก่อน)':'ซิงค์ไม่สำเร็จ')}
- SB.busy=false;if(SB.again)setTimeout(()=>sbSync(),400)}
+ SB.busy=false;if(SB.again){SB.retry=(SB.retry||0)+1;if(SB.retry>4){SB.again=false;SB.retry=0;SB.msg='ซิงค์ไม่สำเร็จ: ข้อมูลขัดแย้งหรือบัญชีนี้ไม่มีสิทธิ์เขียน';sbChip('err','ไม่มีสิทธิ์เขียน/ขัดแย้ง')}else setTimeout(()=>sbSync(),400*SB.retry)}else if(!SB.msg){SB.retry=0;rtStart()}}
 {const s0=save;SB.save0=s0;save=function(){FC.clear();s0();if(SB.cfg.sess){clearTimeout(SB.t);SB.t=setTimeout(()=>sbSync(),1800)}}}
 setInterval(()=>{if(!document.hidden&&SB.cfg.sess)sbSync()},15000);addEventListener('online',()=>sbSync());document.addEventListener('visibilitychange',()=>{if(!document.hidden)sbSync()});setTimeout(()=>{if(SB.cfg.sess)sbChip('sync');sbSync()},1800);
-const SB_SQL=`create table if not exists public.kv (
+const SB_SQL=`-- 1) ตารางข้อมูล
+create table if not exists public.kv (
   key text primary key,
   data jsonb not null,
   rev integer not null default 1,
@@ -2669,12 +2673,52 @@ const SB_SQL=`create table if not exists public.kv (
   updated_at timestamptz not null default now()
 );
 alter table public.kv enable row level security;
-create policy "staff read write" on public.kv
-  for all to authenticated using (true) with check (true);`;
+
+-- 2) บทบาทอ่านจาก app_metadata.app_role ของผู้ใช้ (admin / treasurer / registrar / collector / auditor)
+create or replace function public.app_role() returns text
+language sql stable as $$ select coalesce(auth.jwt()->'app_metadata'->>'app_role','') $$;
+
+drop policy if exists kv_read on public.kv;
+drop policy if exists kv_insert on public.kv;
+drop policy if exists kv_update on public.kv;
+drop policy if exists kv_delete on public.kv;
+create policy kv_read on public.kv for select to authenticated using (true);
+create policy kv_insert on public.kv for insert to authenticated with check (
+  app_role() in ('admin','treasurer','registrar')
+  or (app_role()='collector' and key in ('pays','audit','counters')));
+create policy kv_update on public.kv for update to authenticated
+  using (app_role() in ('admin','treasurer','registrar')
+    or (app_role()='collector' and key in ('pays','audit','counters')))
+  with check (app_role() in ('admin','treasurer','registrar')
+    or (app_role()='collector' and key in ('pays','audit','counters')));
+create policy kv_delete on public.kv for delete to authenticated using (app_role()='admin');
+
+-- 3) ที่เก็บไฟล์ส่วนตัว (รูปบัตร / หลักฐานการชำระ / ลายเซ็น) เข้าถึงผ่าน Signed URL เท่านั้น
+insert into storage.buckets (id, name, public) values ('docs','docs',false) on conflict (id) do nothing;
+drop policy if exists docs_read on storage.objects;
+drop policy if exists docs_insert on storage.objects;
+drop policy if exists docs_update on storage.objects;
+drop policy if exists docs_delete on storage.objects;
+create policy docs_read on storage.objects for select to authenticated using (bucket_id='docs');
+create policy docs_insert on storage.objects for insert to authenticated
+  with check (bucket_id='docs' and app_role() in ('admin','treasurer','registrar','collector'));
+create policy docs_update on storage.objects for update to authenticated
+  using (bucket_id='docs' and app_role() in ('admin','treasurer','registrar','collector'));
+create policy docs_delete on storage.objects for delete to authenticated
+  using (bucket_id='docs' and app_role()='admin');
+
+-- 4) Realtime
+do $$ begin
+  alter publication supabase_realtime add table public.kv;
+exception when duplicate_object then null; end $$;
+
+-- 5) กำหนดบทบาทให้ผู้ใช้ (แก้อีเมลแล้วรันทีละบัญชี)
+-- update auth.users set raw_app_meta_data = coalesce(raw_app_meta_data,'{}'::jsonb) || '{"app_role":"admin"}' where email='admin@example.com';
+-- update auth.users set raw_app_meta_data = coalesce(raw_app_meta_data,'{}'::jsonb) || '{"app_role":"collector"}' where email='agent@example.com';`;
 V.cloud=function(){if(!can('backup.manage'))return head('เชื่อมต่อ Supabase','ต้องมีสิทธิ์ สำรอง/นำเข้า/รีเซ็ตข้อมูล');const c=SB.cfg,on=!!c.sess;
  return head('เชื่อมต่อ Supabase','ซิงค์ข้อมูลหลายเครื่อง ไม่ทับงานของกันและกัน · ใช้ออฟไลน์ได้ แล้วซิงค์เมื่อมีเน็ต')+
- '<div class="g2 an"><div class="card"><h3>1) สร้างตารางใน Supabase</h3><p class="xs fa">เปิด SQL Editor แล้ววางคำสั่งนี้ครั้งเดียว</p><div class="sqlbox mono" id="sbSql">'+esc(SB_SQL)+'</div><div style="margin:10px 0"><button class="btn s" data-act="sbCopy">คัดลอก SQL</button></div><p class="xs fa">ที่ Authentication ให้<b> ปิด Allow new users to sign up</b> แล้วสร้างผู้ใช้ 1 บัญชี (อีเมล+รหัสผ่าน) ให้ระบบนี้ ข้อมูลมีเลขบัตรประชาชน ห้ามเปิดตารางเป็นสาธารณะ</p></div>'+
- '<div class="card"><h3>2) เชื่อมต่อ '+(on?'<span class="pill p-ok">เชื่อมแล้ว</span>':'')+'</h3><div class="field"><label>Project URL</label><input class="input mono" id="sbU" placeholder="https://xxxx.supabase.co" value="'+esc(c.url||'')+'"></div><div class="field"><label>anon public key</label><input class="input mono" id="sbK" value="'+esc(c.key||'')+'"></div><div class="fg c2"><div class="field"><label>อีเมลผู้ใช้</label><input class="input" id="sbE" value="'+esc(c.email||'')+'" autocomplete="username"></div><div class="field"><label>รหัสผ่าน (ไม่เก็บในเครื่อง)</label><input class="input" id="sbP" type="password" autocomplete="current-password"></div></div>'+
+ '<div class="g2 an"><div class="card"><h3>1) สร้างตาราง + สิทธิ์ + ที่เก็บไฟล์ใน Supabase</h3><p class="xs fa">เปิด SQL Editor แล้ววางคำสั่งนี้ครั้งเดียว (ตั้งสิทธิ์ตามบทบาทที่ฐานข้อมูล ตัวแทนเก็บเขียนได้เฉพาะรายการชำระ)</p><div class="sqlbox mono" id="sbSql" style="max-height:260px">'+esc(SB_SQL)+'</div><div style="margin:10px 0"><button class="btn s" data-act="sbCopy">คัดลอก SQL</button></div><p class="xs fa">ที่ Authentication ให้<b> ปิด Allow new users to sign up</b> แล้วสร้างผู้ใช้ 1 บัญชี (อีเมล+รหัสผ่าน) ให้ระบบนี้ ข้อมูลมีเลขบัตรประชาชน ห้ามเปิดตารางเป็นสาธารณะ</p></div>'+
+ '<div class="card"><h3>2) เชื่อมต่อ '+(on?'<span class="pill p-ok">เชื่อมแล้ว</span>':'')+'</h3><div class="field"><label>Project URL</label><input class="input mono" id="sbU" placeholder="https://xxxx.supabase.co" value="'+esc(c.url||(window.__CFG&&__CFG.url)||'')+'"></div><div class="field"><label>anon public key</label><input class="input mono" id="sbK" value="'+esc(c.key||(window.__CFG&&__CFG.key)||'')+'"></div><div class="fg c2"><div class="field"><label>อีเมลผู้ใช้</label><input class="input" id="sbE" value="'+esc(c.email||'')+'" autocomplete="username"></div><div class="field"><label>รหัสผ่าน (ไม่เก็บในเครื่อง)</label><input class="input" id="sbP" type="password" autocomplete="current-password"></div></div>'+
  '<div class="field"><label>ถ้าบนคลาวด์มีข้อมูลอยู่แล้ว</label><select class="input" id="sbM"><option value="merge">รวมข้อมูล (ไม่ลบของใคร)</option><option value="cloud">ใช้ข้อมูลของคลาวด์ แทนเครื่องนี้</option><option value="local">ใช้ข้อมูลเครื่องนี้ ทับคลาวด์</option></select></div>'+
  '<div class="row wrap" style="gap:8px"><button class="btn primary" data-act="sbConn">'+(on?'เชื่อมต่อใหม่':'เชื่อมต่อและซิงค์')+'</button>'+(on?'<button class="btn" data-act="sbNow">ซิงค์ตอนนี้</button><button class="btn danger" data-act="sbOff">ตัดการเชื่อมต่อ</button>':'')+'</div>'+
  '<p class="xs fa" style="margin-top:10px">สถานะ: '+(on?(SB.msg?'⚠ '+esc(SB.msg):'ซิงค์ล่าสุด '+(SB.last||'—')):'ยังไม่เชื่อมต่อ')+(SB.conf?' · แก้ความขัดแย้งอัตโนมัติ '+SB.conf+' ครั้ง (ใช้รายการที่ใหม่กว่า)':'')+'</p></div></div>'};
@@ -2682,7 +2726,7 @@ A.sbCopy=()=>{navigator.clipboard.writeText(SB_SQL).then(()=>toast('คัดล
 A.sbConn=async()=>{if(!need('backup.manage'))return;const url=$('#sbU').value.trim().replace(/\/+$/,''),key=$('#sbK').value.trim(),email=$('#sbE').value.trim(),pw=$('#sbP').value;if(!/^https:\/\/.+\.supabase\.(co|in)$/.test(url)&&!/^https?:\/\/(localhost|127\.0\.0\.1)/.test(url)){toast('Project URL ไม่ถูกต้อง','bad');return}if(!key||!email||!pw){toast('กรอก key อีเมล และรหัสผ่านให้ครบ','bad');return}
  try{const r=await fetch(url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:key,'Content-Type':'application/json'},body:JSON.stringify({email,password:pw})});if(!r.ok)throw new Error('เข้าสู่ระบบ Supabase ไม่ได้ ตรวจอีเมล/รหัสผ่าน ('+r.status+')');const j=await r.json();
   SB.cfg={url,key,email,sess:{at:j.access_token,rt:j.refresh_token,exp:Date.now()+j.expires_in*1000}};SB.m={rev:{},h:{},base:{},bl:{}};SB.conf=0;sbSave();audit('cloud.connect',url,'เชื่อมต่อ Supabase');SB.save0();toast('เชื่อมต่อแล้ว กำลังซิงค์…','ok');await sbSync($('#sbM').value);render()}catch(e){toast(e.message.slice(0,120),'bad')}};
-A.sbNow=()=>sbSync();A.sbOff=()=>{if(!need('backup.manage'))return;SB.cfg={};SB.m={rev:{},h:{},base:{},bl:{}};sbSave();sbChip('off');audit('cloud.off','','ตัดการเชื่อมต่อ Supabase');SB.save0();toast('ตัดการเชื่อมต่อแล้ว ข้อมูลในเครื่องยังอยู่','ok');render()};
+A.sbNow=()=>sbSync();A.sbOff=()=>{if(!need('backup.manage'))return;if(RT.ws){const w=RT.ws;RT.ws=null;try{w.close()}catch(e){}}clearInterval(RT.hb);SB.cfg={};SB.m={rev:{},h:{},base:{},bl:{}};sbSave();sbChip('off');audit('cloud.off','','ตัดการเชื่อมต่อ Supabase');SB.save0();toast('ตัดการเชื่อมต่อแล้ว ข้อมูลในเครื่องยังอยู่','ok');render()};
 NAV.splice(NAV.findIndex(x=>x.p==='rules'),0,{p:'monthly',i:'wallet',t:'ยอดเก็บรายเดือน',perm:'fin.view'},{p:'cloud',i:'cloud',t:'เชื่อม Supabase',perm:'backup.manage'});
 
 
@@ -2714,7 +2758,7 @@ function padInit(c,st,done){const R=2,LW=600,LH=SIGP.h;c.width=LW*R;c.height=LH*
  c.onpointermove=e=>{if(!cur)return;e.preventDefault();const l=e.getCoalescedEvents?e.getCoalescedEvents():[];(l.length?l:[e]).forEach(add)};
  const end=()=>{if(!cur)return;if(cur.length>1)tail(cur);cur=null;done()};c.onpointerup=end;c.onpointercancel=end;c.onlostpointercapture=end;c.onpointerleave=null;c._rp=repaint;
  c._out=()=>{let a=1e9,b=1e9,e=-1e9,f=-1e9;st.forEach(s=>s.forEach(p=>{a=Math.min(a,p.x);b=Math.min(b,p.y);e=Math.max(e,p.x);f=Math.max(f,p.y)}));if(a>e)return null;const m=8,sx=Math.max(0,(a-m)*R),sy=Math.max(0,(b-m)*R),sw=Math.min(c.width-sx,(e-a+2*m)*R),sh=Math.min(c.height-sy,(f-b+2*m)*R),t=document.createElement('canvas');t.width=Math.max(1,Math.round(sw));t.height=Math.max(1,Math.round(sh));t.getContext('2d').drawImage(c,sx,sy,sw,sh,0,0,t.width,t.height);return t.toDataURL('image/png')};
- let bar=c.nextElementSibling;if(!bar||!bar.classList.contains('sigbar'))c.insertAdjacentHTML('afterend',sigBar());return repaint}
+ let bar=c.nextElementSibling;if(!bar||!bar.classList.contains('sigbar'))if(c.parentNode)c.insertAdjacentHTML('afterend',sigBar());return repaint}
 const sigBarRefresh=()=>document.querySelectorAll('canvas.sig').forEach(c=>{const b=c.nextElementSibling;if(b&&b.classList.contains('sigbar'))b.outerHTML=sigBar()});
 A.sigSize=d=>{SIGP.h=+d.h;sigSave();document.querySelectorAll('canvas.sig').forEach(c=>{if(c._st)padInit(c,c._st,c._done)});sigBarRefresh()};
 A.sigLw=d=>{SIGP.lw=+d.v/100;sigSave()};A.sigPr=d=>{SIGP.pr=+d.v;sigSave();sigApply();const b=$('#sgPr');if(b)b.textContent=SIGP.pr+'%'};
@@ -2728,7 +2772,7 @@ A.sigClear=()=>{W.strokes.length=0;W.sig=null;bindSig()};A.sigUndo=()=>{W.stroke
 function fitLines(root){const els=[...root.querySelectorAll('.t2,.para,.bl,.aend,table.tier td:last-child')];
   const info=els.map(el=>{let s=el.querySelector(':scope>.fx');if(!s){s=document.createElement('span');s.className='fx';s.style.transformOrigin='left center';while(el.firstChild)s.appendChild(el.firstChild);el.appendChild(s)}s.style.transform='none';const cs=getComputedStyle(el),cw=el.clientWidth-(parseFloat(cs.paddingLeft)||0)-(parseFloat(cs.paddingRight)||0)-(parseFloat(cs.textIndent)||0);return{s,cw,w:s.offsetWidth,c:cs.textAlign==='center'}});
   const k=Math.max(.55,Math.min(1,...info.map(i=>i.cw/Math.max(1,i.w))));
-  info.forEach(i=>{i.s.style.transform=k<1?(i.c?'translateX('+Math.max(0,(i.cw-i.w*k)/2).toFixed(1)+'px) ':'')+'scaleX('+k.toFixed(4)+')':'none'})}
+  info.forEach(i=>{i.s.style.transform=k<1?(i.c?'translateX('+((i.cw-i.w*k)/2-Math.max(0,(i.cw-i.w)/2)).toFixed(1)+'px) ':'')+'scaleX('+k.toFixed(4)+')':'none'})}
 function ppFit(root){root.querySelectorAll('.ap').forEach(p=>{p.style.cssText+=';height:auto;min-height:0;display:flex;flex-direction:column;overflow:hidden';let lo=.6,hi=1.15,b=lo;
   for(let i=0;i<9;i++){const m=(lo+hi)/2;p.style.setProperty('--dfs',m);p.style.setProperty('--dls',1);fitLines(p);if(p.scrollHeight<=1121){b=m;lo=m}else hi=m}
   p.style.setProperty('--dfs',b);fitLines(p);p.style.height='1121px';p.style.justifyContent='space-between';p.querySelectorAll('img').forEach(i=>{if(!i.complete)i.addEventListener('load',()=>ppFit(root),{once:true})})})}
@@ -2746,6 +2790,59 @@ function ppFit(root){root.querySelectorAll('.ap').forEach(p=>{p.style.cssText+='
   [0,U('6. การขอรับเงินฌาปนกิจศพ')],[0,'6.1 เอกสารผู้เสียชีวิต 1.สำเนาใบมรณะบัตร(ท.ร.4 ตอน 1) 2.สำเนาบัตรประชาชน 3.สำเนาทะเบียนบ้าน (ปั๊มตาย) 4.เอกสารการตายอื่น ๆ'],[0,'6.2 เอกสารผู้รับผลประโยชน์ 1.สำเนาบัตรประชาชน 2.สำเนาทะเบียนบ้าน (ผู้รับผลประโยชน์เซ็นชื่อรับรองสำเนาเอกสารทุกใบ)']];
   return'<div class="ap o back" style="'+st+'"><div class="aside">- ด้านหลัง -</div>'+L.map(l=>'<div class="bl'+(l[0]?' ind':'')+'">'+l[1]+'</div>').join('')+(ch?ch.outerHTML:'')+'</div>'};
  AF.paperHTML=(d,side)=>side==='both'?orig(d,'front')+back(d):side==='back'?back(d):orig(d,'front')}
+
+
+/* ===== v61: Storage ส่วนตัว+Signed URL · Realtime · ลายเซ็น SVG · เริ่มใช้งานจริง ===== */
+async function sbUpload(t){const v=BLK.get(t),m=String(v).match(/^data:([^;,]+)(;base64)?,([\s\S]*)$/),mime=m?m[1]:'application/octet-stream',bin=m&&m[2]?Uint8Array.from(atob(m[3]),c=>c.charCodeAt(0)):new TextEncoder().encode(m?decodeURIComponent(m[3]):String(v)),c=SB.cfg;await sbAuth();
+ const r=await fetch(c.url+'/storage/v1/object/docs/'+t.replace(':','/'),{method:'POST',headers:{apikey:c.key,Authorization:'Bearer '+c.sess.at,'Content-Type':mime,'x-upsert':'true'},body:bin});if(!r.ok)throw new Error('อัปโหลดไฟล์ไม่สำเร็จ ('+r.status+') ตรวจว่ารัน SQL ที่ bucket docs แล้ว')}
+async function sbDownload(t){const c=SB.cfg,p=t.replace(':','/'),s=await sbf('/storage/v1/object/sign/docs/'+p,{m:'POST',b:JSON.stringify({expiresIn:120})});if(!s||!s.signedURL)throw new Error('no signed url');
+ const r=await fetch(c.url+'/storage/v1'+s.signedURL);if(!r.ok)throw new Error('download '+r.status);const b=await r.blob();return await new Promise((ok,no)=>{const f=new FileReader();f.onload=()=>ok(f.result);f.onerror=no;f.readAsDataURL(b)})}
+const RT={ws:null,hb:0,tries:0,ref:1,on:false};
+function rtStart(){if(!SB.cfg.sess||RT.ws||typeof WebSocket==='undefined')return;try{const w=RT.ws=new WebSocket(SB.cfg.url.replace(/^http/,'ws')+'/realtime/v1/websocket?apikey='+encodeURIComponent(SB.cfg.key)+'&vsn=1.0.0');
+ const send=(topic,event,payload)=>{if(w.readyState===1)w.send(JSON.stringify({topic,event,payload,ref:String(RT.ref++)}))};
+ w.onopen=()=>{RT.tries=0;RT.on=true;RT.at=SB.cfg.sess.at;send('realtime:public:kv','phx_join',{config:{broadcast:{self:false},postgres_changes:[{event:'*',schema:'public',table:'kv'}]},access_token:RT.at});sbChip('ok',(SB.last||'')+' ⚡');
+  RT.hb=setInterval(()=>{send('phoenix','heartbeat',{});if(SB.cfg.sess&&SB.cfg.sess.at!==RT.at){RT.at=SB.cfg.sess.at;send('realtime:public:kv','access_token',{access_token:RT.at})}},25000)};
+ w.onmessage=e=>{let m;try{m=JSON.parse(e.data)}catch(x){return}if(m.event==='postgres_changes'){clearTimeout(RT.t);RT.t=setTimeout(()=>sbSync(),250)}};
+ const bye=()=>{if(RT.ws!==w)return;clearInterval(RT.hb);RT.ws=null;RT.on=false;if(SB.cfg.sess){RT.tries++;setTimeout(rtStart,Math.min(30000,1000*2**RT.tries))}};w.onclose=bye;w.onerror=bye}catch(e){RT.ws=null}}
+/* ลายเซ็นเป็น SVG เวกเตอร์ (คมทุกขนาด ไฟล์เล็ก) */
+function svgOut(st){let a=1e9,b=1e9,e=-1e9,f=-1e9;st.forEach(s=>s.forEach(p=>{a=Math.min(a,p.x);b=Math.min(b,p.y);e=Math.max(e,p.x);f=Math.max(f,p.y)}));if(a>e)return null;const m=8,ox=a-m,oy=b-m,W=Math.round(e-a+2*m),H=Math.round(f-b+2*m),r=v=>Math.round(v*10)/10,M=(p,q)=>[(p.x+q.x)/2,(p.y+q.y)/2];let g='';
+ st.forEach(s=>{if(s.length===1){g+='<circle cx="'+r(s[0].x-ox)+'" cy="'+r(s[0].y-oy)+'" r="'+r(1.9*SIGP.lw)+'" fill="#1B2340" stroke="none"/>';return}
+  for(let i=1;i<s.length;i+=5){const j=Math.min(s.length-1,i+4);let d='',w=0;for(let k=i;k<=j;k++){const p=s[k-1],q=s[k],m0=k>=2?M(s[k-2],p):[p.x,p.y],m1=M(p,q);if(k===i)d+='M'+r(m0[0]-ox)+' '+r(m0[1]-oy);d+='Q'+r(p.x-ox)+' '+r(p.y-oy)+' '+r(m1[0]-ox)+' '+r(m1[1]-oy);w+=p.w||3}g+='<path d="'+d+'" stroke-width="'+r(w/(j-i+1))+'"/>'}
+  const q=s[s.length-1],n=M(s[s.length-2],q);g+='<path d="M'+r(n[0]-ox)+' '+r(n[1]-oy)+'L'+r(q.x-ox)+' '+r(q.y-oy)+'" stroke-width="'+r(q.w||3)+'"/>'});
+ const svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'"><g fill="none" stroke="#1B2340" stroke-linecap="round" stroke-linejoin="round">'+g+'</g></svg>';return'data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(svg)))}
+{const po=padInit;padInit=function(c,st,done){const r=po(c,st,done),png=c._out;c._out=()=>{try{return svgOut(st)||png()}catch(e){return png()}};return r}}
+/* เริ่มใช้งานจริง: สร้างผู้ดูแลจริง · ลบบัญชีเดโม · ล้างข้อมูลเดโม · ทดสอบระบบ */
+const DEMO_U=['admin99','money01','usa123','audit01','agent01'];
+{const ld=load;load=function(){const r=ld();r.S.users.forEach(u=>{if(u.demo===undefined&&DEMO_U.includes(u.username))u.demo=true});return r}}
+const glMe=()=>S.users.find(u=>u.username===sess.username),glReal=()=>{const m=glMe();return m&&!m.demo&&m.role==='admin'};
+V.golive=function(){if(!can('backup.manage'))return head('เริ่มใช้งานจริง','ต้องมีสิทธิ์ สำรอง/นำเข้า/รีเซ็ตข้อมูล');const ad=S.users.filter(u=>!u.demo&&u.active&&u.role==='admin'),dm=S.users.filter(u=>u.demo),n=S.members.length+S.apps.length+S.pays.length+S.claims.length;
+ const ck=(ok,t,s,w)=>'<div class="ck '+(ok?'':(w?'w':'no'))+'"><i>'+(ok?'✓':w?'!':'✕')+'</i><div><b>'+t+'</b><div class="xs fa">'+s+'</div></div></div>';
+ return head('เริ่มใช้งานจริง','เช็กลิสต์ก่อนเปิดใช้ · ล้างข้อมูลเดโมอย่างปลอดภัย (สำรองให้อัตโนมัติก่อนลบ)','<button class="btn violet s" data-act="glTest">ทดสอบระบบ</button>')+'<div class="g2 an gl"><div class="card"><h3>เช็กลิสต์</h3>'+
+ ck(ad.length>0,'มีผู้ดูแลระบบจริง',ad.length?ad.map(u=>esc(u.name)).join(', '):'ยังไม่มี สร้างได้ที่ช่องด้านขวา')+ck(glReal(),'กำลังใช้บัญชีจริงอยู่','บัญชีที่ใช้อยู่: '+esc(sess.name)+(glMe()&&glMe().demo?' (เดโม)':''),true)+
+ ck(dm.length===0,'ลบบัญชีเดโมแล้ว',dm.length?'เหลือ '+dm.length+' บัญชี: '+dm.map(u=>u.username).join(', ')+' (รหัสผ่านเดโมรู้กันทั่วไป)':'ไม่เหลือบัญชีเดโม')+ck(n<50,'ล้างข้อมูลเดโมแล้ว',S.members.length+' สมาชิก · '+S.apps.length+' ใบสมัคร · '+S.pays.length+' รายการชำระ',true)+ck(!!SB.cfg.sess,'เชื่อม Supabase (สำรองนอกเครื่อง)',SB.cfg.sess?'เชื่อมแล้ว':'ยังไม่เชื่อม ข้อมูลอยู่เฉพาะในเบราว์เซอร์เครื่องนี้',true)+'<div id="glTest" style="margin-top:12px"></div></div>'+
+ '<div class="card"><h3>1) สร้างผู้ดูแลระบบจริง</h3><div class="field"><label>ชื่อผู้ใช้ (อังกฤษ/ตัวเลข อย่างน้อย 4 ตัว)</label><input class="input" id="glU" autocomplete="off"></div><div class="field"><label>ชื่อ-สกุล</label><input class="input" id="glN"></div><div class="fg c2"><div class="field"><label>รหัสผ่าน (≥10 ตัว มีตัวอักษรและตัวเลข)</label><input class="input" type="password" id="glP" autocomplete="new-password"></div><div class="field"><label>ยืนยันรหัสผ่าน</label><input class="input" type="password" id="glP2" autocomplete="new-password"></div></div><button class="btn primary" data-act="glMake">สร้างผู้ดูแลระบบ</button>'+
+ '<h3 style="margin-top:18px">2) ลบบัญชีเดโม</h3><p class="xs fa">ทำได้เมื่อเข้าสู่ระบบด้วยผู้ดูแลจริงแล้ว</p><button class="btn danger" data-act="glDemo"'+(glReal()?'':' disabled')+'>ลบบัญชีเดโม '+dm.length+' บัญชี</button>'+
+ '<h3 style="margin-top:18px">3) ล้างข้อมูลเดโม</h3><p class="xs fa">ลบสมาชิก ใบสมัคร การชำระ เคลม ฯลฯ ทั้งหมดในเครื่องนี้ (รวมข้อมูลที่นำเข้ามาเอง) ระบบดาวน์โหลดไฟล์สำรองให้ก่อน และต้องพิมพ์ยืนยัน</p><button class="btn danger" data-act="glWipe"'+(glReal()?'':' disabled')+'>ล้างข้อมูลทั้งหมด</button></div></div>'};
+A.glMake=()=>{if(!need('users.manage'))return;const u=$('#glU').value.trim(),nm=$('#glN').value.trim(),p=$('#glP').value,p2=$('#glP2').value;
+ if(!/^[A-Za-z0-9._-]{4,}$/.test(u))return toast('ชื่อผู้ใช้ต้องเป็นอังกฤษ/ตัวเลข อย่างน้อย 4 ตัว','bad');if(nm.length<2)return toast('กรอกชื่อ-สกุล','bad');if(p.length<10||!/[A-Za-z]/.test(p)||!/\d/.test(p))return toast('รหัสผ่านต้องยาว ≥10 ตัว มีตัวอักษรและตัวเลข','bad');if(p!==p2)return toast('รหัสผ่านยืนยันไม่ตรงกัน','bad');if(S.users.some(x=>x.username===u))return toast('ชื่อผู้ใช้นี้มีแล้ว','bad');
+ const sl=H(u+Date.now()).slice(0,12);S.users.push({id:uid('u'),username:u,salt:sl,hash:H(sl+':'+p),role:'admin',name:nm,tambon:'รวม 4 ตำบล',active:true,last:null,fails:0,lock:0});audit('users.create',u,'สร้างผู้ดูแลระบบจริง');save();toast('สร้างแล้ว ออกจากระบบแล้วเข้าด้วยบัญชีใหม่ เพื่อลบบัญชีเดโม','ok');render()};
+A.glDemo=()=>{if(!need('users.manage'))return;if(!glReal())return toast('ต้องเข้าสู่ระบบด้วยผู้ดูแลจริงก่อน','bad');if(!confirm('ลบบัญชีเดโมทั้งหมด?'))return;const n=S.users.filter(u=>u.demo).length;S.users=S.users.filter(u=>!u.demo);reindex();audit('users.purge','demo','ลบบัญชีเดโม '+n+' บัญชี');save();toast('ลบบัญชีเดโมแล้ว','ok');render()};
+A.glWipe=()=>{if(!need('backup.manage'))return;if(!glReal())return toast('ต้องเข้าสู่ระบบด้วยผู้ดูแลจริงก่อน','bad');if((prompt('การกระทำนี้ย้อนกลับไม่ได้ (ระบบจะดาวน์โหลดไฟล์สำรองให้ก่อน)\nพิมพ์ ล้างข้อมูล เพื่อยืนยัน')||'').trim()!=='ล้างข้อมูล')return;
+ dlTxt('สำรองก่อนล้างข้อมูล-'+iso(NOW)+'.json',JSON.stringify(S),'application/json');Object.keys(S).forEach(k=>{if(Array.isArray(S[k])&&!['users','funds','views'].includes(k))S[k]=[]});Object.keys(S.counters).forEach(k=>S.counters[k]=0);S.funds.forEach(f=>{f.opening=0});reindex();audit('golive.wipe','all','ล้างข้อมูลเดโมก่อนใช้งานจริง โดย '+sess.name);save();toast('ล้างข้อมูลเดโมแล้ว พร้อมใช้งานจริง','ok');render()};
+A.glTest=async()=>{const o=$('#glTest');o.innerHTML='<div class="xs fa">กำลังทดสอบ…</div>';const R=[],t=async(n,f)=>{try{const r=await f();R.push([n,(r===false||typeof r==='string')?0:1,typeof r==='string'?r:''])}catch(e){R.push([n,0,e.message])}};
+ await t('บันทึก/อ่านข้อมูลในเครื่อง',()=>{localStorage.setItem('ck_t','1');const v=localStorage.getItem('ck_t')==='1';localStorage.removeItem('ck_t');return v});
+ await t('บันทึกกิจกรรมต่อเนื่อง (hash-chain)',()=>{const r=verifyChain();return r===undefined||r===true||!!(r&&r.ok!==false)});
+ await t('สิทธิ์ตัวแทนเก็บ: แก้ไข/ยกเลิกไม่ได้',()=>!ROLES.collector.perms.includes('member.edit')&&!ROLES.collector.perms.includes('fin.void'));
+ await t('รหัสผ่านเดโมไม่ใช้งานแล้ว',()=>{const d=S.users.filter(u=>u.demo&&u.active).length;return d===0?true:'ยังมีบัญชีเดโมใช้งานอยู่ '+d+' บัญชี'});
+ await t('ใบสมัครพิมพ์เต็ม A4 สองด้าน',()=>{const w=document.createElement('div');w.style.cssText='position:fixed;left:-9999px;width:794px';w.innerHTML=AF.paperHTML(AF.blank(),'both');document.body.appendChild(w);ppFit(w);const h=[...w.querySelectorAll('.ap')].map(e=>e.scrollHeight);w.remove();return h.length===2&&h.every(x=>x<=1121)});
+ await t('ตัวนำเข้า: จับเลขบัตรผิดได้',()=>{const r=imCheck(rowsFromCSV('1,นายทดสอบ ระบบ,1234567890123,0812345678,x,พ่อ,2569-08-15,2530-01-01'));return r[0].st==='err'});
+ await t('อ่านบัตร: แยกชื่อ/วันเกิด พ.ศ.',()=>{const p=parseCard('1709900560843#นางสาว#วริษา#ทรัพย์สมบูรณ์#2533-09-12#47 หมู่ 4','paste');return p.first==='วริษา'&&p.dob==='1990-09-12'});
+ await t('ลายเซ็น: ส่งออก SVG ได้',()=>{const c=document.createElement('canvas'),st=[[{x:10,y:10,w:3},{x:30,y:25,w:3},{x:60,y:12,w:3}]];padInit(c,st,()=>{});return String(c._out()).startsWith('data:image/svg+xml')});
+ await t('ความเร็ววาดหน้า (<400 มิลลิวินาที)',()=>{const s=performance.now();render();const d=performance.now()-s;return d<400?true:'ใช้ '+Math.round(d)+' ms'});
+ if(SB.cfg.sess)await t('เชื่อมต่อ Supabase',async()=>{await sbf('/rest/v1/kv?select=key&limit=1');return true});
+ (document.querySelector('#glTest')||o).innerHTML=R.map(r=>'<div class="ck '+(r[1]?'':'no')+'"><i>'+(r[1]?'✓':'✕')+'</i><div><b>'+esc(r[0])+'</b>'+(r[2]?'<div class="xs fa">'+esc(r[2])+'</div>':'')+'</div></div>').join('')+'<div class="xs fa" style="margin-top:6px">ผ่าน '+R.filter(r=>r[1]).length+' / '+R.length+'</div>'};
+new MutationObserver(ms=>{ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType!==1)return;(n.tagName==='IMG'?[n]:n.querySelectorAll?[...n.querySelectorAll('img')]:[]).forEach(i=>{if(!i.hasAttribute('loading')&&!i.closest('#printArea,.ap,#ppStage'))i.setAttribute('loading','lazy');i.decoding='async'})}))}).observe(document.body,{childList:true,subtree:true});
+NAV.splice(NAV.findIndex(x=>x.p==='cloud'),0,{p:'golive',i:'shield',t:'เริ่มใช้งานจริง',perm:'backup.manage'});
 
 /* ===== init ===== */
 (function(){
