@@ -2480,7 +2480,7 @@ const dlTxt=(n,t,ty)=>{const a=document.createElement('a');a.href=URL.createObje
 try{const r=JSON.parse(localStorage.getItem('ck57rm')||'null');if(r&&r.exp>Date.now()&&!sessionStorage.getItem('ck52')){r.sess.act=Date.now();sessionStorage.setItem('ck52',JSON.stringify(r.sess))}}catch(e){}
 {const lg=login;login=function(u,p){const rm=$('#rmChk')&&$('#rmChk').checked;lg(u,p);if(sess&&sess.mode==='staff'){try{if(rm)localStorage.setItem('ck57rm',JSON.stringify({u:sess.username,sess:Object.assign({},sess),exp:Date.now()+30*864e5}));else localStorage.removeItem('ck57rm')}catch(e){}}}
  const lo=logout;logout=function(){try{localStorage.removeItem('ck57rm')}catch(e){}lo()}
- const rd=render;render=function(){if(sess&&sess.mode==='staff'&&!S.users.find(x=>x.username===sess.username&&x.active)){sess=null;sessionStorage.removeItem('ck52');localStorage.removeItem('ck57rm')}
+ const rd=render;render=function(){if(sess&&sess.mode==='staff'&&!SB.cfg.sess&&!S.users.find(x=>x.username===sess.username&&x.active)){sess=null;sessionStorage.removeItem('ck52');localStorage.removeItem('ck57rm')}
   rd();if(!sess){const f=$('#staffForm');try{const r=JSON.parse(localStorage.getItem('ck57rm')||'null');if(f&&r&&r.exp>Date.now()&&!f.u.value){f.u.value=r.u;$('#rmChk').checked=true;f.p.focus()}}catch(e){}}}}
 /* บทบาท + สิทธิ์ที่ admin กำหนดได้ */
 ROLES.collector={name:'ตัวแทนเก็บเงิน',short:'ตัวแทนเก็บ',perms:['member.view','app.view','fin.view','fin.receive']};
