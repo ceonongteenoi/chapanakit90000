@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ฌาปนกิจสงเคราะห์ 4 ตำบล · v61 รวมสมบูรณ์</title>
+<title>ฌาปนกิจสงเคราะห์ 4 ตำบล · v63 ออนไลน์</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -338,9 +338,9 @@ canvas.sig{touch-action:none;cursor:crosshair;background:linear-gradient(#fff,#f
       <button type="button" data-act="loginTab" data-t="track">ติดตามใบสมัคร</button>
     </div>
     <form id="staffForm" data-form="staffLogin">
-      <div class="field"><label>ชื่อผู้ใช้</label><input class="input" name="u" autocomplete="username" placeholder="เช่น admin99" required></div>
-      <div class="field"><label>รหัสผ่าน</label><input class="input" type="password" name="p" autocomplete="current-password" placeholder="••••••••" required></div>
-      <label class="chk" style="margin-top:12px"><input type="checkbox" id="rmChk"> จำชื่อผู้ใช้และคงการเข้าสู่ระบบในเครื่องนี้ 30 วัน</label><div id="lmsg"></div><button class="btn primary block" style="margin-top:15px" type="submit">เข้าสู่ระบบ</button>
+      <div class="field"><label>อีเมลบัญชีเจ้าหน้าที่</label><input class="input" type="email" name="u" autocomplete="username" placeholder="name@example.com" required></div>
+      <div class="field"><label>รหัสผ่าน</label><input class="input" type="password" name="p" autocomplete="current-password" placeholder="รหัสผ่านบัญชี Supabase" required></div>
+      <p class="xs fa" style="margin-top:10px">ใช้บัญชีส่วนตัวที่ผู้ดูแลระบบสร้างให้ · ไม่ใช้บัญชีร่วมกัน · ระบบไม่บันทึกรหัสผ่าน</p><div id="lmsg"></div><button class="btn primary block" style="margin-top:15px" type="submit">เข้าสู่ระบบ</button>
     </form>
     <form id="memberForm" data-form="memberLogin" hidden>
       <div class="field"><label>เลขบัตรประชาชน 13 หลัก <b>*</b></label><input class="input mono" name="idc" inputmode="numeric" maxlength="13" placeholder="3700501101568" data-oninput="idLive" required></div>
@@ -1333,11 +1333,7 @@ V.settings=function(){
     body='<div class="row" style="margin-bottom:11px"><button class="btn primary s" data-act="fundNew">'+ic('plus')+' เพิ่มกองทุน</button></div><div class="tw"><table class="t"><thead><tr><th>ชื่อกองทุน</th><th>ตำบล</th><th class="num">ยกมา</th><th class="num">คงเหลือ</th><th>สถานะ</th><th></th></tr></thead><tbody>'+
      S.funds.map(f=>'<tr><td>'+esc(f.name)+'</td><td class="sm">'+esc(f.tambon)+'</td><td class="num">'+money0(f.opening)+'</td><td class="num">'+money0(fstat(f).bal)+'</td><td><span class="pill '+(f.active?'p-ok':'p-mute')+'">'+(f.active?'ใช้งาน':'ปิด')+'</span></td><td class="nw"><button class="btn t" data-act="fundEdit" data-id="'+f.id+'">'+ic('edit')+'</button> <button class="btn t danger" data-act="fundDel" data-id="'+f.id+'">'+ic('trash')+'</button></td></tr>').join('')+'</tbody></table></div>';
   } else if(t==='users'){
-    body='<div class="row" style="margin-bottom:11px"><button class="btn primary s" data-act="userNew">'+ic('plus')+' เพิ่มผู้ใช้</button><span class="sm fa">รหัสผ่านแฮช SHA-256 + salt</span></div>'+
-     '<div class="tw" style="margin-bottom:13px"><table class="t"><thead><tr><th>ผู้ใช้</th><th>ชื่อ</th><th>บทบาท</th><th>เข้าใช้ล่าสุด</th><th>สถานะ</th><th></th></tr></thead><tbody>'+
-     S.users.map(u=>'<tr><td class="mono">'+esc(u.username)+'</td><td>'+esc(u.name)+'</td><td><span class="pill p-vio">'+ROLES[u.role].name+'</span></td><td class="sm">'+(u.last?thT(u.last):'—')+'</td><td><span class="pill '+(u.active?'p-ok':'p-bad')+'">'+(u.active?'ใช้งาน':'ระงับ')+'</span></td><td class="nw"><button class="btn t" data-act="userEdit" data-id="'+u.id+'">'+ic('edit')+'</button> <button class="btn t" data-act="userReset" data-id="'+u.id+'">'+ic('shield')+'</button> <button class="btn t" data-act="userToggle" data-id="'+u.id+'">'+(u.active?ic('x'):ic('check'))+'</button></td></tr>').join('')+'</tbody></table></div>'+
-     '<div class="sect"><h4>'+ic('shield')+' ตารางสิทธิ์ (RBAC)</h4><div class="tw" style="max-height:420px"><table class="t"><thead><tr><th>สิทธิ์</th>'+Object.keys(ROLES).map(r=>'<th class="center">'+ROLES[r].short+'</th>').join('')+'</tr></thead><tbody>'+
-     PERMS.map(p=>'<tr><td class="sm">'+esc(p[1])+' <span class="xs fa mono">'+p[0]+'</span></td>'+Object.keys(ROLES).map(r=>{const ok=ROLES[r].perms==='*'||ROLES[r].perms.includes(p[0]);return '<td class="center" style="color:'+(ok?'var(--ok)':'var(--fa)')+'">'+(ok?'✓':'—')+'</td>'}).join('')+'</tr>').join('')+'</tbody></table></div></div>';
+    body='<div class="bn info">บัญชีเจ้าหน้าที่ใช้ Supabase Auth แยกคนละบัญชี ไม่ใช้บัญชีในเครื่องนี้</div><p class="sm fa">ไปที่ Supabase Dashboard → Authentication → Users เพื่อสร้างบัญชี แล้วกำหนด app_role ใน app_metadata ด้วย SQL จากหน้าเชื่อม Supabase</p><button class="btn primary s" data-act="nav" data-page="cloud">เปิดการตั้งค่าฐานข้อมูลกลาง</button>';
   } else {
     const kb=(JSON.stringify(S).length/1024).toFixed(0),imgs=S.apps.filter(a=>a.card&&a.card.dataUrl).length+sum(S.apps,a=>a.docs.filter(d=>d.dataUrl).length);
     body='<div class="sect" style="border-color:var(--gold)"><h4>'+ic('shield')+' ตรวจความสมบูรณ์ของระบบ</h4><p class="sm mu">รันชุดทดสอบจริง 20 ข้อ: โครงสร้างข้อมูล · เลขบัตร · สายบันทึก Audit · ทุกหน้าเรนเดอร์ได้ · ทุกปุ่มมีตัวจัดการ · ไม่มี id ซ้ำ · การบันทึก/อ่านข้อมูล</p><button class="btn primary" data-act="selfTest">'+ic('check')+' รันตรวจระบบตอนนี้</button></div>'+
@@ -1400,7 +1396,7 @@ const NAV=[{g:'งานประจำวัน'},{p:'dashboard',i:'dash',t:'�
 function renderNav(){
   $('#side').innerHTML=NAV.map(n=>{if(n.g)return '<div class="ng">'+n.g+'</div>';if(n.perm&&!can(n.perm))return '';const b=n.badge?n.badge():0;
     return '<div class="ni'+(ui.page===n.p?' on':'')+'" data-act="nav" data-page="'+n.p+'">'+ic(n.i)+'<span>'+n.t+'</span>'+(b?'<span class="cnt'+(n.hot?' hot':'')+'">'+b+'</span>':'')+'</div>'}).join('')+
-   '<div class="sfoot"><b style="color:var(--gold2)">'+esc(S.settings.org)+'</b><div>'+esc(S.settings.sub)+'</div><div style="margin-top:6px">v53 · ข้อมูลเก็บในเครื่องท่าน<br>สำรองล่าสุด: '+(S.lastBackup?thT(S.lastBackup):'ยังไม่ได้สำรอง')+'</div></div>'}
+   '<div class="sfoot"><b style="color:var(--gold2)">'+esc(S.settings.org)+'</b><div>'+esc(S.settings.sub)+'</div><div style="margin-top:6px">v62 · ฐานข้อมูลกลาง Supabase<br>สำรองล่าสุด: '+(S.lastBackup?thT(S.lastBackup):'ยังไม่ได้สำรอง')+'</div></div>'}
 function renderTop(){if(!sess)return;
   const nt=S.notes.filter(n=>sess.mode==='member'?n.to==='m:'+sess.memberId:n.to===sess.role||n.to==='all'),un=nt.filter(n=>!n.read).length;
   $('#ta').innerHTML='<span class="sync" id="sync">'+ic('cloud')+'พร้อมใช้งาน</span>'+
@@ -2628,8 +2624,8 @@ A.moCsv=()=>dlTxt('ยอดเก็บรายเดือน.csv','\ufeff'+'
   s.insertAdjacentHTML('beforeend','<div class="bn ok" style="margin-top:8px">'+ic('wallet')+'<div>สมาชิกอยู่ใน <b>'+m.funds.length+'</b> กองทุน · รวมเก็บ <b>'+money0(monthlyOf(m))+'</b>/เดือน<br><span class="xs fa">'+m.funds.map(i=>{const f=IDX.f.get(i);return f?esc(f.name.replace('กองทุน','').trim())+' '+money0(f.monthly||0):''}).join(' · ')+'</span></div></div>')})},150)}).observe(document.body,{childList:true,subtree:true})}
 /* ===== v58 เชื่อม Supabase: ซิงค์ 3 ทางทีละหมวดข้อมูล · รูป/ไฟล์แนบแยกเก็บ · ใช้งานออฟไลน์ได้ ===== */
 const SB={cfg:{},m:{rev:{},h:{},base:{},bl:{}},busy:false,conf:0,last:'',msg:'',again:false};
-try{SB.cfg=JSON.parse(localStorage.getItem('ck57sb')||'{}');Object.assign(SB.m,JSON.parse(localStorage.getItem('ck57sbm')||'{}'))}catch(e){}
-const sbSave=()=>{try{localStorage.setItem('ck57sb',JSON.stringify(SB.cfg));localStorage.setItem('ck57sbm',JSON.stringify(SB.m))}catch(e){}};
+try{SB.cfg=Object.assign({url:'https://yskgbuytmmwhpdgdvgzz.supabase.co',key:'sb_publishable_S-5wjF1YuLdN1Hc53xRIlg_yhiQL3nL'},JSON.parse(localStorage.getItem('ck57sb')||'{}'));delete SB.cfg.sess;const saved=JSON.parse(sessionStorage.getItem('ck57sbauth')||'null');if(saved&&saved.rt)SB.cfg.sess=saved;Object.assign(SB.m,JSON.parse(localStorage.getItem('ck57sbm')||'{}'))}catch(e){}
+const sbSave=()=>{try{const c=Object.assign({},SB.cfg);delete c.sess;localStorage.setItem('ck57sb',JSON.stringify(c));if(SB.cfg.sess)sessionStorage.setItem('ck57sbauth',JSON.stringify(SB.cfg.sess));else sessionStorage.removeItem('ck57sbauth');localStorage.setItem('ck57sbm',JSON.stringify(SB.m))}catch(e){}};
 const BLK=new Map();let BLN=new Set();
 const h53=s=>{let a=0xdeadbeef,b=0x41c6ce57;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);a=Math.imul(a^c,2654435761);b=Math.imul(b^c,1597334677)}a=Math.imul(a^(a>>>16),2246822507)^Math.imul(b^(b>>>13),3266489909);b=Math.imul(b^(b>>>16),2246822507)^Math.imul(a^(a>>>13),3266489909);return(4294967296*(2097151&b)+(a>>>0)).toString(36)};
 const tok=v=>{const n=v.length>>1,t='b:'+h53(v.length+v.slice(0,96)+v.slice(n,n+96)+v.slice(-96));BLK.set(t,v);BLN.add(t);return'@@'+t};
@@ -2647,13 +2643,14 @@ function merge3(k,L,R){const B=SB.m.base[k]||{},hh=x=>h53(cn(x));
  if(L&&R&&typeof L==='object'&&typeof R==='object'){const o={};new Set([...Object.keys(L),...Object.keys(R)]).forEach(p=>{const l=L[p],r=R[p];if(k==='counters'&&typeof l==='number'&&typeof r==='number'){o[p]=Math.max(l,r);return}const lh=l===undefined?null:hh(l),rh=r===undefined?null:hh(r),b=B[p]??null;let v;if(lh===rh||b===rh)v=l;else if(b===lh)v=r;else{SB.conf++;v=r}if(v!==undefined)o[p]=v});return o}
  return R}
 async function sbPush(k,rev,exists,body,mh){const toks=[...BLN].filter(t=>!SB.m.bl[t]);for(const t of toks){await sbUpload(t);SB.m.bl[t]=1}
- const by=(sess&&sess.username)||'',ua=new Date().toISOString();let res;
+ const by=(sess&&sess.authUid)||null,ua=new Date().toISOString();let res;
  if(exists)res=await sbf('/rest/v1/kv?key=eq.'+encodeURIComponent(k)+'&rev=eq.'+rev,{m:'PATCH',h:{Prefer:'return=representation'},b:'{"data":'+body+',"rev":'+(rev+1)+',"updated_by":'+JSON.stringify(by)+',"updated_at":"'+ua+'"}'});
  else res=await sbf('/rest/v1/kv?on_conflict=key',{m:'POST',h:{Prefer:'resolution=ignore-duplicates,return=representation'},b:'{"key":'+JSON.stringify(k)+',"data":'+body+',"rev":1,"updated_by":'+JSON.stringify(by)+'}'});
  if(!res||!res.length){SB.again=true;return false}SB.m.rev[k]=res[0].rev;SB.m.h[k]=mh;SB.m.base[k]=recH(S[k]);return true}
-async function sbSync(mode){if(SB.busy||!SB.cfg.sess||typeof S==='undefined'||!sess)return;SB.busy=true;SB.again=false;sbChip('sync');let ch=0;
+const hasLocalDatabase=()=>!!(localStorage.getItem(KEY)||localStorage.getItem('chapanikit4t_v51')||localStorage.getItem('chapanikit4t_v50'));
+async function sbSync(mode){if(SB.busy||!SB.cfg.sess||!SB.cfg.ready||typeof S==='undefined'||!sess)return;SB.busy=true;SB.again=false;sbChip('sync');let ch=0;
  try{const rows=await sbf('/rest/v1/kv?select=key,rev&key=not.like.b:*'),rr={};(rows||[]).forEach(r=>rr[r.key]=r.rev);
-  for(const k of Object.keys(S)){const v=S[k];if(!v||typeof v!=='object')continue;BLN=new Set();const lh=h53(cn(v)),exists=k in rr,remoteNew=exists&&rr[k]!==SB.m.rev[k],dirty=SB.m.h[k]!==lh;
+  for(const k of Object.keys(S)){if(k==='users')continue;const v=S[k];if(!v||typeof v!=='object')continue;BLN=new Set();const lh=h53(cn(v)),exists=k in rr,remoteNew=exists&&rr[k]!==SB.m.rev[k],dirty=SB.m.h[k]!==lh;if(!hasLocalDatabase()&&mode==='cloud'&&!exists)continue;
    if(exists&&!remoteNew&&!dirty)continue;let rev=rr[k]||0,rh=null;
    if(remoteNew){const row=((await sbf('/rest/v1/kv?key=eq.'+encodeURIComponent(k)+'&select=data,rev'))||[])[0];if(!row)continue;rev=row.rev;const rd=await blobIn(row.data);rh=h53(cn(rd));
     if(mode==='cloud')S[k]=rd;else if(mode!=='local')S[k]=merge3(k,S[k],rd);ch++}
@@ -2662,70 +2659,84 @@ async function sbSync(mode){if(SB.busy||!SB.cfg.sess||typeof S==='undefined'||!s
   SB.last=new Date().toTimeString().slice(0,5);sbSave();if(ch){reindex();SB.save0();const a=document.activeElement;if(!(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))render();else setTimeout(()=>render(),6000);toast('อัปเดตข้อมูลจากเครื่องอื่นแล้ว','ok')}
   sbChip('ok',SB.last);SB.msg=''}catch(e){SB.msg=e.message;sbChip('err',/Failed to fetch|NetworkError/.test(e.message)?'ออฟไลน์ (เก็บในเครื่องไว้ก่อน)':'ซิงค์ไม่สำเร็จ')}
  SB.busy=false;if(SB.again){SB.retry=(SB.retry||0)+1;if(SB.retry>4){SB.again=false;SB.retry=0;SB.msg='ซิงค์ไม่สำเร็จ: ข้อมูลขัดแย้งหรือบัญชีนี้ไม่มีสิทธิ์เขียน';sbChip('err','ไม่มีสิทธิ์เขียน/ขัดแย้ง')}else setTimeout(()=>sbSync(),400*SB.retry)}else if(!SB.msg){SB.retry=0;rtStart()}}
-{const s0=save;SB.save0=s0;save=function(){FC.clear();s0();if(SB.cfg.sess){clearTimeout(SB.t);SB.t=setTimeout(()=>sbSync(),1800)}}}
-setInterval(()=>{if(!document.hidden&&SB.cfg.sess)sbSync()},15000);addEventListener('online',()=>sbSync());document.addEventListener('visibilitychange',()=>{if(!document.hidden)sbSync()});setTimeout(()=>{if(SB.cfg.sess)sbChip('sync');sbSync()},1800);
-const SB_SQL=`-- 1) ตารางข้อมูล
+{const s0=save;SB.save0=s0;save=function(){FC.clear();s0();if(SB.cfg.sess&&SB.cfg.ready){clearTimeout(SB.t);SB.t=setTimeout(()=>sbSync(),1800)}}}
+setInterval(()=>{if(!document.hidden&&SB.cfg.sess&&SB.cfg.ready)sbSync()},15000);addEventListener('online',()=>sbSync());document.addEventListener('visibilitychange',()=>{if(!document.hidden)sbSync()});setTimeout(()=>{if(SB.cfg.sess&&SB.cfg.ready){sbChip('sync');sbSync()}},1800);
+const SB_SQL=`-- Supabase Auth + RBAC สำหรับระบบฌาปนกิจ 4 ตำบล
 create table if not exists public.kv (
   key text primary key,
   data jsonb not null,
-  rev integer not null default 1,
-  updated_by text,
+  rev integer not null default 1 check (rev > 0),
+  updated_by uuid references auth.users(id) on delete set null,
   updated_at timestamptz not null default now()
 );
 alter table public.kv enable row level security;
+alter table public.kv force row level security;
+revoke all on public.kv from anon, public;
+grant select, insert, update, delete on public.kv to authenticated;
 
--- 2) บทบาทอ่านจาก app_metadata.app_role ของผู้ใช้ (admin / treasurer / registrar / collector / auditor)
 create or replace function public.app_role() returns text
-language sql stable as $$ select coalesce(auth.jwt()->'app_metadata'->>'app_role','') $$;
+language sql stable security invoker set search_path = ''
+as $$ select coalesce((select auth.jwt() -> 'app_metadata' ->> 'app_role'), '') $$;
+revoke all on function public.app_role() from public, anon;
+grant execute on function public.app_role() to authenticated;
 
+-- สิทธิ์อ่านแยกตามบทบาท (ไม่มีสิทธิ์อ่านตารางบัญชีผู้ใช้ภายในไฟล์)
 drop policy if exists kv_read on public.kv;
 drop policy if exists kv_insert on public.kv;
 drop policy if exists kv_update on public.kv;
 drop policy if exists kv_delete on public.kv;
-create policy kv_read on public.kv for select to authenticated using (true);
+create policy kv_read on public.kv for select to authenticated using (
+ public.app_role()='admin'
+ or (public.app_role()='auditor' and key <> 'users')
+ or (public.app_role()='treasurer' and key in ('members','apps','pays','exps','claims','levies','funds','counters','settings','audit','notes'))
+ or (public.app_role()='registrar' and key in ('members','apps','claims','funds','counters','settings','audit','notes'))
+ or (public.app_role()='collector' and key in ('members','pays','funds','counters','settings'))
+);
 create policy kv_insert on public.kv for insert to authenticated with check (
-  app_role() in ('admin','treasurer','registrar')
-  or (app_role()='collector' and key in ('pays','audit','counters')));
-create policy kv_update on public.kv for update to authenticated
-  using (app_role() in ('admin','treasurer','registrar')
-    or (app_role()='collector' and key in ('pays','audit','counters')))
-  with check (app_role() in ('admin','treasurer','registrar')
-    or (app_role()='collector' and key in ('pays','audit','counters')));
-create policy kv_delete on public.kv for delete to authenticated using (app_role()='admin');
+ public.app_role()='admin'
+ or (public.app_role()='treasurer' and key in ('pays','exps','levies','counters','audit','notes'))
+ or (public.app_role()='registrar' and key in ('members','apps','claims','counters','audit','notes'))
+ or (public.app_role()='collector' and key in ('pays','counters','audit'))
+);
+create policy kv_update on public.kv for update to authenticated using (
+ public.app_role()='admin'
+ or (public.app_role()='treasurer' and key in ('pays','exps','levies','counters','audit','notes'))
+ or (public.app_role()='registrar' and key in ('members','apps','claims','counters','audit','notes'))
+ or (public.app_role()='collector' and key in ('pays','counters','audit'))
+) with check (
+ public.app_role()='admin'
+ or (public.app_role()='treasurer' and key in ('pays','exps','levies','counters','audit','notes'))
+ or (public.app_role()='registrar' and key in ('members','apps','claims','counters','audit','notes'))
+ or (public.app_role()='collector' and key in ('pays','counters','audit'))
+);
+create policy kv_delete on public.kv for delete to authenticated using (public.app_role()='admin');
 
--- 3) ที่เก็บไฟล์ส่วนตัว (รูปบัตร / หลักฐานการชำระ / ลายเซ็น) เข้าถึงผ่าน Signed URL เท่านั้น
-insert into storage.buckets (id, name, public) values ('docs','docs',false) on conflict (id) do nothing;
+insert into storage.buckets (id,name,public) values ('docs','docs',false)
+on conflict (id) do update set public=false;
 drop policy if exists docs_read on storage.objects;
 drop policy if exists docs_insert on storage.objects;
 drop policy if exists docs_update on storage.objects;
 drop policy if exists docs_delete on storage.objects;
-create policy docs_read on storage.objects for select to authenticated using (bucket_id='docs');
-create policy docs_insert on storage.objects for insert to authenticated
-  with check (bucket_id='docs' and app_role() in ('admin','treasurer','registrar','collector'));
-create policy docs_update on storage.objects for update to authenticated
-  using (bucket_id='docs' and app_role() in ('admin','treasurer','registrar','collector'));
-create policy docs_delete on storage.objects for delete to authenticated
-  using (bucket_id='docs' and app_role()='admin');
+create policy docs_read on storage.objects for select to authenticated using (bucket_id='docs' and public.app_role() in ('admin','treasurer','registrar','auditor'));
+create policy docs_insert on storage.objects for insert to authenticated with check (bucket_id='docs' and public.app_role() in ('admin','treasurer','registrar'));
+create policy docs_update on storage.objects for update to authenticated using (bucket_id='docs' and public.app_role() in ('admin','treasurer','registrar')) with check (bucket_id='docs' and public.app_role() in ('admin','treasurer','registrar'));
+create policy docs_delete on storage.objects for delete to authenticated using (bucket_id='docs' and public.app_role()='admin');
+do $$ begin alter publication supabase_realtime add table public.kv; exception when duplicate_object then null; end $$;
+revoke all on function public.rls_auto_enable() from public, anon, authenticated;
 
--- 4) Realtime
-do $$ begin
-  alter publication supabase_realtime add table public.kv;
-exception when duplicate_object then null; end $$;
-
--- 5) กำหนดบทบาทให้ผู้ใช้ (แก้อีเมลแล้วรันทีละบัญชี)
--- update auth.users set raw_app_meta_data = coalesce(raw_app_meta_data,'{}'::jsonb) || '{"app_role":"admin"}' where email='admin@example.com';
--- update auth.users set raw_app_meta_data = coalesce(raw_app_meta_data,'{}'::jsonb) || '{"app_role":"collector"}' where email='agent@example.com';`;
+-- หลังสร้างผู้ใช้ใน Authentication > Users ให้กำหนดบทบาทด้วย SQL ตัวอย่างด้านล่าง
+-- ห้ามใช้ raw_user_meta_data สำหรับกำหนดสิทธิ์ เพราะผู้ใช้แก้ไขเองได้
+-- update auth.users set raw_app_meta_data=coalesce(raw_app_meta_data,'{}'::jsonb)||jsonb_build_object('app_role','admin','display_name','ผู้ดูแลระบบ','tambon','รวม 4 ตำบล','app_active',true) where email='admin@example.com';
+-- บทบาทที่รองรับ: admin, treasurer, registrar, collector, auditor
+`;
 V.cloud=function(){if(!can('backup.manage'))return head('เชื่อมต่อ Supabase','ต้องมีสิทธิ์ สำรอง/นำเข้า/รีเซ็ตข้อมูล');const c=SB.cfg,on=!!c.sess;
- return head('เชื่อมต่อ Supabase','ซิงค์ข้อมูลหลายเครื่อง ไม่ทับงานของกันและกัน · ใช้ออฟไลน์ได้ แล้วซิงค์เมื่อมีเน็ต')+
- '<div class="g2 an"><div class="card"><h3>1) สร้างตาราง + สิทธิ์ + ที่เก็บไฟล์ใน Supabase</h3><p class="xs fa">เปิด SQL Editor แล้ววางคำสั่งนี้ครั้งเดียว (ตั้งสิทธิ์ตามบทบาทที่ฐานข้อมูล ตัวแทนเก็บเขียนได้เฉพาะรายการชำระ)</p><div class="sqlbox mono" id="sbSql" style="max-height:260px">'+esc(SB_SQL)+'</div><div style="margin:10px 0"><button class="btn s" data-act="sbCopy">คัดลอก SQL</button></div><p class="xs fa">ที่ Authentication ให้<b> ปิด Allow new users to sign up</b> แล้วสร้างผู้ใช้ 1 บัญชี (อีเมล+รหัสผ่าน) ให้ระบบนี้ ข้อมูลมีเลขบัตรประชาชน ห้ามเปิดตารางเป็นสาธารณะ</p></div>'+
- '<div class="card"><h3>2) เชื่อมต่อ '+(on?'<span class="pill p-ok">เชื่อมแล้ว</span>':'')+'</h3><div class="field"><label>Project URL</label><input class="input mono" id="sbU" placeholder="https://xxxx.supabase.co" value="'+esc(c.url||(window.__CFG&&__CFG.url)||'')+'"></div><div class="field"><label>anon public key</label><input class="input mono" id="sbK" value="'+esc(c.key||(window.__CFG&&__CFG.key)||'')+'"></div><div class="fg c2"><div class="field"><label>อีเมลผู้ใช้</label><input class="input" id="sbE" value="'+esc(c.email||'')+'" autocomplete="username"></div><div class="field"><label>รหัสผ่าน (ไม่เก็บในเครื่อง)</label><input class="input" id="sbP" type="password" autocomplete="current-password"></div></div>'+
- '<div class="field"><label>ถ้าบนคลาวด์มีข้อมูลอยู่แล้ว</label><select class="input" id="sbM"><option value="merge">รวมข้อมูล (ไม่ลบของใคร)</option><option value="cloud">ใช้ข้อมูลของคลาวด์ แทนเครื่องนี้</option><option value="local">ใช้ข้อมูลเครื่องนี้ ทับคลาวด์</option></select></div>'+
- '<div class="row wrap" style="gap:8px"><button class="btn primary" data-act="sbConn">'+(on?'เชื่อมต่อใหม่':'เชื่อมต่อและซิงค์')+'</button>'+(on?'<button class="btn" data-act="sbNow">ซิงค์ตอนนี้</button><button class="btn danger" data-act="sbOff">ตัดการเชื่อมต่อ</button>':'')+'</div>'+
- '<p class="xs fa" style="margin-top:10px">สถานะ: '+(on?(SB.msg?'⚠ '+esc(SB.msg):'ซิงค์ล่าสุด '+(SB.last||'—')):'ยังไม่เชื่อมต่อ')+(SB.conf?' · แก้ความขัดแย้งอัตโนมัติ '+SB.conf+' ครั้ง (ใช้รายการที่ใหม่กว่า)':'')+'</p></div></div>'};
+ return head('เชื่อมต่อ Supabase','ฐานข้อมูลกลางสำหรับเจ้าหน้าที่ทุกตำบล · บัญชีแยกคน · ซิงค์ตามสิทธิ์')+
+ '<div class="g2 an"><div class="card"><h3>1) ตั้งค่าความปลอดภัยและฐานข้อมูล</h3><p class="xs fa">คัดลอก SQL นี้ไปวางใน Supabase SQL Editor แล้วกด Run หนึ่งครั้ง เพื่อสร้างตารางกลาง, RLS, Storage ส่วนตัว และ Realtime</p><div class="sqlbox mono" id="sbSql" style="max-height:260px">'+esc(SB_SQL)+'</div><div style="margin:10px 0"><button class="btn s" data-act="sbCopy">คัดลอก SQL</button></div><p class="xs fa">ปิด Allow new users to sign up ใน Authentication และสร้างบัญชีแยกให้แต่ละคน จากนั้นกำหนด app_role ใน app_metadata ตามตัวอย่าง SQL</p></div>'+
+ '<div class="card"><h3>2) การเชื่อมต่อ '+(on?'<span class="pill p-ok">เข้าสู่ระบบแล้ว</span>':'<span class="pill p-warn">ยังไม่เข้าสู่ระบบ</span>')+'</h3><div class="field"><label>Project URL</label><input class="input mono" id="sbU" value="'+esc(c.url||'')+'"></div><div class="field"><label>Publishable key (ใช้ในเว็บได้)</label><input class="input mono" id="sbK" value="'+esc(c.key||'')+'"></div><div class="field"><label>ถ้าบนคลาวด์มีข้อมูลอยู่แล้ว</label><select class="input" id="sbM"><option value="merge">รวมข้อมูลจากเครื่องนี้กับคลาวด์</option><option value="cloud">ใช้ข้อมูลบนคลาวด์แทนข้อมูลเครื่องนี้</option><option value="local">ใช้ข้อมูลเครื่องนี้แทนข้อมูลบนคลาวด์</option></select></div>'+
+ '<p class="xs fa">สถานะฐานข้อมูล: '+(c.ready?'เปิดใช้ฐานข้อมูลกลางแล้ว':'ยังไม่เปิดใช้ฐานข้อมูลกลาง')+' · '+(on?'บัญชี '+esc(sess.username):'เข้าสู่ระบบผ่านหน้าเจ้าหน้าที่ก่อน')+'</p><div class="row wrap" style="gap:8px"><button class="btn primary" data-act="sbConn" '+(!on?'disabled':'')+'>เริ่มต้น / ซิงค์ฐานข้อมูลกลาง</button>'+(on?'<button class="btn" data-act="sbNow" '+(!c.ready?'disabled':'')+'>ซิงค์ตอนนี้</button><button class="btn danger" data-act="sbOff">ออกจากระบบ Supabase</button>':'')+'</div>'+
+ '<p class="xs fa" style="margin-top:10px">'+(SB.msg?'ข้อความระบบ: '+esc(SB.msg):'ระบบจะไม่ซิงค์บัญชีผู้ใช้ภายในไฟล์ขึ้นคลาวด์')+(SB.conf?' · พบการรวมข้อมูลต่างเวอร์ชัน '+SB.conf+' ครั้ง':'')+'</p></div></div>'};
 A.sbCopy=()=>{navigator.clipboard.writeText(SB_SQL).then(()=>toast('คัดลอกแล้ว','ok'),()=>toast('คัดลอกไม่ได้ ให้ลากเลือกข้อความเอง','warn'))};
-A.sbConn=async()=>{if(!need('backup.manage'))return;const url=$('#sbU').value.trim().replace(/\/+$/,''),key=$('#sbK').value.trim(),email=$('#sbE').value.trim(),pw=$('#sbP').value;if(!/^https:\/\/.+\.supabase\.(co|in)$/.test(url)&&!/^https?:\/\/(localhost|127\.0\.0\.1)/.test(url)){toast('Project URL ไม่ถูกต้อง','bad');return}if(!key||!email||!pw){toast('กรอก key อีเมล และรหัสผ่านให้ครบ','bad');return}
- try{const r=await fetch(url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:key,'Content-Type':'application/json'},body:JSON.stringify({email,password:pw})});if(!r.ok)throw new Error('เข้าสู่ระบบ Supabase ไม่ได้ ตรวจอีเมล/รหัสผ่าน ('+r.status+')');const j=await r.json();
-  SB.cfg={url,key,email,sess:{at:j.access_token,rt:j.refresh_token,exp:Date.now()+j.expires_in*1000}};SB.m={rev:{},h:{},base:{},bl:{}};SB.conf=0;sbSave();audit('cloud.connect',url,'เชื่อมต่อ Supabase');SB.save0();toast('เชื่อมต่อแล้ว กำลังซิงค์…','ok');await sbSync($('#sbM').value);render()}catch(e){toast(e.message.slice(0,120),'bad')}};
+A.sbConn=async()=>{if(!need('backup.manage'))return;if(!SB.cfg.sess||sess.role!=='admin'){toast('ต้องเข้าสู่ระบบด้วยบัญชีผู้ดูแลระบบ Supabase ก่อน','bad');return}const url=$('#sbU').value.trim().replace(/\/+$/,''),key=$('#sbK').value.trim();if(!/^https:\/\/.+\.supabase\.(co|in)$/.test(url)||!key){toast('Project URL หรือ publishable key ไม่ถูกต้อง','bad');return}SB.cfg.url=url;SB.cfg.key=key;const existing=await sbf('/rest/v1/kv?select=key&limit=1');if((!existing||!existing.length)&&!hasLocalDatabase())throw new Error('เครื่องนี้ยังไม่มีฐานข้อมูลที่บันทึกไว้ ระบบจึงไม่อัปโหลดชุดข้อมูลตัวอย่าง กรุณานำเข้าไฟล์สำรองข้อมูลจริงก่อน');SB.cfg.ready=true;sbSave();try{await sbSync($('#sbM').value);if(SB.msg)throw new Error(SB.msg);audit('cloud.initialize',url,'เปิดใช้ฐานข้อมูลกลางโดย '+sess.username);SB.save0();toast('เปิดใช้ฐานข้อมูลกลางแล้ว','ok');render()}catch(e){SB.cfg.ready=false;sbSave();toast('เริ่มซิงค์ไม่สำเร็จ: '+e.message.slice(0,120),'bad')}};
 A.sbNow=()=>sbSync();A.sbOff=()=>{if(!need('backup.manage'))return;if(RT.ws){const w=RT.ws;RT.ws=null;try{w.close()}catch(e){}}clearInterval(RT.hb);SB.cfg={};SB.m={rev:{},h:{},base:{},bl:{}};sbSave();sbChip('off');audit('cloud.off','','ตัดการเชื่อมต่อ Supabase');SB.save0();toast('ตัดการเชื่อมต่อแล้ว ข้อมูลในเครื่องยังอยู่','ok');render()};
 NAV.splice(NAV.findIndex(x=>x.p==='rules'),0,{p:'monthly',i:'wallet',t:'ยอดเก็บรายเดือน',perm:'fin.view'},{p:'cloud',i:'cloud',t:'เชื่อม Supabase',perm:'backup.manage'});
 
@@ -2844,12 +2855,93 @@ A.glTest=async()=>{const o=$('#glTest');o.innerHTML='<div class="xs fa">กำ�
 new MutationObserver(ms=>{ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType!==1)return;(n.tagName==='IMG'?[n]:n.querySelectorAll?[...n.querySelectorAll('img')]:[]).forEach(i=>{if(!i.hasAttribute('loading')&&!i.closest('#printArea,.ap,#ppStage'))i.setAttribute('loading','lazy');i.decoding='async'})}))}).observe(document.body,{childList:true,subtree:true});
 NAV.splice(NAV.findIndex(x=>x.p==='cloud'),0,{p:'golive',i:'shield',t:'เริ่มใช้งานจริง',perm:'backup.manage'});
 
+/* ===== v62: Supabase Auth รายบุคคล + RBAC จาก app_metadata ===== */
+async function sbStaffLogin(email,password,initializeOnly=false){
+ const msg=$('#lmsg');if(!SB.cfg.url||!SB.cfg.key){if(msg)msg.innerHTML='<div class="bn bad">ยังไม่ได้ตั้งค่า Supabase URL / publishable key</div>';return false}
+ try{
+  const r=await fetch(SB.cfg.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:SB.cfg.key,'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+  const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.msg||j.message||j.error_description||'อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+  const u=j.user||{},am=u.app_metadata||{},role=am.app_role;
+  if(am.app_active===false)throw new Error('บัญชีนี้ถูกระงับ กรุณาติดต่อผู้ดูแลระบบ');
+  if(!role||!ROLES[role]||role==='member')throw new Error('บัญชียังไม่ได้กำหนดบทบาทใน app_metadata กรุณาติดต่อผู้ดูแลระบบ');
+  SB.cfg.sess={at:j.access_token,rt:j.refresh_token,exp:Date.now()+j.expires_in*1000};SB.cfg.email=u.email||email;sbSave();
+  sess={mode:'staff',username:u.email||email,name:am.display_name||u.email||email,role,tambon:am.tambon||'รวม 4 ตำบล',authUid:u.id,act:Date.now()};
+  sessionStorage.setItem('ck52',JSON.stringify(sess));
+  if(!initializeOnly){
+   try{const remote=await sbf('/rest/v1/kv?select=key&limit=1');if(remote&&remote.length){SB.cfg.ready=true;sbSave();const hasLocal=!!localStorage.getItem(KEY);await sbSync(hasLocal?'merge':'cloud')}else{SB.cfg.ready=false;sbSave()}}catch(e){SB.cfg.ready=false;sbSave();SB.msg=e.message}
+  }
+  if(msg)msg.innerHTML='';audit('auth.login',sess.username,'เข้าสู่ระบบ Supabase Auth · '+role);SB.save0();ui.page='dashboard';render();toast('เข้าสู่ระบบแล้ว · '+ROLES[role].name+(SB.cfg.ready?' · เชื่อมฐานข้อมูลกลาง':' · รอผู้ดูแลเริ่มซิงค์ข้อมูลกลาง'),'ok');return true;
+ }catch(e){if(msg)msg.innerHTML='<div class="bn bad" style="margin-top:12px">'+esc(e.message.slice(0,180))+'</div>';beep('err');return false}
+}
+F.staffLogin=async f=>{await sbStaffLogin(f.u.value.trim(),f.p.value,false)};
+/* ไม่ใช้บัญชีรหัสผ่านแบบเดิมใน S.users อีกต่อไป */
+V.perms=function(){return head('สิทธิ์การใช้งาน','กำหนดสิทธิ์จาก app_metadata ใน Supabase Auth เท่านั้น')+'<div class="card an"><p>บทบาทที่รองรับ: admin, treasurer, registrar, collector และ auditor</p><p class="sm fa">การแก้ไขสิทธิ์ในหน้านี้แบบเดิมถูกปิดไว้ เพื่อไม่ให้สิทธิ์บนหน้าจอขัดกับนโยบาย RLS ที่ฐานข้อมูล</p><button class="btn s" data-act="nav" data-page="cloud">ตั้งค่าฐานข้อมูลกลาง</button></div>'};
+A.userNew=A.userEdit=A.userReset=A.userToggle=()=>toast('จัดการบัญชีผ่าน Supabase Dashboard > Authentication > Users และกำหนด app_metadata เท่านั้น','info');
+A.permSave=A.roleNew=()=>toast('สิทธิ์ถูกควบคุมจาก app_metadata และ RLS ใน Supabase ไม่แก้จากข้อมูลภายในเครื่อง','info');
+{const oldLogout=logout;logout=function(){const token=SB.cfg.sess&&SB.cfg.sess.at;if(RT.ws){const w=RT.ws;RT.ws=null;try{w.close()}catch(e){}}clearInterval(RT.hb);if(token)fetch(SB.cfg.url+'/auth/v1/logout',{method:'POST',headers:{apikey:SB.cfg.key,Authorization:'Bearer '+token}}).catch(()=>{});SB.cfg.sess=null;SB.cfg.ready=!!SB.cfg.ready;sbSave();oldLogout()}}
+
+/* ===== v63 production hardening ===== */
+/* Fresh installations start with empty records and zero opening balances. */
+{
+ const loadV62=load;
+ load=function(){
+  const hadLocal=!!(localStorage.getItem(KEY)||localStorage.getItem('chapanikit4t_v51')||localStorage.getItem('chapanikit4t_v50'));
+  const r=loadV62();
+  if(!hadLocal){
+   const s=r.S;
+   ['users','members','apps','pays','exps','claims','levies','audit','notes'].forEach(k=>s[k]=[]);
+   (s.funds||[]).forEach(f=>f.opening=0);
+   s.counters={member:0,receipt:0,expense:0,claim:0,levy:0,app:0};
+   s.views=[];
+  }
+  return r;
+ }
+}
+/* Prevent the legacy local-ID member portal and demo credentials from exposing records. */
+try{const old=JSON.parse(sessionStorage.getItem('ck52')||'null');if(old&&old.mode==='member')sessionStorage.removeItem('ck52')}catch(e){}
+function v63LockPublicLogin(){
+ const tabs=$('#ltabs');if(tabs)tabs.remove();
+ const member=$('#memberForm');if(member)member.remove();
+ const track=$('#trackForm');if(track)track.remove();
+ const demo=document.querySelector('.demo');if(demo)demo.remove();
+ const staff=$('#staffForm');if(staff)staff.hidden=false;
+}
+v63LockPublicLogin();
+A.loginTab=()=>{v63LockPublicLogin();const f=$('#staffForm');if(f)f.hidden=false};
+A.fillMember=A.fillTrack=()=>toast('ปิดการเข้าสู่ระบบสมาชิก/ติดตามแบบเดิมชั่วคราว เพื่อป้องกันการอ่านข้อมูลจากเครื่องนี้','info');
+{const gotoV62=A.goto;A.goto=d=>{if(d&&((d.p==='portal')||d.do==='track')){toast('พอร์ทัลสมาชิกและติดตามใบสมัครจะเปิดหลังพัฒนาการยืนยันตัวตนฝั่งสมาชิก','info');return}return gotoV62(d)}}
+/* An empty cloud may be initialized from a clean install. Existing local records require an explicit local-only import choice and confirmation. */
+{
+ const sbConnV62=A.sbConn;
+ A.sbConn=async()=>{
+  if(!SB.cfg.sess||sess.role!=='admin')return sbConnV62();
+  let rows;
+  try{rows=await sbf('/rest/v1/kv?select=key&limit=1')}catch(e){return sbConnV62()}
+  const remoteEmpty=!rows||!rows.length;
+  const localCount=['members','apps','pays','exps','claims','levies'].reduce((n,k)=>n+((S[k]||[]).length),0);
+  const opening=(S.funds||[]).reduce((n,f)=>n+(Number(f.opening)||0),0);
+  const hasBusinessData=localCount>0||opening>0;
+  if(remoteEmpty&&hasBusinessData){
+   const mode=$('#sbM')&&$('#sbM').value;
+   if(mode!=='local')return toast('ฐานข้อมูลคลาวด์ยังว่าง แต่เครื่องนี้มีข้อมูลอยู่ โปรดสำรองข้อมูลก่อน แล้วเลือก “ใช้ข้อมูลเครื่องนี้แทนข้อมูลบนคลาวด์” หากต้องการนำเข้าข้อมูลชุดนี้','warn');
+   if(!confirm('ยืนยันนำเข้าข้อมูลจากเครื่องนี้ขึ้นฐานข้อมูลกลาง? โปรดตรวจสอบไฟล์สำรองก่อนดำเนินการ'))return;
+  }
+  return sbConnV62();
+ }
+}
+/* Account provisioning is managed only in Supabase Auth; never create local-only administrator accounts. */
+V.golive=function(){
+ return head('ตั้งค่าบัญชีเจ้าหน้าที่','บัญชีทุกคนต้องสร้างใน Supabase Auth และกำหนดบทบาทใน app_metadata')+
+ '<div class="card an"><h3>ขั้นตอนสร้างบัญชี</h3><ol><li>เปิด Supabase Dashboard → Authentication → Users</li><li>เลือก Add user และสร้างอีเมล/รหัสผ่านให้เจ้าหน้าที่แต่ละคน</li><li>คัดลอก User UID แล้วเปิด SQL Editor</li><li>กำหนด app_role และ app_active ใน app_metadata ด้วย SQL ด้านล่าง</li></ol><pre style="white-space:pre-wrap;overflow-wrap:anywhere;background:var(--bg2);padding:12px;border-radius:10px">update auth.users\nset raw_app_meta_data = coalesce(raw_app_meta_data, \'{}\'::jsonb) || jsonb_build_object(\'app_role\', \'admin\', \'app_active\', true, \'display_name\', \'ชื่อเจ้าหน้าที่\', \'tambon\', \'รวม 4 ตำบล\')\nwhere id = \'ใส่-USER-UID-ตรงนี้\';</pre><p class="sm fa">เปลี่ยน app_role ให้ตรงกับบทบาท: admin, treasurer, registrar, collector หรือ auditor · อย่าให้สิทธิ์ admin กับบัญชีทั่วไป</p><p class="sm fa">ปิด Allow new users to sign up เพื่อไม่ให้บุคคลทั่วไปสมัครบัญชีเอง</p><button class="btn primary" data-act="nav" data-page="cloud">เปิดการตั้งค่าฐานข้อมูลกลาง</button></div>';
+};
+A.glMake=A.glDemo=A.glWipe=()=>toast('จัดการบัญชีและข้อมูลจริงผ่าน Supabase Auth/ฐานข้อมูลกลางเท่านั้น','info');
+
 /* ===== init ===== */
 (function(){
   const r=load();S=r.S;reindex();document.documentElement.dataset.theme=S.settings.theme||'night';sound=!!S.settings.sound;
   const em=$('#embers');for(let i=0;i<14;i++){const s=document.createElement('i');s.style.left=(5+Math.random()*90)+'%';s.style.animationDuration=(7+Math.random()*9)+'s';s.style.animationDelay=(-Math.random()*12)+'s';s.style.width=s.style.height=(2+Math.random()*4)+'px';s.style.background=Math.random()<.4?'var(--saf)':'var(--gold)';em.appendChild(s)}
   try{const ss=sessionStorage.getItem('ck52');if(ss){const p=JSON.parse(ss);
-    if(p&&ROLES[p.role]&&(Date.now()-(p.act||0))<S.settings.idle*60000){
+    if(p&&ROLES[p.role]&&(p.mode!=='staff'||SB.cfg.sess)&&(Date.now()-(p.act||0))<S.settings.idle*60000){
       if(p.mode==='member'&&!S.members.some(m=>m.id===p.memberId))sessionStorage.removeItem('ck52');
       else{sess=p;sess.act=Date.now();if(sess.mode==='member')ui.page='portal'}}}}catch(e){}
   render();
