@@ -2857,21 +2857,74 @@ NAV.splice(NAV.findIndex(x=>x.p==='cloud'),0,{p:'golive',i:'shield',t:'เริ
 
 /* ===== v62: Supabase Auth รายบุคคล + RBAC จาก app_metadata ===== */
 async function sbStaffLogin(email,password,initializeOnly=false){
- const msg=$('#lmsg');if(!SB.cfg.url||!SB.cfg.key){if(msg)msg.innerHTML='<div class="bn bad">ยังไม่ได้ตั้งค่า Supabase URL / publishable key</div>';return false}
+ const msg=$('#lmsg');
+ if(!SB.cfg.url||!SB.cfg.key){
+  if(msg)msg.innerHTML='<div class="bn bad">ยังไม่ได้ตั้งค่า Supabase URL / publishable key</div>';
+  return false;
+ }
  try{
-  const r=await fetch(SB.cfg.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:SB.cfg.key,'Content-Type':'application/json'},body:JSON.stringify({email,password})});
-  const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.msg||j.message||j.error_description||'อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+  const r=await fetch(SB.cfg.url+'/auth/v1/token?grant_type=password',{
+   method:'POST',
+   headers:{apikey:SB.cfg.key,'Content-Type':'application/json'},
+   body:JSON.stringify({email,password})
+  });
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(j.msg||j.message||j.error_description||'อีเมลหรือรหัสผ่านไม่ถูกต้อง');
   const u=j.user||{},am=u.app_metadata||{},role=am.app_role;
   if(am.app_active===false)throw new Error('บัญชีนี้ถูกระงับ กรุณาติดต่อผู้ดูแลระบบ');
   if(!role||!ROLES[role]||role==='member')throw new Error('บัญชียังไม่ได้กำหนดบทบาทใน app_metadata กรุณาติดต่อผู้ดูแลระบบ');
-  SB.cfg.sess={at:j.access_token,rt:j.refresh_token,exp:Date.now()+j.expires_in*1000};SB.cfg.email=u.email||email;sbSave();
+
+  SB.cfg.sess={at:j.access_token,rt:j.refresh_token,exp:Date.now()+j.expires_in*1000};
+  SB.cfg.email=u.email||email;
+  SB.cfg.ready=false;
+  sbSave();
+
   sess={mode:'staff',username:u.email||email,name:am.display_name||u.email||email,role,tambon:am.tambon||'รวม 4 ตำบล',authUid:u.id,act:Date.now()};
   sessionStorage.setItem('ck52',JSON.stringify(sess));
+
+  if(msg)msg.innerHTML='';
+  audit('auth.login',sess.username,'เข้าสู่ระบบ Supabase Auth · '+role);
+  SB.save0();
+  ui.page='dashboard';
+  render();
+  toast('เข้าสู่ระบบแล้ว · กำลังตรวจสอบฐานข้อมูลกลาง','ok');
+
+  // ซิงค์ข้อมูลเบื้องหลัง เพื่อไม่ให้หน้า Login ค้างระหว่างรอข้อมูลจำนวนมาก
   if(!initializeOnly){
-   try{const remote=await sbf('/rest/v1/kv?select=key&limit=1');if(remote&&remote.length){SB.cfg.ready=true;sbSave();const hasLocal=!!localStorage.getItem(KEY);await sbSync(hasLocal?'merge':'cloud')}else{SB.cfg.ready=false;sbSave()}}catch(e){SB.cfg.ready=false;sbSave();SB.msg=e.message}
+   (async()=>{
+    try{
+     const remote=await sbf('/rest/v1/kv?select=key&limit=1');
+     if(remote&&remote.length){
+      SB.cfg.ready=true;
+      sbSave();
+      const hasLocal=!!localStorage.getItem(KEY);
+      await sbSync(hasLocal?'merge':'cloud');
+      if(SB.msg){
+       sbChip('err','ซิงค์ไม่สำเร็จ');
+       toast('เข้าสู่ระบบแล้ว แต่ซิงค์ข้อมูลไม่สำเร็จ: '+String(SB.msg).slice(0,100),'warn');
+      }else{
+       toast('เชื่อมต่อฐานข้อมูลกลางแล้ว','ok');
+      }
+     }else{
+      SB.cfg.ready=false;
+      sbSave();
+      sbChip('err','ฐานข้อมูลกลางยังไม่มีข้อมูล');
+     }
+    }catch(e){
+     SB.cfg.ready=false;
+     sbSave();
+     SB.msg=e.message;
+     sbChip('err','ซิงค์ไม่สำเร็จ');
+     toast('เข้าสู่ระบบแล้ว แต่เชื่อมฐานข้อมูลกลางไม่สำเร็จ: '+String(e.message).slice(0,100),'warn');
+    }
+   })();
   }
-  if(msg)msg.innerHTML='';audit('auth.login',sess.username,'เข้าสู่ระบบ Supabase Auth · '+role);SB.save0();ui.page='dashboard';render();toast('เข้าสู่ระบบแล้ว · '+ROLES[role].name+(SB.cfg.ready?' · เชื่อมฐานข้อมูลกลาง':' · รอผู้ดูแลเริ่มซิงค์ข้อมูลกลาง'),'ok');return true;
- }catch(e){if(msg)msg.innerHTML='<div class="bn bad" style="margin-top:12px">'+esc(e.message.slice(0,180))+'</div>';beep('err');return false}
+  return true;
+ }catch(e){
+  if(msg)msg.innerHTML='<div class="bn bad" style="margin-top:12px">'+esc(e.message.slice(0,180))+'</div>';
+  beep('err');
+  return false;
+ }
 }
 F.staffLogin=async f=>{await sbStaffLogin(f.u.value.trim(),f.p.value,false)};
 /* ไม่ใช้บัญชีรหัสผ่านแบบเดิมใน S.users อีกต่อไป */
