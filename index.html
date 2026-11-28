@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ฌาปนกิจสงเคราะห์ 4 ตำบล · v58 รวมสมบูรณ์</title>
+<title>ฌาปนกิจสงเคราะห์ 4 ตำบล · v60 รวมสมบูรณ์</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -296,6 +296,19 @@ canvas.sig{touch-action:none;cursor:crosshair;background:linear-gradient(#fff,#f
 .sqlbox{background:var(--sf2);border:1px solid var(--ln);border-radius:10px;padding:10px;max-height:190px;overflow:auto;white-space:pre-wrap;font-size:11.5px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media print{#sbChip{display:none!important}}
+
+/* ===== v59: ขนาดลายเซ็น ===== */
+.ap.o .sgn img{max-height:calc(38px*var(--sgs,1))!important}
+.sg img{height:calc(46px*var(--sgs,1))!important;width:auto!important;max-width:100%;object-fit:contain}
+#dw img[src^="data:image/png"]{max-height:130px;object-fit:contain;background:#fff}
+.sigbar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-top:8px;font-size:12px;color:var(--mu)}
+.sigbar .chip{padding:3px 10px}.sigbar input[type=range]{width:110px;accent-color:var(--gold)}
+
+/* ===== v60: ใบสมัครตรงกับต้นฉบับ ฉบับที่ 3/2569 ===== */
+.ap.o table.tier td{border:1px solid #000!important}
+.ap.o .bl{margin:0}.ap.o .bl.ind{padding-left:2.2em}
+.ap.o .fx{display:inline-block;white-space:nowrap}
+.ap.o table.tier{table-layout:fixed}.ap.o table.tier td:first-child{width:80px;white-space:nowrap}.ap.o table.tier td:last-child{overflow:hidden}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script></head>
 <body>
@@ -305,7 +318,7 @@ canvas.sig{touch-action:none;cursor:crosshair;background:linear-gradient(#fff,#f
   <div class="lart">
     <div class="embers" id="embers"></div>
     <svg class="flame" viewBox="0 0 64 64" fill="none"><defs><linearGradient id="fg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FF6A00"/><stop offset=".55" stop-color="#FFB020"/><stop offset="1" stop-color="#FFE9A8"/></linearGradient></defs><path d="M32 4c9 12 3 17 8 22 4 4 8 2 8-4 6 8 8 15 8 21 0 12-11 19-24 19S8 55 8 43c0-13 12-20 16-30 2-5 5-7 8-9z" fill="url(#fg)"/><path d="M32 34c4 5 6 8 6 12a6 6 0 11-12 0c0-4 2-7 6-12z" fill="#FFF3D0" opacity=".9"/></svg>
-    <h1>ฌาปนกิจสงเคราะห์<br><span>4 ตำบล · v58 รวมสมบูรณ์</span></h1>
+    <h1>ฌาปนกิจสงเคราะห์<br><span>4 ตำบล · v60 รวมสมบูรณ์</span></h1>
     <div class="row wrap"><span class="b90">เงินช่วยเหลือ 90,000 บาท / ราย</span><span class="pill p-mag">สแกนบัตรประชาชนรับสมัคร</span></div>
     <div class="lstats" id="lstats"></div>
     <ul class="lpts">
@@ -811,8 +824,8 @@ async function runOCR(){
     if(!navigator.onLine)throw new Error('ออฟไลน์');
     const txt=await Promise.race([ocr(W.card.dataUrl,p=>{if(ocrJob===job){W.ocrProg=p;const b=$('#ocrBar');if(b)b.style.width=p+'%';const t=$('#ocrPct');if(t)t.textContent=p+'%'}}),new Promise((_,rj)=>setTimeout(()=>rj(new Error('หมดเวลา')),45000))]);
     if(ocrJob!==job)return;const p=parseCard(txt,'ocr');W.ocrText=txt;W.parse={conf:p.conf,mode:'ocr'};
-    ['idc','prefix','first','last','dob','phone','addr'].forEach(k=>{if(p[k]&&!W.data[k])W.data[k]=p[k]});if(p.tambon)W.data.tambon=p.tambon;if(p.moo)W.data.moo=p.moo;
-    W.ocrState='done';renderWiz();toast('อ่านข้อความจากรูปบัตรแล้ว — โปรดตรวจทานทุกช่องก่อนยื่น','ok');beep('ok');
+    syncW();['idc','prefix','first','last','dob','phone','addr'].forEach(k=>{if(p[k]&&(!W.data[k]||k==='prefix'))W.data[k]=p[k]});if(p.tambon)W.data.tambon=p.tambon;if(p.moo)W.data.moo=p.moo;
+    W.ocrState='done';renderWiz(true);toast('อ่านข้อความจากรูปบัตรแล้ว — โปรดตรวจทานทุกช่องก่อนยื่น','ok');beep('ok');
   }catch(e){if(ocrJob!==job)return;W.ocrState='failed';W.ocrError=e.message==='ออฟไลน์'?'อุปกรณ์ออฟไลน์ — กรอกจากรูปที่แสดงด้านซ้ายได้ทันที':'อ่านอักษรอัตโนมัติไม่สำเร็จ ('+e.message+') — กรอกจากรูปได้เลย ระบบแสดงรูปบัตรไว้ข้างฟอร์มแล้ว';renderWiz()}}
 /* ===== intake wizard ===== */
 let W=null;
@@ -2058,7 +2071,7 @@ document.addEventListener('drop',e=>{const z=e.target.closest('[data-drop]');if(
   drag=null});
 window.addEventListener('beforeunload',stopCam);
 
-/* ===== v58 รวมสมบูรณ์: ใบสมัครกระดาษ + เกณฑ์รับสมัคร ตามไฟล์ v48 ===== */
+/* ===== v60 รวมสมบูรณ์: ใบสมัครกระดาษ + เกณฑ์รับสมัคร ตามไฟล์ v48 ===== */
 const AF=(()=>{const S={settings:{doc:{side:'both',guides:false,mono:false,ink:'#1B2470',dfs:1,dls:1,draft:false,zoom:1},auto:{checksum:true,dedupe:true}}};
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -2350,7 +2363,7 @@ function paperFront(d){
   <div class="t2">รับสมัครสมาชิกอายุ 15-60 ปี (อายุ 60 ปี ทายาทผู้รับผลประโยชน์ต้องสมัครคู่มาด้วยอายุไม่เกิน 45 ปี)</div>
   <div class="t2">และบุคคลที่ประธานพิจารณาให้รับสมัครเป็นกรณีพิเศษโดยมีเงื่อนไข</div>
   <div class="t2">เริ่มรับสมัครวันที่ 1 เดือนสิงหาคม พ.ศ.2569 <u>ถึง</u> วันที่ 31 เดือนมกราคม พ.ศ.2570</div>
-  <div class="arow cen">วันที่ ${ff(jd.getDate(),0,80)} เดือน ${ff(MTH[jd.getMonth()],0,190)} พ.ศ. ${ff(jd.getFullYear()+543,0,110)}</div>
+  <div class="arow cen">วันที่ ${d.blankForm?ff("",0,80):ff(jd.getDate(),0,80)} เดือน ${d.blankForm?ff("",0,270):ff(MTH[jd.getMonth()],0,190)} พ.ศ. ${d.blankForm?ff("",0,110):ff(jd.getFullYear()+543,0,110)}</div>
   <div class="arow">ข้าพเจ้า ${ff(d.name?d.prefix+d.name:"",3)} เลขที่ประจำตัวประชาชน ${ff(d.nid,1.5)}</div>
   <div class="arow">เกิดวันที่ ${ff(d.bd,.6)} เดือน ${ff(d.bm?MTH[d.bm-1]:"",1.2)} พ.ศ. ${ff(d.by,.7)} อายุ ${ff(d.age,.5)} ปี ชื่อคู่สมรส ${ff(d.spouse,2)}</div>
   <div class="arow">ที่อยู่เลขที่ ${ff(d.addr.no,.8)} หมู่ ${ff(d.addr.moo,.5)} ตรอก/ซอย ${ff(d.addr.soi,1.4)} ถนน ${ff(d.addr.road,1.4)}</div>
@@ -2406,7 +2419,7 @@ A.paper=d=>{const x=d.t==='a'?IDX.a.get(d.id):IDX.m.get(d.id);if(!x)return;const
   audit('paper.open',d.t==='a'?x.no:x.code,'เปิดใบสมัครฉบับกระดาษ (แสดงเลขบัตรเต็ม) โดย '+sess.name);save();ppOpen(dr,d.t==='a'?x.no:x.code)};
 A.ppSide=d=>{PP.side=d.s;ppDraw()};A.ppZoom=d=>{PP.z=d.z==='fit'?1:Math.max(.5,Math.min(3,PP.z*(d.z==='in'?1.25:.8)));ppDraw()};
 A.ppPrint=()=>{const pa=$('#printArea');pa.innerHTML=AF.paperHTML(PP.d,PP.side);pa.style.cssText='display:block;position:absolute;left:-9999px;top:0;width:794px';Promise.all([...pa.querySelectorAll('img')].map(i=>i.decode?i.decode().catch(()=>0):0)).then(()=>{ppFit(pa);pa.style.cssText='';window.print()})};
-A.ppBlank=()=>ppOpen(AF.blank(),'ฟอร์มเปล่า');
+A.ppBlank=()=>{const d=AF.blank();d.blankForm=true;ppOpen(d,'ฟอร์มเปล่า')};
 A.ppRead=()=>{const r=AF.parseReader($('#ppRd').value);if(!r.ok&&!r.d.nid){toast('อ่านข้อมูลไม่ได้ ตรวจรูปแบบ JSON/CSV/ข้อความจากเครื่องอ่าน','warn');return}ppOpen(r.d,'จากเครื่องอ่านบัตร')};
 V.paperform=function(){return head('แบบฟอร์มใบสมัคร ฉบับ '+AF.EDITION,'ใบสมัครและเกณฑ์รับสมัครตามไฟล์ v48 · พิมพ์ได้ทั้งหน้า-หลัง พร้อมตรวจคุณสมบัติอัตโนมัติ','<button class="btn primary s" data-act="ppBlank">'+ic('print')+' ฟอร์มเปล่า</button>')+
   '<div class="g2 an"><div class="card"><h3>วางข้อมูลจากเครื่องอ่านบัตร / CSV</h3><p class="xs fa">วาง JSON, CSV หรือข้อความจากเครื่องอ่านบัตร ระบบกรอกลงใบสมัครและตรวจเกณฑ์ให้ทันที</p><textarea class="input mono" id="ppRd" rows="6" placeholder="เลขบัตร, คำนำหน้า, ชื่อ-สกุล, วันเกิด, ที่อยู่ …"></textarea><div style="margin-top:10px"><button class="btn violet" data-act="ppRead">'+ic('scan')+' อ่านแล้วเปิดใบสมัคร</button></div></div>'+
@@ -2671,6 +2684,68 @@ A.sbConn=async()=>{if(!need('backup.manage'))return;const url=$('#sbU').value.tr
   SB.cfg={url,key,email,sess:{at:j.access_token,rt:j.refresh_token,exp:Date.now()+j.expires_in*1000}};SB.m={rev:{},h:{},base:{},bl:{}};SB.conf=0;sbSave();audit('cloud.connect',url,'เชื่อมต่อ Supabase');SB.save0();toast('เชื่อมต่อแล้ว กำลังซิงค์…','ok');await sbSync($('#sbM').value);render()}catch(e){toast(e.message.slice(0,120),'bad')}};
 A.sbNow=()=>sbSync();A.sbOff=()=>{if(!need('backup.manage'))return;SB.cfg={};SB.m={rev:{},h:{},base:{},bl:{}};sbSave();sbChip('off');audit('cloud.off','','ตัดการเชื่อมต่อ Supabase');SB.save0();toast('ตัดการเชื่อมต่อแล้ว ข้อมูลในเครื่องยังอยู่','ok');render()};
 NAV.splice(NAV.findIndex(x=>x.p==='rules'),0,{p:'monthly',i:'wallet',t:'ยอดเก็บรายเดือน',perm:'fin.view'},{p:'cloud',i:'cloud',t:'เชื่อม Supabase',perm:'backup.manage'});
+
+
+/* ===== v59: อ่านบัตรแม่นขึ้น (เดือนย่อไทย/อังกฤษ, น.ส.) + ลายเซ็นกำหนดขนาดได้ ===== */
+{const p2=parseCard,MA=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'].map(x=>x.replace(/\./g,'')),MF=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],ME=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'],PX={'น.ส.':'นางสาว','นส.':'นางสาว','ด.ช.':'เด็กชาย','ด.ญ.':'เด็กหญิง'};
+ const mi=w=>{const k=w.replace(/[\s.]/g,'');let i=MA.indexOf(k);if(i<0)i=MF.indexOf(k);if(i<0)i=ME.findIndex(x=>k.toLowerCase().startsWith(x));return i};
+ const dobText=t=>{const re=/(\d{1,2})\s*([ก-๙][ก-๙.\s]{0,8}?|[A-Za-z]{3,9}\.?)\s*(\d{4})/g,L=[],now=new Date(iso(NOW));let m;while((m=re.exec(t))){const i=mi(m[2]);if(i<0)continue;let y=+m[3];if(y>2400)y-=543;const d=pDate(y+'-'+(i+1)+'-'+m[1]);if(!d)continue;const age=(now-new Date(d))/31557600000;if(age<10||age>110)continue;L.push({d,age,kw:/เกิด|birth/i.test(t.slice(Math.max(0,m.index-70),m.index))})}
+  return (L.find(x=>x.kw)||L.sort((a,b)=>b.age-a.age)[0]||{}).d||''};
+ parseCard=function(raw,mode){const t=String(raw||''),o=p2(raw,mode);
+  const d=dobText(t);if(d&&(mode==='ocr'||!o.dob)){o.dob=d;o.conf.dob=Math.max(o.conf.dob||0,mode==='ocr'?80:93)}
+  const bad=w=>!w||/ชื่อ|สกุล|ตัวและ/.test(w);
+  if(bad(o.first)||bad(o.last)){const m=t.match(/(นาย|นางสาว|น\.\s?ส\.|นาง|เด็กชาย|เด็กหญิง|ด\.\s?ช\.|ด\.\s?ญ\.)\s*([ก-๙]{2,})\s+([ก-๙]{2,})/);if(m){o.prefix=m[1];o.first=m[2];o.last=m[3];o.conf.first=78;o.conf.last=74}}
+  if(o.prefix){const k=o.prefix.replace(/\s/g,'');o.prefix=PX[k]||o.prefix}return o}}
+/* ลายเซ็น: เลือกขนาดช่องเซ็น · ความหนาเส้น · ขนาดในเอกสาร · ตัดขอบอัตโนมัติให้ขนาดสม่ำเสมอ */
+const SIGP=Object.assign({h:240,lw:1,pr:100},(()=>{try{return JSON.parse(localStorage.getItem('ck58sig')||'{}')}catch(e){return{}}})());
+const sigSave=()=>{try{localStorage.setItem('ck58sig',JSON.stringify(SIGP))}catch(e){}};
+const sigApply=()=>document.documentElement.style.setProperty('--sgs',SIGP.pr/100);sigApply();
+const SIGS=[['เล็ก',160],['กลาง',240],['ใหญ่',340],['ใหญ่มาก',440]];
+const sigBar=()=>'<div class="sigbar"><span>ขนาดช่องเซ็น</span>'+SIGS.map(s=>'<button type="button" class="chip'+(SIGP.h===s[1]?' on':'')+'" data-act="sigSize" data-h="'+s[1]+'">'+s[0]+'</button>').join('')+'<label>เส้น <input type="range" min="50" max="200" step="10" value="'+SIGP.lw*100+'" oninput="A.sigLw({v:this.value})"></label><label>ขนาดในเอกสาร <b id="sgPr">'+SIGP.pr+'%</b> <input type="range" min="50" max="200" step="10" value="'+SIGP.pr+'" oninput="A.sigPr({v:this.value})"></label></div>';
+function padInit(c,st,done){const R=2,LW=600,LH=SIGP.h;c.width=LW*R;c.height=LH*R;c.style.touchAction='none';c._st=st;c._done=done;const x=c.getContext('2d');x.setTransform(R,0,0,R,0,0);x.lineCap='round';x.lineJoin='round';x.strokeStyle=x.fillStyle='#1B2340';
+ const M=(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2});
+ const seg=(s,i)=>{const p=s[i-1],q=s[i],m0=i>=2?M(s[i-2],p):p,m1=M(p,q);x.lineWidth=p.w||3;x.beginPath();x.moveTo(m0.x,m0.y);x.quadraticCurveTo(p.x,p.y,m1.x,m1.y);x.stroke()};
+ const tail=s=>{const n=s.length;if(n<2)return;const p=s[n-1],m=M(s[n-2],p);x.lineWidth=p.w||3;x.beginPath();x.moveTo(m.x,m.y);x.lineTo(p.x,p.y);x.stroke()};
+ const dot=s=>{x.beginPath();x.arc(s[0].x,s[0].y,1.9*SIGP.lw,0,7);x.fill()};
+ const repaint=()=>{x.clearRect(0,0,LW,LH);st.forEach(s=>{if(s.length===1)dot(s);else{for(let i=1;i<s.length;i++)seg(s,i);tail(s)}})};repaint();
+ let cur=null,rc=null;const pos=e=>({x:(e.clientX-rc.left)*LW/rc.width,y:(e.clientY-rc.top)*LH/rc.height,t:e.timeStamp});
+ const add=e=>{const p=pos(e),l=cur[cur.length-1],d=Math.hypot(p.x-l.x,p.y-l.y);if(d<1.1)return;const v=d/Math.max(1,p.t-l.t)*16;p.w=l.w*.7+Math.max(1.7,Math.min(4.4,4.8-v*.55))*SIGP.lw*.3;cur.push(p);seg(cur,cur.length-1)};
+ c.onpointerdown=e=>{e.preventDefault();rc=c.getBoundingClientRect();c.setPointerCapture(e.pointerId);const p=pos(e);p.w=3*SIGP.lw;cur=[p];st.push(cur);dot(cur)};
+ c.onpointermove=e=>{if(!cur)return;e.preventDefault();const l=e.getCoalescedEvents?e.getCoalescedEvents():[];(l.length?l:[e]).forEach(add)};
+ const end=()=>{if(!cur)return;if(cur.length>1)tail(cur);cur=null;done()};c.onpointerup=end;c.onpointercancel=end;c.onlostpointercapture=end;c.onpointerleave=null;c._rp=repaint;
+ c._out=()=>{let a=1e9,b=1e9,e=-1e9,f=-1e9;st.forEach(s=>s.forEach(p=>{a=Math.min(a,p.x);b=Math.min(b,p.y);e=Math.max(e,p.x);f=Math.max(f,p.y)}));if(a>e)return null;const m=8,sx=Math.max(0,(a-m)*R),sy=Math.max(0,(b-m)*R),sw=Math.min(c.width-sx,(e-a+2*m)*R),sh=Math.min(c.height-sy,(f-b+2*m)*R),t=document.createElement('canvas');t.width=Math.max(1,Math.round(sw));t.height=Math.max(1,Math.round(sh));t.getContext('2d').drawImage(c,sx,sy,sw,sh,0,0,t.width,t.height);return t.toDataURL('image/png')};
+ let bar=c.nextElementSibling;if(!bar||!bar.classList.contains('sigbar'))c.insertAdjacentHTML('afterend',sigBar());return repaint}
+const sigBarRefresh=()=>document.querySelectorAll('canvas.sig').forEach(c=>{const b=c.nextElementSibling;if(b&&b.classList.contains('sigbar'))b.outerHTML=sigBar()});
+A.sigSize=d=>{SIGP.h=+d.h;sigSave();document.querySelectorAll('canvas.sig').forEach(c=>{if(c._st)padInit(c,c._st,c._done)});sigBarRefresh()};
+A.sigLw=d=>{SIGP.lw=+d.v/100;sigSave()};A.sigPr=d=>{SIGP.pr=+d.v;sigSave();sigApply();const b=$('#sgPr');if(b)b.textContent=SIGP.pr+'%'};
+bindSig=function(){const c=$('#sigPad');if(!c)return;padInit(c,W.strokes,()=>{W.sig=W.strokes.length?c._out():null})};
+A.sigClear=()=>{W.strokes.length=0;W.sig=null;bindSig()};A.sigUndo=()=>{W.strokes.pop();bindSig();const c=$('#sigPad');W.sig=W.strokes.length&&c?c._out():null};
+{const sx=document.querySelectorAll;new MutationObserver(()=>{const o=document.getElementById('offSig');if(o&&!o.dataset.s2){o.dataset.s2=1;const st=[];padInit(o,st,()=>{window.__osig=st.length?o._out():null});window.__oclear=()=>{st.length=0;o._rp();window.__osig=null}}}).observe(document.body,{childList:true,subtree:true})}
+{const pd=ppDraw;ppDraw=function(){pd();const t=$('#ppT');if(t&&!t.querySelector('.sgrng'))t.insertAdjacentHTML('beforeend','<label class="xs fa sgrng" style="margin-left:8px">ขนาดลายเซ็น <b id="sgPr">'+SIGP.pr+'%</b> <input type="range" min="50" max="200" step="10" value="'+SIGP.pr+'" oninput="A.sigPr({v:this.value})" style="width:100px;accent-color:var(--gold)"></label>')}}
+
+
+/* ===== v60: จัดหน้าใบสมัครให้ตรงไฟล์ต้นฉบับ (ด้านหลังแยกบรรทัดตามต้นฉบับ · ทุกบรรทัดอยู่บรรทัดเดียว) ===== */
+function fitLines(root){const els=[...root.querySelectorAll('.t2,.para,.bl,.aend,table.tier td:last-child')];
+  const info=els.map(el=>{let s=el.querySelector(':scope>.fx');if(!s){s=document.createElement('span');s.className='fx';s.style.transformOrigin='left center';while(el.firstChild)s.appendChild(el.firstChild);el.appendChild(s)}s.style.transform='none';const cs=getComputedStyle(el),cw=el.clientWidth-(parseFloat(cs.paddingLeft)||0)-(parseFloat(cs.paddingRight)||0)-(parseFloat(cs.textIndent)||0);return{s,cw,w:s.offsetWidth,c:cs.textAlign==='center'}});
+  const k=Math.max(.55,Math.min(1,...info.map(i=>i.cw/Math.max(1,i.w))));
+  info.forEach(i=>{i.s.style.transform=k<1?(i.c?'translateX('+Math.max(0,(i.cw-i.w*k)/2).toFixed(1)+'px) ':'')+'scaleX('+k.toFixed(4)+')':'none'})}
+function ppFit(root){root.querySelectorAll('.ap').forEach(p=>{p.style.cssText+=';height:auto;min-height:0;display:flex;flex-direction:column;overflow:hidden';let lo=.6,hi=1.15,b=lo;
+  for(let i=0;i<9;i++){const m=(lo+hi)/2;p.style.setProperty('--dfs',m);p.style.setProperty('--dls',1);fitLines(p);if(p.scrollHeight<=1121){b=m;lo=m}else hi=m}
+  p.style.setProperty('--dfs',b);fitLines(p);p.style.height='1121px';p.style.justifyContent='space-between';p.querySelectorAll('img').forEach(i=>{if(!i.complete)i.addEventListener('load',()=>ppFit(root),{once:true})})})}
+{const orig=AF.paperHTML,U=t=>'<u>'+t+'</u>',N=n=>Number(n).toLocaleString('en-US');
+ const back=d=>{const o=orig(d,'back'),t=document.createElement('div');t.innerHTML=o;const ch=t.querySelector('.chair'),st=t.firstElementChild.getAttribute('style');
+  const L=[[0,U('1.หลักเกณฑ์ในการรับสมัครสมาชิก')],[0,'1.1 ค่าสมัครแรกเข้าคนละ '+AF.FEE+' บาท'],[0,'กลุ่มฌาปนกิจฯรับสมัครสมาชิกที่สุขภาพแข็งแรงไม่เป็นโรคร้ายแรง โรคมะเร็ง โรคหัวใจ โรคไต โรคเอดส์ โรคตับแข็ง โรคเบาหวาน(ตัดอวัยวะ)'],[0,'รับสมัครสมาชิกฯใหม่ที่อายุ 15-60 ปี (อายุ 60 ปี ทายาทผู้รับผลประโยชน์ต้องสมัครคู่มาด้วยอายุไม่เกิน 45 ปี)'],
+  [0,'1.2 เอกสารประกอบใบสมัคร สำเนาบัตรประชาชน สำเนาทะเบียนบ้าน ผู้สมัครและผู้รับผลประโยชน์ คนละ 1 ชุด พร้อมเซ็นสำเนาถูกต้องทุกใบ'],[0,'1.3 กลุ่มฌาปนกิจฯไม่รับสมัครสมาชิกฯบัตรประชาชนหมดอายุ'],[0,'1.4 กลุ่มฌาปนกิจฯไม่รับสมัครสมาชิกฯมีปัญหาสุขภาพ ช่วยเหลือตัวเองไม่ได้ ป่วยติดเตียง และเป็นโรคร้ายแรงดังกล่าวข้างต้น'],[0,'1.5 กลุ่มฌาปนกิจฯไม่รับสมัครสมาชิกฯซ้ำซ้อน หากพบเจอไม่คุ้มครองทุกกรณี'],
+  [0,'1.6 กลุ่มฌาปนกิจฯจะเริ่มคุ้มครองผู้สมัครเป็นสมาชิกกลุ่มฌาปนกิจฯที่ผ่านหลักเกณฑ์ในวันที่1 เวลา 00.01 น. ของทุกเดือนถัดไป'],[1,'หลังจากวันที่สมัครเป็นต้นไป (หากผู้สมัครรายใดไม่ผ่านหลักเกณฑ์ ให้มาติดต่อรับเงินค่าสมัครคืนได้ตามวันเวลาราชการ)'],
+  [0,U('2. การชำระเงินฌาปนกิจฯเป็นรายศพตามสภาพจริง')+' (เก็บเดือนละ 1 ครั้ง)'],[0,'กำหนดการส่งเงินทุกวันที่ 1 ถึง 10 ของทุกเดือน(หลังวันที่10 สมาชิกฯท่านใดยังไม่ชำระเงินกลุ่มฌาปนกิจฯจะพิจารณาตัดสิทธิ์การเป็นสมาชิกต่อไป)'],
+  [0,U('3.การชำระเงินบำรุงรายปี')+' สมาชิกฯต้องชำระเงินบำรุงรายปีคนละ '+AF.ANNUAL+' บาท ให้กับทางกลุ่มฌาปนกิจฯทุกวันที่ 1 ถึง 10 ในเดือนมกราคม ของทุกปี'],[0,'สมาชิกฯท่านใดไม่ชำระเงินบำรุงรายปีตามที่กลุ่มฌาปนกิจฯกำหนดไว้ เสียชีวิตกลุ่มฌาปนกิจฯไม่จ่ายเงินฌาปนกิจฯให้ทายาท'],
+  [0,U('4.ระเบียบว่าด้วยการจ่ายเงินฌาปนกิจฯ กรณี"ฆ่าตัวตาย"โดยเจตนา')],...AF.SUICIDE.map(s=>[0,s.clause+' '+s.label+' '+(s.clause==='4.8'?'จ่ายเงินเต็มจำนวน':s.levy?'จ่ายเงินจำนวน':'จ่ายเงินทำบุญจำนวน')+' '+N(s.amt)+' บาท ('+(s.levy?'เก็บเงินสมาชิก':'ไม่เก็บเงินสมาชิก')+')']),
+  [0,U('5.กลุ่มฌาปนกิจฯไม่จ่ายเงินฌาปนกิจฯศพ')+' ในกรณีดังนี้'],[0,'5.1 ไม่จ่ายเงินฌาปนกิจฯให้ผู้สมัครซ้ำซ้อน'],[0,'5.2 ไม่จ่ายเงินฌาปนกิจฯให้กับสมาชิกฯที่ถูกฆาตกรรมเพื่อหวังเงินฌาปนกิจฯ'],[0,'5.3 ไม่จ่ายเงินฌาปนกิจฯให้ผู้รับผลประโยชน์เป็นผู้ฆ่า หรือจ้างวานฆ่า หรือมีส่วนในการยุยงส่งเสริมให้ผู้อื่นฆ่า เพื่อหวังเงินฌาปนกิจฯ'],
+  [0,'5.4 ไม่จ่ายเงินฌาปนกิจฯกรณีตรวจพบให้ข้อมูลเป็นเท็จ ตั้งใจปกปิดปัญหาสุขภาพเป็นโรคร้ายแรง (ตามข้อ1.หลักเกณฑ์ในการรับสมัคร) ข้างต้น'],[0,'5.5 ไม่จ่ายเงินฌาปนกิจฯกรณีเสียชีวิตจากการจราจล ประท้วง หรือสงคราม (ที่ประชุมจะมีการพิจารณาจ่ายเงินฌาปนกิจฯเป็นรายบุคคลไป)'],[0,'5.6 ไม่จ่ายเงินฌาปนกิจฯจากภัยพิบัติซึ่งรัฐบาลประกาศ หรือไม่ประกาศก็ตาม (ที่ประชุมจะมีการพิจารณาจ่ายเงินฌาปนกิจฯเป็นรายบุคคลไป)'],
+  [0,'5.7 ไม่จ่ายเงินคืนกรณีที่สมาชิกฯขอลาออกยกเลิกการเป็นสมาชิกกลุ่มฌาปนกิจฯ หรือถูกยกเลิกกรณีทำผิดเงื่อนไขของกลุ่มฌาปนกิจฯ'],[0,'5.8 ไม่จ่ายเงินกรณีเกิดโรคระบาดขึ้นกับประชาชนเป็นจำนวนมากที่รัฐบาลประกาศภาวะโรคระบาด หรือไม่ก็ตามเช่น โรคโควิด19 เป็นต้น'],[1,'(ที่ประชุมจะมีการพิจารณาจ่ายเงินฌาปนกิจฯเป็นรายบุคคลไป)'],
+  [0,U('6. การขอรับเงินฌาปนกิจศพ')],[0,'6.1 เอกสารผู้เสียชีวิต 1.สำเนาใบมรณะบัตร(ท.ร.4 ตอน 1) 2.สำเนาบัตรประชาชน 3.สำเนาทะเบียนบ้าน (ปั๊มตาย) 4.เอกสารการตายอื่น ๆ'],[0,'6.2 เอกสารผู้รับผลประโยชน์ 1.สำเนาบัตรประชาชน 2.สำเนาทะเบียนบ้าน (ผู้รับผลประโยชน์เซ็นชื่อรับรองสำเนาเอกสารทุกใบ)']];
+  return'<div class="ap o back" style="'+st+'"><div class="aside">- ด้านหลัง -</div>'+L.map(l=>'<div class="bl'+(l[0]?' ind':'')+'">'+l[1]+'</div>').join('')+(ch?ch.outerHTML:'')+'</div>'};
+ AF.paperHTML=(d,side)=>side==='both'?orig(d,'front')+back(d):side==='back'?back(d):orig(d,'front')}
 
 /* ===== init ===== */
 (function(){
